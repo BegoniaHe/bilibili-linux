@@ -23,34 +23,22 @@ declare namespace Electron {
     // Docs: https://electronjs.org/docs/api/app
 
     /**
-     * Emitted when Chrome's accessibility support changes. This event fires when
-     * assistive technologies, such as screen readers, are enabled or disabled. See
-     * https://www.chromium.org/developers/design-documents/accessibility for more
-     * details.
+     * A `boolean` property that's `true` if Chrome's accessibility support is enabled,
+     * `false` otherwise. This property will be `true` if the use of assistive
+     * technologies, such as screen readers, has been detected. Setting this property
+     * to `true` manually enables Chrome's accessibility support, allowing developers
+     * to expose accessibility switch to users in application settings.
+     *
+     * See Chromium's accessibility docs for more details. Disabled by default.
+     *
+     * This API must be called after the `ready` event is emitted.
+     *
+     * **Note:** Rendering accessibility tree can significantly affect the performance
+     * of your app. It should not be enabled by default.
      *
      * @platform darwin,win32
      */
-    on(event: 'accessibility-support-changed', listener: (event: Event,
-                                                          /**
-                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
-                                                           */
-                                                          accessibilitySupportEnabled: boolean) => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    off(event: 'accessibility-support-changed', listener: (event: Event,
-                                                          /**
-                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
-                                                           */
-                                                          accessibilitySupportEnabled: boolean) => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    once(event: 'accessibility-support-changed', listener: (event: Event,
-                                                          /**
-                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
-                                                           */
-                                                          accessibilitySupportEnabled: boolean) => void): this;
+    accessibilitySupportEnabled: boolean;
     /**
      * @platform darwin,win32
      */
@@ -60,82 +48,10 @@ declare namespace Electron {
                                                            */
                                                           accessibilitySupportEnabled: boolean) => void): this;
     /**
-     * @platform darwin,win32
-     */
-    removeListener(event: 'accessibility-support-changed', listener: (event: Event,
-                                                          /**
-                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
-                                                           */
-                                                          accessibilitySupportEnabled: boolean) => void): this;
-    /**
-     * Emitted when the application is activated. Various actions can trigger this
-     * event, such as launching the application for the first time, attempting to
-     * re-launch the application when it's already running, or clicking on the
-     * application's dock or taskbar icon.
-     *
-     * @platform darwin
-     */
-    on(event: 'activate', listener: (event: Event,
-                                     hasVisibleWindows: boolean) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'activate', listener: (event: Event,
-                                     hasVisibleWindows: boolean) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'activate', listener: (event: Event,
-                                     hasVisibleWindows: boolean) => void): this;
-    /**
      * @platform darwin
      */
     addListener(event: 'activate', listener: (event: Event,
                                      hasVisibleWindows: boolean) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'activate', listener: (event: Event,
-                                     hasVisibleWindows: boolean) => void): this;
-    /**
-     * Emitted during Handoff after an activity from this device was successfully
-     * resumed on another one.
-     *
-     * @platform darwin
-     */
-    on(event: 'activity-was-continued', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string,
-                                                   /**
-                                                    * Contains app-specific state stored by the activity.
-                                                    */
-                                                   userInfo: unknown) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'activity-was-continued', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string,
-                                                   /**
-                                                    * Contains app-specific state stored by the activity.
-                                                    */
-                                                   userInfo: unknown) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'activity-was-continued', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string,
-                                                   /**
-                                                    * Contains app-specific state stored by the activity.
-                                                    */
-                                                   userInfo: unknown) => void): this;
     /**
      * @platform darwin
      */
@@ -148,109 +64,13 @@ declare namespace Electron {
                                                     * Contains app-specific state stored by the activity.
                                                     */
                                                    userInfo: unknown) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'activity-was-continued', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string,
-                                                   /**
-                                                    * Contains app-specific state stored by the activity.
-                                                    */
-                                                   userInfo: unknown) => void): this;
-    /**
-     * Emitted before the application starts closing its windows. Calling
-     * `event.preventDefault()` will prevent the default behavior, which is terminating
-     * the application.
-     *
-     * **Note:** If application quit was initiated by `autoUpdater.quitAndInstall()`,
-     * then `before-quit` is emitted _after_ emitting `close` event on all windows and
-     * closing them.
-     *
-     * **Note:** On Windows, this event will not be emitted if the app is closed due to
-     * a shutdown/restart of the system or a user logout.
-     */
-    on(event: 'before-quit', listener: (event: Event) => void): this;
-    off(event: 'before-quit', listener: (event: Event) => void): this;
-    once(event: 'before-quit', listener: (event: Event) => void): this;
     addListener(event: 'before-quit', listener: (event: Event) => void): this;
-    removeListener(event: 'before-quit', listener: (event: Event) => void): this;
-    /**
-     * Emitted when a browserWindow gets blurred.
-     */
-    on(event: 'browser-window-blur', listener: (event: Event,
-                                                window: BrowserWindow) => void): this;
-    off(event: 'browser-window-blur', listener: (event: Event,
-                                                window: BrowserWindow) => void): this;
-    once(event: 'browser-window-blur', listener: (event: Event,
-                                                window: BrowserWindow) => void): this;
     addListener(event: 'browser-window-blur', listener: (event: Event,
                                                 window: BrowserWindow) => void): this;
-    removeListener(event: 'browser-window-blur', listener: (event: Event,
-                                                window: BrowserWindow) => void): this;
-    /**
-     * Emitted when a new browserWindow is created.
-     */
-    on(event: 'browser-window-created', listener: (event: Event,
-                                                   window: BrowserWindow) => void): this;
-    off(event: 'browser-window-created', listener: (event: Event,
-                                                   window: BrowserWindow) => void): this;
-    once(event: 'browser-window-created', listener: (event: Event,
-                                                   window: BrowserWindow) => void): this;
     addListener(event: 'browser-window-created', listener: (event: Event,
                                                    window: BrowserWindow) => void): this;
-    removeListener(event: 'browser-window-created', listener: (event: Event,
-                                                   window: BrowserWindow) => void): this;
-    /**
-     * Emitted when a browserWindow gets focused.
-     */
-    on(event: 'browser-window-focus', listener: (event: Event,
-                                                 window: BrowserWindow) => void): this;
-    off(event: 'browser-window-focus', listener: (event: Event,
-                                                 window: BrowserWindow) => void): this;
-    once(event: 'browser-window-focus', listener: (event: Event,
-                                                 window: BrowserWindow) => void): this;
     addListener(event: 'browser-window-focus', listener: (event: Event,
                                                  window: BrowserWindow) => void): this;
-    removeListener(event: 'browser-window-focus', listener: (event: Event,
-                                                 window: BrowserWindow) => void): this;
-    /**
-     * Emitted when failed to verify the `certificate` for `url`, to trust the
-     * certificate you should prevent the default behavior with
-     * `event.preventDefault()` and call `callback(true)`.
-     */
-    on(event: 'certificate-error', listener: (event: Event,
-                                              webContents: WebContents,
-                                              url: string,
-                                              /**
-                                               * The error code
-                                               */
-                                              error: string,
-                                              certificate: Certificate,
-                                              callback: (isTrusted: boolean) => void,
-                                              isMainFrame: boolean) => void): this;
-    off(event: 'certificate-error', listener: (event: Event,
-                                              webContents: WebContents,
-                                              url: string,
-                                              /**
-                                               * The error code
-                                               */
-                                              error: string,
-                                              certificate: Certificate,
-                                              callback: (isTrusted: boolean) => void,
-                                              isMainFrame: boolean) => void): this;
-    once(event: 'certificate-error', listener: (event: Event,
-                                              webContents: WebContents,
-                                              url: string,
-                                              /**
-                                               * The error code
-                                               */
-                                              error: string,
-                                              certificate: Certificate,
-                                              callback: (isTrusted: boolean) => void,
-                                              isMainFrame: boolean) => void): this;
     addListener(event: 'certificate-error', listener: (event: Event,
                                               webContents: WebContents,
                                               url: string,
@@ -261,78 +81,8 @@ declare namespace Electron {
                                               certificate: Certificate,
                                               callback: (isTrusted: boolean) => void,
                                               isMainFrame: boolean) => void): this;
-    removeListener(event: 'certificate-error', listener: (event: Event,
-                                              webContents: WebContents,
-                                              url: string,
-                                              /**
-                                               * The error code
-                                               */
-                                              error: string,
-                                              certificate: Certificate,
-                                              callback: (isTrusted: boolean) => void,
-                                              isMainFrame: boolean) => void): this;
-    /**
-     * Emitted when the child process unexpectedly disappears. This is normally because
-     * it was crashed or killed. It does not include renderer processes.
-     */
-    on(event: 'child-process-gone', listener: (event: Event,
-                                               details: Details) => void): this;
-    off(event: 'child-process-gone', listener: (event: Event,
-                                               details: Details) => void): this;
-    once(event: 'child-process-gone', listener: (event: Event,
-                                               details: Details) => void): this;
     addListener(event: 'child-process-gone', listener: (event: Event,
                                                details: Details) => void): this;
-    removeListener(event: 'child-process-gone', listener: (event: Event,
-                                               details: Details) => void): this;
-    /**
-     * Emitted during Handoff when an activity from a different device wants to be
-     * resumed. You should call `event.preventDefault()` if you want to handle this
-     * event.
-     *
-     * A user activity can be continued only in an app that has the same developer Team
-     * ID as the activity's source app and that supports the activity's type. Supported
-     * activity types are specified in the app's `Info.plist` under the
-     * `NSUserActivityTypes` key.
-     *
-     * @platform darwin
-     */
-    on(event: 'continue-activity', listener: (event: Event,
-                                              /**
-                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                               */
-                                              type: string,
-                                              /**
-                                               * Contains app-specific state stored by the activity on another device.
-                                               */
-                                              userInfo: unknown,
-                                              details: ContinueActivityDetails) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'continue-activity', listener: (event: Event,
-                                              /**
-                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                               */
-                                              type: string,
-                                              /**
-                                               * Contains app-specific state stored by the activity on another device.
-                                               */
-                                              userInfo: unknown,
-                                              details: ContinueActivityDetails) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'continue-activity', listener: (event: Event,
-                                              /**
-                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                               */
-                                              type: string,
-                                              /**
-                                               * Contains app-specific state stored by the activity on another device.
-                                               */
-                                              userInfo: unknown,
-                                              details: ContinueActivityDetails) => void): this;
     /**
      * @platform darwin
      */
@@ -349,58 +99,6 @@ declare namespace Electron {
     /**
      * @platform darwin
      */
-    removeListener(event: 'continue-activity', listener: (event: Event,
-                                              /**
-                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                               */
-                                              type: string,
-                                              /**
-                                               * Contains app-specific state stored by the activity on another device.
-                                               */
-                                              userInfo: unknown,
-                                              details: ContinueActivityDetails) => void): this;
-    /**
-     * Emitted during Handoff when an activity from a different device fails to be
-     * resumed.
-     *
-     * @platform darwin
-     */
-    on(event: 'continue-activity-error', listener: (event: Event,
-                                                    /**
-                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                     */
-                                                    type: string,
-                                                    /**
-                                                     * A string with the error's localized description.
-                                                     */
-                                                    error: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'continue-activity-error', listener: (event: Event,
-                                                    /**
-                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                     */
-                                                    type: string,
-                                                    /**
-                                                     * A string with the error's localized description.
-                                                     */
-                                                    error: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'continue-activity-error', listener: (event: Event,
-                                                    /**
-                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                     */
-                                                    type: string,
-                                                    /**
-                                                     * A string with the error's localized description.
-                                                     */
-                                                    error: string) => void): this;
-    /**
-     * @platform darwin
-     */
     addListener(event: 'continue-activity-error', listener: (event: Event,
                                                     /**
                                                      * A string identifying the activity. Maps to `NSUserActivity.activityType`.
@@ -413,158 +111,21 @@ declare namespace Electron {
     /**
      * @platform darwin
      */
-    removeListener(event: 'continue-activity-error', listener: (event: Event,
-                                                    /**
-                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                     */
-                                                    type: string,
-                                                    /**
-                                                     * A string with the error's localized description.
-                                                     */
-                                                    error: string) => void): this;
-    /**
-     * Emitted when the application becomes active. This differs from the `activate`
-     * event in that `did-become-active` is emitted every time the app becomes active,
-     * not only when Dock icon is clicked or application is re-launched. It is also
-     * emitted when a user switches to the app via the macOS App Switcher.
-     *
-     * @platform darwin
-     */
-    on(event: 'did-become-active', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'did-become-active', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'did-become-active', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
     addListener(event: 'did-become-active', listener: (event: Event) => void): this;
     /**
      * @platform darwin
      */
-    removeListener(event: 'did-become-active', listener: (event: Event) => void): this;
-    /**
-     * Emitted when the app is no longer active and doesn’t have focus. This can be
-     * triggered, for example, by clicking on another application or by using the macOS
-     * App Switcher to switch to another application.
-     *
-     * @platform darwin
-     */
-    on(event: 'did-resign-active', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'did-resign-active', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'did-resign-active', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
     addListener(event: 'did-resign-active', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'did-resign-active', listener: (event: Event) => void): this;
-    /**
-     * Emitted whenever there is a GPU info update.
-     */
-    on(event: 'gpu-info-update', listener: () => void): this;
-    off(event: 'gpu-info-update', listener: () => void): this;
-    once(event: 'gpu-info-update', listener: () => void): this;
     addListener(event: 'gpu-info-update', listener: () => void): this;
-    removeListener(event: 'gpu-info-update', listener: () => void): this;
-    /**
-     * Emitted when `webContents` or Utility process wants to do basic auth.
-     *
-     * The default behavior is to cancel all authentications. To override this you
-     * should prevent the default behavior with `event.preventDefault()` and call
-     * `callback(username, password)` with the credentials.
-     *
-     * If `callback` is called without a username or password, the authentication
-     * request will be cancelled and the authentication error will be returned to the
-     * page.
-     */
-    on(event: 'login', listener: (event: Event,
-                                  webContents: WebContents,
-                                  authenticationResponseDetails: AuthenticationResponseDetails,
-                                  authInfo: AuthInfo,
-                                  callback: (username?: string, password?: string) => void) => void): this;
-    off(event: 'login', listener: (event: Event,
-                                  webContents: WebContents,
-                                  authenticationResponseDetails: AuthenticationResponseDetails,
-                                  authInfo: AuthInfo,
-                                  callback: (username?: string, password?: string) => void) => void): this;
-    once(event: 'login', listener: (event: Event,
-                                  webContents: WebContents,
-                                  authenticationResponseDetails: AuthenticationResponseDetails,
-                                  authInfo: AuthInfo,
-                                  callback: (username?: string, password?: string) => void) => void): this;
     addListener(event: 'login', listener: (event: Event,
                                   webContents: WebContents,
                                   authenticationResponseDetails: AuthenticationResponseDetails,
                                   authInfo: AuthInfo,
                                   callback: (username?: string, password?: string) => void) => void): this;
-    removeListener(event: 'login', listener: (event: Event,
-                                  webContents: WebContents,
-                                  authenticationResponseDetails: AuthenticationResponseDetails,
-                                  authInfo: AuthInfo,
-                                  callback: (username?: string, password?: string) => void) => void): this;
-    /**
-     * Emitted when the user clicks the native macOS new tab button. The new tab button
-     * is only visible if the current `BrowserWindow` has a `tabbingIdentifier`
-     *
-     * @platform darwin
-     */
-    on(event: 'new-window-for-tab', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'new-window-for-tab', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'new-window-for-tab', listener: (event: Event) => void): this;
     /**
      * @platform darwin
      */
     addListener(event: 'new-window-for-tab', listener: (event: Event) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'new-window-for-tab', listener: (event: Event) => void): this;
-    /**
-     * Emitted when the user wants to open a file with the application. The `open-file`
-     * event is usually emitted when the application is already open and the OS wants
-     * to reuse the application to open the file. `open-file` is also emitted when a
-     * file is dropped onto the dock and the application is not yet running. Make sure
-     * to listen for the `open-file` event very early in your application startup to
-     * handle this case (even before the `ready` event is emitted).
-     *
-     * You should call `event.preventDefault()` if you want to handle this event.
-     *
-     * On Windows, you have to parse `process.argv` (in the main process) to get the
-     * filepath.
-     *
-     * @platform darwin
-     */
-    on(event: 'open-file', listener: (event: Event,
-                                      path: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'open-file', listener: (event: Event,
-                                      path: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'open-file', listener: (event: Event,
-                                      path: string) => void): this;
     /**
      * @platform darwin
      */
@@ -573,176 +134,18 @@ declare namespace Electron {
     /**
      * @platform darwin
      */
-    removeListener(event: 'open-file', listener: (event: Event,
-                                      path: string) => void): this;
-    /**
-     * Emitted when the user wants to open a URL with the application. Your
-     * application's `Info.plist` file must define the URL scheme within the
-     * `CFBundleURLTypes` key, and set `NSPrincipalClass` to `AtomApplication`.
-     *
-     * As with the `open-file` event, be sure to register a listener for the `open-url`
-     * event early in your application startup to detect if the application is being
-     * opened to handle a URL. If you register the listener in response to a `ready`
-     * event, you'll miss URLs that trigger the launch of your application.
-     *
-     * @platform darwin
-     */
-    on(event: 'open-url', listener: (event: Event,
-                                     url: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'open-url', listener: (event: Event,
-                                     url: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'open-url', listener: (event: Event,
-                                     url: string) => void): this;
-    /**
-     * @platform darwin
-     */
     addListener(event: 'open-url', listener: (event: Event,
                                      url: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'open-url', listener: (event: Event,
-                                     url: string) => void): this;
-    /**
-     * Emitted when the application is quitting.
-     *
-     * **Note:** On Windows, this event will not be emitted if the app is closed due to
-     * a shutdown/restart of the system or a user logout.
-     */
-    on(event: 'quit', listener: (event: Event,
-                                 exitCode: number) => void): this;
-    off(event: 'quit', listener: (event: Event,
-                                 exitCode: number) => void): this;
-    once(event: 'quit', listener: (event: Event,
-                                 exitCode: number) => void): this;
     addListener(event: 'quit', listener: (event: Event,
                                  exitCode: number) => void): this;
-    removeListener(event: 'quit', listener: (event: Event,
-                                 exitCode: number) => void): this;
-    /**
-     * Emitted once, when Electron has finished initializing. On macOS, `launchInfo`
-     * holds the `userInfo` of the `NSUserNotification` or information from
-     * `UNNotificationResponse` that was used to open the application, if it was
-     * launched from Notification Center. You can also call `app.isReady()` to check if
-     * this event has already fired and `app.whenReady()` to get a Promise that is
-     * fulfilled when Electron is initialized.
-     *
-     * **Note**: The `ready` event is only fired after the main process has finished
-     * running the first tick of the event loop. If an Electron API needs to be called
-     * before the `ready` event, ensure that it is called synchronously in the
-     * top-level context of the main process.
-     */
-    on(event: 'ready', listener: (event: Event,
-                                  /**
-                                   * @platform darwin
-                                   */
-                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
-    off(event: 'ready', listener: (event: Event,
-                                  /**
-                                   * @platform darwin
-                                   */
-                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
-    once(event: 'ready', listener: (event: Event,
-                                  /**
-                                   * @platform darwin
-                                   */
-                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
     addListener(event: 'ready', listener: (event: Event,
                                   /**
                                    * @platform darwin
                                    */
                                   launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
-    removeListener(event: 'ready', listener: (event: Event,
-                                  /**
-                                   * @platform darwin
-                                   */
-                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
-    /**
-     * Emitted when the renderer process unexpectedly disappears.  This is normally
-     * because it was crashed or killed.
-     */
-    on(event: 'render-process-gone', listener: (event: Event,
-                                                webContents: WebContents,
-                                                details: RenderProcessGoneDetails) => void): this;
-    off(event: 'render-process-gone', listener: (event: Event,
-                                                webContents: WebContents,
-                                                details: RenderProcessGoneDetails) => void): this;
-    once(event: 'render-process-gone', listener: (event: Event,
-                                                webContents: WebContents,
-                                                details: RenderProcessGoneDetails) => void): this;
     addListener(event: 'render-process-gone', listener: (event: Event,
                                                 webContents: WebContents,
                                                 details: RenderProcessGoneDetails) => void): this;
-    removeListener(event: 'render-process-gone', listener: (event: Event,
-                                                webContents: WebContents,
-                                                details: RenderProcessGoneDetails) => void): this;
-    /**
-     * This event will be emitted inside the primary instance of your application when
-     * a second instance has been executed and calls `app.requestSingleInstanceLock()`.
-     *
-     * `argv` is an Array of the second instance's command line arguments, and
-     * `workingDirectory` is its current working directory. Usually applications
-     * respond to this by making their primary window focused and non-minimized.
-     *
-     * **Note:** `argv` will not be exactly the same list of arguments as those passed
-     * to the second instance. The order might change and additional arguments might be
-     * appended. If you need to maintain the exact same arguments, it's advised to use
-     * `additionalData` instead.
-     *
-     * **Note:** If the second instance is started by a different user than the first,
-     * the `argv` array will not include the arguments.
-     *
-     * This event is guaranteed to be emitted after the `ready` event of `app` gets
-     * emitted.
-     *
-     * **Note:** Extra command line arguments might be added by Chromium, such as
-     * `--original-process-start-time`.
-     */
-    on(event: 'second-instance', listener: (event: Event,
-                                            /**
-                                             * An array of the second instance's command line arguments
-                                             */
-                                            argv: string[],
-                                            /**
-                                             * The second instance's working directory
-                                             */
-                                            workingDirectory: string,
-                                            /**
-                                             * A JSON object of additional data passed from the second instance
-                                             */
-                                            additionalData: unknown) => void): this;
-    off(event: 'second-instance', listener: (event: Event,
-                                            /**
-                                             * An array of the second instance's command line arguments
-                                             */
-                                            argv: string[],
-                                            /**
-                                             * The second instance's working directory
-                                             */
-                                            workingDirectory: string,
-                                            /**
-                                             * A JSON object of additional data passed from the second instance
-                                             */
-                                            additionalData: unknown) => void): this;
-    once(event: 'second-instance', listener: (event: Event,
-                                            /**
-                                             * An array of the second instance's command line arguments
-                                             */
-                                            argv: string[],
-                                            /**
-                                             * The second instance's working directory
-                                             */
-                                            workingDirectory: string,
-                                            /**
-                                             * A JSON object of additional data passed from the second instance
-                                             */
-                                            additionalData: unknown) => void): this;
     addListener(event: 'second-instance', listener: (event: Event,
                                             /**
                                              * An array of the second instance's command line arguments
@@ -756,102 +159,12 @@ declare namespace Electron {
                                              * A JSON object of additional data passed from the second instance
                                              */
                                             additionalData: unknown) => void): this;
-    removeListener(event: 'second-instance', listener: (event: Event,
-                                            /**
-                                             * An array of the second instance's command line arguments
-                                             */
-                                            argv: string[],
-                                            /**
-                                             * The second instance's working directory
-                                             */
-                                            workingDirectory: string,
-                                            /**
-                                             * A JSON object of additional data passed from the second instance
-                                             */
-                                            additionalData: unknown) => void): this;
-    /**
-     * Emitted when a client certificate is requested.
-     *
-     * The `url` corresponds to the navigation entry requesting the client certificate
-     * and `callback` can be called with an entry filtered from the list. Using
-     * `event.preventDefault()` prevents the application from using the first
-     * certificate from the store.
-     */
-    on(event: 'select-client-certificate', listener: (event: Event,
-                                                      webContents: WebContents,
-                                                      url: string,
-                                                      certificateList: Certificate[],
-                                                      callback: (certificate?: Certificate) => void) => void): this;
-    off(event: 'select-client-certificate', listener: (event: Event,
-                                                      webContents: WebContents,
-                                                      url: string,
-                                                      certificateList: Certificate[],
-                                                      callback: (certificate?: Certificate) => void) => void): this;
-    once(event: 'select-client-certificate', listener: (event: Event,
-                                                      webContents: WebContents,
-                                                      url: string,
-                                                      certificateList: Certificate[],
-                                                      callback: (certificate?: Certificate) => void) => void): this;
     addListener(event: 'select-client-certificate', listener: (event: Event,
                                                       webContents: WebContents,
                                                       url: string,
                                                       certificateList: Certificate[],
                                                       callback: (certificate?: Certificate) => void) => void): this;
-    removeListener(event: 'select-client-certificate', listener: (event: Event,
-                                                      webContents: WebContents,
-                                                      url: string,
-                                                      certificateList: Certificate[],
-                                                      callback: (certificate?: Certificate) => void) => void): this;
-    /**
-     * Emitted when Electron has created a new `session`.
-     */
-    on(event: 'session-created', listener: (session: Session) => void): this;
-    off(event: 'session-created', listener: (session: Session) => void): this;
-    once(event: 'session-created', listener: (session: Session) => void): this;
     addListener(event: 'session-created', listener: (session: Session) => void): this;
-    removeListener(event: 'session-created', listener: (session: Session) => void): this;
-    /**
-     * Emitted when Handoff is about to be resumed on another device. If you need to
-     * update the state to be transferred, you should call `event.preventDefault()`
-     * immediately, construct a new `userInfo` dictionary and call
-     * `app.updateCurrentActivity()` in a timely manner. Otherwise, the operation will
-     * fail and `continue-activity-error` will be called.
-     *
-     * @platform darwin
-     */
-    on(event: 'update-activity-state', listener: (event: Event,
-                                                  /**
-                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                   */
-                                                  type: string,
-                                                  /**
-                                                   * Contains app-specific state stored by the activity.
-                                                   */
-                                                  userInfo: unknown) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'update-activity-state', listener: (event: Event,
-                                                  /**
-                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                   */
-                                                  type: string,
-                                                  /**
-                                                   * Contains app-specific state stored by the activity.
-                                                   */
-                                                  userInfo: unknown) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'update-activity-state', listener: (event: Event,
-                                                  /**
-                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                   */
-                                                  type: string,
-                                                  /**
-                                                   * Contains app-specific state stored by the activity.
-                                                   */
-                                                  userInfo: unknown) => void): this;
     /**
      * @platform darwin
      */
@@ -864,59 +177,8 @@ declare namespace Electron {
                                                    * Contains app-specific state stored by the activity.
                                                    */
                                                   userInfo: unknown) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'update-activity-state', listener: (event: Event,
-                                                  /**
-                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                   */
-                                                  type: string,
-                                                  /**
-                                                   * Contains app-specific state stored by the activity.
-                                                   */
-                                                  userInfo: unknown) => void): this;
-    /**
-     * Emitted when a new webContents is created.
-     */
-    on(event: 'web-contents-created', listener: (event: Event,
-                                                 webContents: WebContents) => void): this;
-    off(event: 'web-contents-created', listener: (event: Event,
-                                                 webContents: WebContents) => void): this;
-    once(event: 'web-contents-created', listener: (event: Event,
-                                                 webContents: WebContents) => void): this;
     addListener(event: 'web-contents-created', listener: (event: Event,
                                                  webContents: WebContents) => void): this;
-    removeListener(event: 'web-contents-created', listener: (event: Event,
-                                                 webContents: WebContents) => void): this;
-    /**
-     * Emitted during Handoff before an activity from a different device wants to be
-     * resumed. You should call `event.preventDefault()` if you want to handle this
-     * event.
-     *
-     * @platform darwin
-     */
-    on(event: 'will-continue-activity', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'will-continue-activity', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'will-continue-activity', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string) => void): this;
     /**
      * @platform darwin
      */
@@ -925,58 +187,9 @@ declare namespace Electron {
                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
                                                     */
                                                    type: string) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'will-continue-activity', listener: (event: Event,
-                                                   /**
-                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
-                                                    */
-                                                   type: string) => void): this;
-    /**
-     * Emitted when the application has finished basic startup. On Windows and Linux,
-     * the `will-finish-launching` event is the same as the `ready` event; on macOS,
-     * this event represents the `applicationWillFinishLaunching` notification of
-     * `NSApplication`.
-     *
-     * In most cases, you should do everything in the `ready` event handler.
-     */
-    on(event: 'will-finish-launching', listener: () => void): this;
-    off(event: 'will-finish-launching', listener: () => void): this;
-    once(event: 'will-finish-launching', listener: () => void): this;
     addListener(event: 'will-finish-launching', listener: () => void): this;
-    removeListener(event: 'will-finish-launching', listener: () => void): this;
-    /**
-     * Emitted when all windows have been closed and the application will quit. Calling
-     * `event.preventDefault()` will prevent the default behavior, which is terminating
-     * the application.
-     *
-     * See the description of the `window-all-closed` event for the differences between
-     * the `will-quit` and `window-all-closed` events.
-     *
-     * **Note:** On Windows, this event will not be emitted if the app is closed due to
-     * a shutdown/restart of the system or a user logout.
-     */
-    on(event: 'will-quit', listener: (event: Event) => void): this;
-    off(event: 'will-quit', listener: (event: Event) => void): this;
-    once(event: 'will-quit', listener: (event: Event) => void): this;
     addListener(event: 'will-quit', listener: (event: Event) => void): this;
-    removeListener(event: 'will-quit', listener: (event: Event) => void): this;
-    /**
-     * Emitted when all windows have been closed.
-     *
-     * If you do not subscribe to this event and all windows are closed, the default
-     * behavior is to quit the app; however, if you subscribe, you control whether the
-     * app quits or not. If the user pressed `Cmd + Q`, or the developer called
-     * `app.quit()`, Electron will first try to close all the windows and then emit the
-     * `will-quit` event, and in this case the `window-all-closed` event would not be
-     * emitted.
-     */
-    on(event: 'window-all-closed', listener: () => void): this;
-    off(event: 'window-all-closed', listener: () => void): this;
-    once(event: 'window-all-closed', listener: () => void): this;
     addListener(event: 'window-all-closed', listener: () => void): this;
-    removeListener(event: 'window-all-closed', listener: () => void): this;
     /**
      * Adds `path` to the recent documents list.
      *
@@ -987,11 +200,38 @@ declare namespace Electron {
      */
     addRecentDocument(path: string): void;
     /**
+     * A `Menu | null` property that returns `Menu` if one has been set and `null`
+     * otherwise. Users can pass a Menu to set this property.
+     */
+    applicationMenu: (Menu) | (null);
+    /**
+     * An `Integer` property that returns the badge count for current app. Setting the
+     * count to `0` will hide the badge.
+     *
+     * On macOS, setting this with any nonzero integer shows on the dock icon. On
+     * Linux, this property only works for Unity launcher.
+     *
+     * **Note:** Unity launcher requires a `.desktop` file to work. For more
+     * information, please read the Unity integration documentation.
+     *
+     * **Note:** On macOS, you need to ensure that your application has the permission
+     * to display notifications for this property to take effect.
+     *
+     * @platform linux,darwin
+     */
+    badgeCount: number;
+    /**
      * Clears the recent documents list.
      *
      * @platform darwin,win32
      */
     clearRecentDocuments(): void;
+    /**
+     * A `CommandLine` object that allows you to read and manipulate the command line
+     * arguments that Chromium uses.
+     *
+     */
+    readonly commandLine: CommandLine;
     /**
      * Configures host resolution (DNS and DNS-over-HTTPS). By default, the following
      * resolvers will be used, in order:
@@ -1026,6 +266,13 @@ declare namespace Electron {
      * This method can only be called before app is ready.
      */
     disableHardwareAcceleration(): void;
+    /**
+     * A `Dock` `| undefined` object that allows you to perform actions on your app
+     * icon in the user's dock on macOS.
+     *
+     * @platform darwin
+     */
+    readonly dock: Dock;
     /**
      * Enables full sandbox mode on the app. This means that all renderers will be
      * launched sandboxed, regardless of the value of the `sandbox` flag in
@@ -1354,6 +601,13 @@ declare namespace Electron {
      */
     isInApplicationsFolder(): boolean;
     /**
+     * A `boolean` property that returns  `true` if the app is packaged, `false`
+     * otherwise. For many apps, this property can be used to distinguish development
+     * and production environments.
+     *
+     */
+    readonly isPackaged: boolean;
+    /**
      * `true` if Electron has finished initializing, `false` otherwise. See also
      * `app.whenReady()`.
      */
@@ -1406,6 +660,669 @@ declare namespace Electron {
      */
     moveToApplicationsFolder(options?: MoveToApplicationsFolderOptions): boolean;
     /**
+     * A `string` property that indicates the current application's name, which is the
+     * name in the application's `package.json` file.
+     *
+     * Usually the `name` field of `package.json` is a short lowercase name, according
+     * to the npm modules spec. You should usually also specify a `productName` field,
+     * which is your application's full capitalized name, and which will be preferred
+     * over `name` by Electron.
+     */
+    name: string;
+    /**
+     * @platform darwin,win32
+     */
+    off(event: 'accessibility-support-changed', listener: (event: Event,
+                                                          /**
+                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
+                                                           */
+                                                          accessibilitySupportEnabled: boolean) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'activate', listener: (event: Event,
+                                     hasVisibleWindows: boolean) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'activity-was-continued', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string,
+                                                   /**
+                                                    * Contains app-specific state stored by the activity.
+                                                    */
+                                                   userInfo: unknown) => void): this;
+    off(event: 'before-quit', listener: (event: Event) => void): this;
+    off(event: 'browser-window-blur', listener: (event: Event,
+                                                window: BrowserWindow) => void): this;
+    off(event: 'browser-window-created', listener: (event: Event,
+                                                   window: BrowserWindow) => void): this;
+    off(event: 'browser-window-focus', listener: (event: Event,
+                                                 window: BrowserWindow) => void): this;
+    off(event: 'certificate-error', listener: (event: Event,
+                                              webContents: WebContents,
+                                              url: string,
+                                              /**
+                                               * The error code
+                                               */
+                                              error: string,
+                                              certificate: Certificate,
+                                              callback: (isTrusted: boolean) => void,
+                                              isMainFrame: boolean) => void): this;
+    off(event: 'child-process-gone', listener: (event: Event,
+                                               details: Details) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'continue-activity', listener: (event: Event,
+                                              /**
+                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                               */
+                                              type: string,
+                                              /**
+                                               * Contains app-specific state stored by the activity on another device.
+                                               */
+                                              userInfo: unknown,
+                                              details: ContinueActivityDetails) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'continue-activity-error', listener: (event: Event,
+                                                    /**
+                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                     */
+                                                    type: string,
+                                                    /**
+                                                     * A string with the error's localized description.
+                                                     */
+                                                    error: string) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'did-become-active', listener: (event: Event) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'did-resign-active', listener: (event: Event) => void): this;
+    off(event: 'gpu-info-update', listener: () => void): this;
+    off(event: 'login', listener: (event: Event,
+                                  webContents: WebContents,
+                                  authenticationResponseDetails: AuthenticationResponseDetails,
+                                  authInfo: AuthInfo,
+                                  callback: (username?: string, password?: string) => void) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'new-window-for-tab', listener: (event: Event) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'open-file', listener: (event: Event,
+                                      path: string) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'open-url', listener: (event: Event,
+                                     url: string) => void): this;
+    off(event: 'quit', listener: (event: Event,
+                                 exitCode: number) => void): this;
+    off(event: 'ready', listener: (event: Event,
+                                  /**
+                                   * @platform darwin
+                                   */
+                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
+    off(event: 'render-process-gone', listener: (event: Event,
+                                                webContents: WebContents,
+                                                details: RenderProcessGoneDetails) => void): this;
+    off(event: 'second-instance', listener: (event: Event,
+                                            /**
+                                             * An array of the second instance's command line arguments
+                                             */
+                                            argv: string[],
+                                            /**
+                                             * The second instance's working directory
+                                             */
+                                            workingDirectory: string,
+                                            /**
+                                             * A JSON object of additional data passed from the second instance
+                                             */
+                                            additionalData: unknown) => void): this;
+    off(event: 'select-client-certificate', listener: (event: Event,
+                                                      webContents: WebContents,
+                                                      url: string,
+                                                      certificateList: Certificate[],
+                                                      callback: (certificate?: Certificate) => void) => void): this;
+    off(event: 'session-created', listener: (session: Session) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'update-activity-state', listener: (event: Event,
+                                                  /**
+                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                   */
+                                                  type: string,
+                                                  /**
+                                                   * Contains app-specific state stored by the activity.
+                                                   */
+                                                  userInfo: unknown) => void): this;
+    off(event: 'web-contents-created', listener: (event: Event,
+                                                 webContents: WebContents) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'will-continue-activity', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string) => void): this;
+    off(event: 'will-finish-launching', listener: () => void): this;
+    off(event: 'will-quit', listener: (event: Event) => void): this;
+    off(event: 'window-all-closed', listener: () => void): this;
+    /**
+     * Emitted when Chrome's accessibility support changes. This event fires when
+     * assistive technologies, such as screen readers, are enabled or disabled. See
+     * https://www.chromium.org/developers/design-documents/accessibility for more
+     * details.
+     *
+     * @platform darwin,win32
+     */
+    on(event: 'accessibility-support-changed', listener: (event: Event,
+                                                          /**
+                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
+                                                           */
+                                                          accessibilitySupportEnabled: boolean) => void): this;
+    /**
+     * Emitted when the application is activated. Various actions can trigger this
+     * event, such as launching the application for the first time, attempting to
+     * re-launch the application when it's already running, or clicking on the
+     * application's dock or taskbar icon.
+     *
+     * @platform darwin
+     */
+    on(event: 'activate', listener: (event: Event,
+                                     hasVisibleWindows: boolean) => void): this;
+    /**
+     * Emitted during Handoff after an activity from this device was successfully
+     * resumed on another one.
+     *
+     * @platform darwin
+     */
+    on(event: 'activity-was-continued', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string,
+                                                   /**
+                                                    * Contains app-specific state stored by the activity.
+                                                    */
+                                                   userInfo: unknown) => void): this;
+    /**
+     * Emitted before the application starts closing its windows. Calling
+     * `event.preventDefault()` will prevent the default behavior, which is terminating
+     * the application.
+     *
+     * **Note:** If application quit was initiated by `autoUpdater.quitAndInstall()`,
+     * then `before-quit` is emitted _after_ emitting `close` event on all windows and
+     * closing them.
+     *
+     * **Note:** On Windows, this event will not be emitted if the app is closed due to
+     * a shutdown/restart of the system or a user logout.
+     */
+    on(event: 'before-quit', listener: (event: Event) => void): this;
+    /**
+     * Emitted when a browserWindow gets blurred.
+     */
+    on(event: 'browser-window-blur', listener: (event: Event,
+                                                window: BrowserWindow) => void): this;
+    /**
+     * Emitted when a new browserWindow is created.
+     */
+    on(event: 'browser-window-created', listener: (event: Event,
+                                                   window: BrowserWindow) => void): this;
+    /**
+     * Emitted when a browserWindow gets focused.
+     */
+    on(event: 'browser-window-focus', listener: (event: Event,
+                                                 window: BrowserWindow) => void): this;
+    /**
+     * Emitted when failed to verify the `certificate` for `url`, to trust the
+     * certificate you should prevent the default behavior with
+     * `event.preventDefault()` and call `callback(true)`.
+     */
+    on(event: 'certificate-error', listener: (event: Event,
+                                              webContents: WebContents,
+                                              url: string,
+                                              /**
+                                               * The error code
+                                               */
+                                              error: string,
+                                              certificate: Certificate,
+                                              callback: (isTrusted: boolean) => void,
+                                              isMainFrame: boolean) => void): this;
+    /**
+     * Emitted when the child process unexpectedly disappears. This is normally because
+     * it was crashed or killed. It does not include renderer processes.
+     */
+    on(event: 'child-process-gone', listener: (event: Event,
+                                               details: Details) => void): this;
+    /**
+     * Emitted during Handoff when an activity from a different device wants to be
+     * resumed. You should call `event.preventDefault()` if you want to handle this
+     * event.
+     *
+     * A user activity can be continued only in an app that has the same developer Team
+     * ID as the activity's source app and that supports the activity's type. Supported
+     * activity types are specified in the app's `Info.plist` under the
+     * `NSUserActivityTypes` key.
+     *
+     * @platform darwin
+     */
+    on(event: 'continue-activity', listener: (event: Event,
+                                              /**
+                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                               */
+                                              type: string,
+                                              /**
+                                               * Contains app-specific state stored by the activity on another device.
+                                               */
+                                              userInfo: unknown,
+                                              details: ContinueActivityDetails) => void): this;
+    /**
+     * Emitted during Handoff when an activity from a different device fails to be
+     * resumed.
+     *
+     * @platform darwin
+     */
+    on(event: 'continue-activity-error', listener: (event: Event,
+                                                    /**
+                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                     */
+                                                    type: string,
+                                                    /**
+                                                     * A string with the error's localized description.
+                                                     */
+                                                    error: string) => void): this;
+    /**
+     * Emitted when the application becomes active. This differs from the `activate`
+     * event in that `did-become-active` is emitted every time the app becomes active,
+     * not only when Dock icon is clicked or application is re-launched. It is also
+     * emitted when a user switches to the app via the macOS App Switcher.
+     *
+     * @platform darwin
+     */
+    on(event: 'did-become-active', listener: (event: Event) => void): this;
+    /**
+     * Emitted when the app is no longer active and doesn’t have focus. This can be
+     * triggered, for example, by clicking on another application or by using the macOS
+     * App Switcher to switch to another application.
+     *
+     * @platform darwin
+     */
+    on(event: 'did-resign-active', listener: (event: Event) => void): this;
+    /**
+     * Emitted whenever there is a GPU info update.
+     */
+    on(event: 'gpu-info-update', listener: () => void): this;
+    /**
+     * Emitted when `webContents` or Utility process wants to do basic auth.
+     *
+     * The default behavior is to cancel all authentications. To override this you
+     * should prevent the default behavior with `event.preventDefault()` and call
+     * `callback(username, password)` with the credentials.
+     *
+     * If `callback` is called without a username or password, the authentication
+     * request will be cancelled and the authentication error will be returned to the
+     * page.
+     */
+    on(event: 'login', listener: (event: Event,
+                                  webContents: WebContents,
+                                  authenticationResponseDetails: AuthenticationResponseDetails,
+                                  authInfo: AuthInfo,
+                                  callback: (username?: string, password?: string) => void) => void): this;
+    /**
+     * Emitted when the user clicks the native macOS new tab button. The new tab button
+     * is only visible if the current `BrowserWindow` has a `tabbingIdentifier`
+     *
+     * @platform darwin
+     */
+    on(event: 'new-window-for-tab', listener: (event: Event) => void): this;
+    /**
+     * Emitted when the user wants to open a file with the application. The `open-file`
+     * event is usually emitted when the application is already open and the OS wants
+     * to reuse the application to open the file. `open-file` is also emitted when a
+     * file is dropped onto the dock and the application is not yet running. Make sure
+     * to listen for the `open-file` event very early in your application startup to
+     * handle this case (even before the `ready` event is emitted).
+     *
+     * You should call `event.preventDefault()` if you want to handle this event.
+     *
+     * On Windows, you have to parse `process.argv` (in the main process) to get the
+     * filepath.
+     *
+     * @platform darwin
+     */
+    on(event: 'open-file', listener: (event: Event,
+                                      path: string) => void): this;
+    /**
+     * Emitted when the user wants to open a URL with the application. Your
+     * application's `Info.plist` file must define the URL scheme within the
+     * `CFBundleURLTypes` key, and set `NSPrincipalClass` to `AtomApplication`.
+     *
+     * As with the `open-file` event, be sure to register a listener for the `open-url`
+     * event early in your application startup to detect if the application is being
+     * opened to handle a URL. If you register the listener in response to a `ready`
+     * event, you'll miss URLs that trigger the launch of your application.
+     *
+     * @platform darwin
+     */
+    on(event: 'open-url', listener: (event: Event,
+                                     url: string) => void): this;
+    /**
+     * Emitted when the application is quitting.
+     *
+     * **Note:** On Windows, this event will not be emitted if the app is closed due to
+     * a shutdown/restart of the system or a user logout.
+     */
+    on(event: 'quit', listener: (event: Event,
+                                 exitCode: number) => void): this;
+    /**
+     * Emitted once, when Electron has finished initializing. On macOS, `launchInfo`
+     * holds the `userInfo` of the `NSUserNotification` or information from
+     * `UNNotificationResponse` that was used to open the application, if it was
+     * launched from Notification Center. You can also call `app.isReady()` to check if
+     * this event has already fired and `app.whenReady()` to get a Promise that is
+     * fulfilled when Electron is initialized.
+     *
+     * **Note**: The `ready` event is only fired after the main process has finished
+     * running the first tick of the event loop. If an Electron API needs to be called
+     * before the `ready` event, ensure that it is called synchronously in the
+     * top-level context of the main process.
+     */
+    on(event: 'ready', listener: (event: Event,
+                                  /**
+                                   * @platform darwin
+                                   */
+                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
+    /**
+     * Emitted when the renderer process unexpectedly disappears.  This is normally
+     * because it was crashed or killed.
+     */
+    on(event: 'render-process-gone', listener: (event: Event,
+                                                webContents: WebContents,
+                                                details: RenderProcessGoneDetails) => void): this;
+    /**
+     * This event will be emitted inside the primary instance of your application when
+     * a second instance has been executed and calls `app.requestSingleInstanceLock()`.
+     *
+     * `argv` is an Array of the second instance's command line arguments, and
+     * `workingDirectory` is its current working directory. Usually applications
+     * respond to this by making their primary window focused and non-minimized.
+     *
+     * **Note:** `argv` will not be exactly the same list of arguments as those passed
+     * to the second instance. The order might change and additional arguments might be
+     * appended. If you need to maintain the exact same arguments, it's advised to use
+     * `additionalData` instead.
+     *
+     * **Note:** If the second instance is started by a different user than the first,
+     * the `argv` array will not include the arguments.
+     *
+     * This event is guaranteed to be emitted after the `ready` event of `app` gets
+     * emitted.
+     *
+     * **Note:** Extra command line arguments might be added by Chromium, such as
+     * `--original-process-start-time`.
+     */
+    on(event: 'second-instance', listener: (event: Event,
+                                            /**
+                                             * An array of the second instance's command line arguments
+                                             */
+                                            argv: string[],
+                                            /**
+                                             * The second instance's working directory
+                                             */
+                                            workingDirectory: string,
+                                            /**
+                                             * A JSON object of additional data passed from the second instance
+                                             */
+                                            additionalData: unknown) => void): this;
+    /**
+     * Emitted when a client certificate is requested.
+     *
+     * The `url` corresponds to the navigation entry requesting the client certificate
+     * and `callback` can be called with an entry filtered from the list. Using
+     * `event.preventDefault()` prevents the application from using the first
+     * certificate from the store.
+     */
+    on(event: 'select-client-certificate', listener: (event: Event,
+                                                      webContents: WebContents,
+                                                      url: string,
+                                                      certificateList: Certificate[],
+                                                      callback: (certificate?: Certificate) => void) => void): this;
+    /**
+     * Emitted when Electron has created a new `session`.
+     */
+    on(event: 'session-created', listener: (session: Session) => void): this;
+    /**
+     * Emitted when Handoff is about to be resumed on another device. If you need to
+     * update the state to be transferred, you should call `event.preventDefault()`
+     * immediately, construct a new `userInfo` dictionary and call
+     * `app.updateCurrentActivity()` in a timely manner. Otherwise, the operation will
+     * fail and `continue-activity-error` will be called.
+     *
+     * @platform darwin
+     */
+    on(event: 'update-activity-state', listener: (event: Event,
+                                                  /**
+                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                   */
+                                                  type: string,
+                                                  /**
+                                                   * Contains app-specific state stored by the activity.
+                                                   */
+                                                  userInfo: unknown) => void): this;
+    /**
+     * Emitted when a new webContents is created.
+     */
+    on(event: 'web-contents-created', listener: (event: Event,
+                                                 webContents: WebContents) => void): this;
+    /**
+     * Emitted during Handoff before an activity from a different device wants to be
+     * resumed. You should call `event.preventDefault()` if you want to handle this
+     * event.
+     *
+     * @platform darwin
+     */
+    on(event: 'will-continue-activity', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string) => void): this;
+    /**
+     * Emitted when the application has finished basic startup. On Windows and Linux,
+     * the `will-finish-launching` event is the same as the `ready` event; on macOS,
+     * this event represents the `applicationWillFinishLaunching` notification of
+     * `NSApplication`.
+     *
+     * In most cases, you should do everything in the `ready` event handler.
+     */
+    on(event: 'will-finish-launching', listener: () => void): this;
+    /**
+     * Emitted when all windows have been closed and the application will quit. Calling
+     * `event.preventDefault()` will prevent the default behavior, which is terminating
+     * the application.
+     *
+     * See the description of the `window-all-closed` event for the differences between
+     * the `will-quit` and `window-all-closed` events.
+     *
+     * **Note:** On Windows, this event will not be emitted if the app is closed due to
+     * a shutdown/restart of the system or a user logout.
+     */
+    on(event: 'will-quit', listener: (event: Event) => void): this;
+    /**
+     * Emitted when all windows have been closed.
+     *
+     * If you do not subscribe to this event and all windows are closed, the default
+     * behavior is to quit the app; however, if you subscribe, you control whether the
+     * app quits or not. If the user pressed `Cmd + Q`, or the developer called
+     * `app.quit()`, Electron will first try to close all the windows and then emit the
+     * `will-quit` event, and in this case the `window-all-closed` event would not be
+     * emitted.
+     */
+    on(event: 'window-all-closed', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    once(event: 'accessibility-support-changed', listener: (event: Event,
+                                                          /**
+                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
+                                                           */
+                                                          accessibilitySupportEnabled: boolean) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'activate', listener: (event: Event,
+                                     hasVisibleWindows: boolean) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'activity-was-continued', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string,
+                                                   /**
+                                                    * Contains app-specific state stored by the activity.
+                                                    */
+                                                   userInfo: unknown) => void): this;
+    once(event: 'before-quit', listener: (event: Event) => void): this;
+    once(event: 'browser-window-blur', listener: (event: Event,
+                                                window: BrowserWindow) => void): this;
+    once(event: 'browser-window-created', listener: (event: Event,
+                                                   window: BrowserWindow) => void): this;
+    once(event: 'browser-window-focus', listener: (event: Event,
+                                                 window: BrowserWindow) => void): this;
+    once(event: 'certificate-error', listener: (event: Event,
+                                              webContents: WebContents,
+                                              url: string,
+                                              /**
+                                               * The error code
+                                               */
+                                              error: string,
+                                              certificate: Certificate,
+                                              callback: (isTrusted: boolean) => void,
+                                              isMainFrame: boolean) => void): this;
+    once(event: 'child-process-gone', listener: (event: Event,
+                                               details: Details) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'continue-activity', listener: (event: Event,
+                                              /**
+                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                               */
+                                              type: string,
+                                              /**
+                                               * Contains app-specific state stored by the activity on another device.
+                                               */
+                                              userInfo: unknown,
+                                              details: ContinueActivityDetails) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'continue-activity-error', listener: (event: Event,
+                                                    /**
+                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                     */
+                                                    type: string,
+                                                    /**
+                                                     * A string with the error's localized description.
+                                                     */
+                                                    error: string) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'did-become-active', listener: (event: Event) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'did-resign-active', listener: (event: Event) => void): this;
+    once(event: 'gpu-info-update', listener: () => void): this;
+    once(event: 'login', listener: (event: Event,
+                                  webContents: WebContents,
+                                  authenticationResponseDetails: AuthenticationResponseDetails,
+                                  authInfo: AuthInfo,
+                                  callback: (username?: string, password?: string) => void) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'new-window-for-tab', listener: (event: Event) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'open-file', listener: (event: Event,
+                                      path: string) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'open-url', listener: (event: Event,
+                                     url: string) => void): this;
+    once(event: 'quit', listener: (event: Event,
+                                 exitCode: number) => void): this;
+    once(event: 'ready', listener: (event: Event,
+                                  /**
+                                   * @platform darwin
+                                   */
+                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
+    once(event: 'render-process-gone', listener: (event: Event,
+                                                webContents: WebContents,
+                                                details: RenderProcessGoneDetails) => void): this;
+    once(event: 'second-instance', listener: (event: Event,
+                                            /**
+                                             * An array of the second instance's command line arguments
+                                             */
+                                            argv: string[],
+                                            /**
+                                             * The second instance's working directory
+                                             */
+                                            workingDirectory: string,
+                                            /**
+                                             * A JSON object of additional data passed from the second instance
+                                             */
+                                            additionalData: unknown) => void): this;
+    once(event: 'select-client-certificate', listener: (event: Event,
+                                                      webContents: WebContents,
+                                                      url: string,
+                                                      certificateList: Certificate[],
+                                                      callback: (certificate?: Certificate) => void) => void): this;
+    once(event: 'session-created', listener: (session: Session) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'update-activity-state', listener: (event: Event,
+                                                  /**
+                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                   */
+                                                  type: string,
+                                                  /**
+                                                   * Contains app-specific state stored by the activity.
+                                                   */
+                                                  userInfo: unknown) => void): this;
+    once(event: 'web-contents-created', listener: (event: Event,
+                                                 webContents: WebContents) => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'will-continue-activity', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string) => void): this;
+    once(event: 'will-finish-launching', listener: () => void): this;
+    once(event: 'will-quit', listener: (event: Event) => void): this;
+    once(event: 'window-all-closed', listener: () => void): this;
+    /**
      * Try to close all windows. The `before-quit` event will be emitted first. If all
      * windows are successfully closed, the `will-quit` event will be emitted and by
      * default the application will terminate.
@@ -1448,6 +1365,157 @@ declare namespace Electron {
      */
     removeAsDefaultProtocolClient(protocol: string, path?: string, args?: string[]): boolean;
     /**
+     * @platform darwin,win32
+     */
+    removeListener(event: 'accessibility-support-changed', listener: (event: Event,
+                                                          /**
+                                                           * `true` when Chrome's accessibility support is enabled, `false` otherwise.
+                                                           */
+                                                          accessibilitySupportEnabled: boolean) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'activate', listener: (event: Event,
+                                     hasVisibleWindows: boolean) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'activity-was-continued', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string,
+                                                   /**
+                                                    * Contains app-specific state stored by the activity.
+                                                    */
+                                                   userInfo: unknown) => void): this;
+    removeListener(event: 'before-quit', listener: (event: Event) => void): this;
+    removeListener(event: 'browser-window-blur', listener: (event: Event,
+                                                window: BrowserWindow) => void): this;
+    removeListener(event: 'browser-window-created', listener: (event: Event,
+                                                   window: BrowserWindow) => void): this;
+    removeListener(event: 'browser-window-focus', listener: (event: Event,
+                                                 window: BrowserWindow) => void): this;
+    removeListener(event: 'certificate-error', listener: (event: Event,
+                                              webContents: WebContents,
+                                              url: string,
+                                              /**
+                                               * The error code
+                                               */
+                                              error: string,
+                                              certificate: Certificate,
+                                              callback: (isTrusted: boolean) => void,
+                                              isMainFrame: boolean) => void): this;
+    removeListener(event: 'child-process-gone', listener: (event: Event,
+                                               details: Details) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'continue-activity', listener: (event: Event,
+                                              /**
+                                               * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                               */
+                                              type: string,
+                                              /**
+                                               * Contains app-specific state stored by the activity on another device.
+                                               */
+                                              userInfo: unknown,
+                                              details: ContinueActivityDetails) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'continue-activity-error', listener: (event: Event,
+                                                    /**
+                                                     * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                     */
+                                                    type: string,
+                                                    /**
+                                                     * A string with the error's localized description.
+                                                     */
+                                                    error: string) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'did-become-active', listener: (event: Event) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'did-resign-active', listener: (event: Event) => void): this;
+    removeListener(event: 'gpu-info-update', listener: () => void): this;
+    removeListener(event: 'login', listener: (event: Event,
+                                  webContents: WebContents,
+                                  authenticationResponseDetails: AuthenticationResponseDetails,
+                                  authInfo: AuthInfo,
+                                  callback: (username?: string, password?: string) => void) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'new-window-for-tab', listener: (event: Event) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'open-file', listener: (event: Event,
+                                      path: string) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'open-url', listener: (event: Event,
+                                     url: string) => void): this;
+    removeListener(event: 'quit', listener: (event: Event,
+                                 exitCode: number) => void): this;
+    removeListener(event: 'ready', listener: (event: Event,
+                                  /**
+                                   * @platform darwin
+                                   */
+                                  launchInfo: (Record<string, any>) | (NotificationResponse)) => void): this;
+    removeListener(event: 'render-process-gone', listener: (event: Event,
+                                                webContents: WebContents,
+                                                details: RenderProcessGoneDetails) => void): this;
+    removeListener(event: 'second-instance', listener: (event: Event,
+                                            /**
+                                             * An array of the second instance's command line arguments
+                                             */
+                                            argv: string[],
+                                            /**
+                                             * The second instance's working directory
+                                             */
+                                            workingDirectory: string,
+                                            /**
+                                             * A JSON object of additional data passed from the second instance
+                                             */
+                                            additionalData: unknown) => void): this;
+    removeListener(event: 'select-client-certificate', listener: (event: Event,
+                                                      webContents: WebContents,
+                                                      url: string,
+                                                      certificateList: Certificate[],
+                                                      callback: (certificate?: Certificate) => void) => void): this;
+    removeListener(event: 'session-created', listener: (session: Session) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'update-activity-state', listener: (event: Event,
+                                                  /**
+                                                   * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                   */
+                                                  type: string,
+                                                  /**
+                                                   * Contains app-specific state stored by the activity.
+                                                   */
+                                                  userInfo: unknown) => void): this;
+    removeListener(event: 'web-contents-created', listener: (event: Event,
+                                                 webContents: WebContents) => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'will-continue-activity', listener: (event: Event,
+                                                   /**
+                                                    * A string identifying the activity. Maps to `NSUserActivity.activityType`.
+                                                    */
+                                                   type: string) => void): this;
+    removeListener(event: 'will-finish-launching', listener: () => void): this;
+    removeListener(event: 'will-quit', listener: (event: Event) => void): this;
+    removeListener(event: 'window-all-closed', listener: () => void): this;
+    /**
      * The return value of this method indicates whether or not this instance of your
      * application successfully obtained the lock.  If it failed to obtain the lock,
      * you can assume that another instance of your application is already running with
@@ -1479,6 +1547,18 @@ declare namespace Electron {
      * to make requests using Net in the utility process.
      */
     resolveProxy(url: string): Promise<string>;
+    /**
+     * A `boolean` which when `true` indicates that the app is currently running under
+     * an ARM64 translator (like the macOS Rosetta Translator Environment or Windows
+     * WOW).
+     *
+     * You can use this property to prompt users to download the arm64 version of your
+     * application when they are mistakenly running the x64 version under Rosetta or
+     * WOW.
+     *
+     * @platform darwin,win32
+     */
+    readonly runningUnderARM64Translation: boolean;
     /**
      * Set the about panel options. This will override the values defined in the app's
      * `.plist` file on macOS. See the Apple docs for more details. On Linux, values
@@ -1723,92 +1803,6 @@ declare namespace Electron {
      */
     updateCurrentActivity(type: string, userInfo: any): void;
     /**
-     * fulfilled when Electron is initialized. May be used as a convenient alternative
-     * to checking `app.isReady()` and subscribing to the `ready` event if the app is
-     * not ready yet.
-     */
-    whenReady(): Promise<void>;
-    /**
-     * A `boolean` property that's `true` if Chrome's accessibility support is enabled,
-     * `false` otherwise. This property will be `true` if the use of assistive
-     * technologies, such as screen readers, has been detected. Setting this property
-     * to `true` manually enables Chrome's accessibility support, allowing developers
-     * to expose accessibility switch to users in application settings.
-     *
-     * See Chromium's accessibility docs for more details. Disabled by default.
-     *
-     * This API must be called after the `ready` event is emitted.
-     *
-     * **Note:** Rendering accessibility tree can significantly affect the performance
-     * of your app. It should not be enabled by default.
-     *
-     * @platform darwin,win32
-     */
-    accessibilitySupportEnabled: boolean;
-    /**
-     * A `Menu | null` property that returns `Menu` if one has been set and `null`
-     * otherwise. Users can pass a Menu to set this property.
-     */
-    applicationMenu: (Menu) | (null);
-    /**
-     * An `Integer` property that returns the badge count for current app. Setting the
-     * count to `0` will hide the badge.
-     *
-     * On macOS, setting this with any nonzero integer shows on the dock icon. On
-     * Linux, this property only works for Unity launcher.
-     *
-     * **Note:** Unity launcher requires a `.desktop` file to work. For more
-     * information, please read the Unity integration documentation.
-     *
-     * **Note:** On macOS, you need to ensure that your application has the permission
-     * to display notifications for this property to take effect.
-     *
-     * @platform linux,darwin
-     */
-    badgeCount: number;
-    /**
-     * A `CommandLine` object that allows you to read and manipulate the command line
-     * arguments that Chromium uses.
-     *
-     */
-    readonly commandLine: CommandLine;
-    /**
-     * A `Dock` `| undefined` object that allows you to perform actions on your app
-     * icon in the user's dock on macOS.
-     *
-     * @platform darwin
-     */
-    readonly dock: Dock;
-    /**
-     * A `boolean` property that returns  `true` if the app is packaged, `false`
-     * otherwise. For many apps, this property can be used to distinguish development
-     * and production environments.
-     *
-     */
-    readonly isPackaged: boolean;
-    /**
-     * A `string` property that indicates the current application's name, which is the
-     * name in the application's `package.json` file.
-     *
-     * Usually the `name` field of `package.json` is a short lowercase name, according
-     * to the npm modules spec. You should usually also specify a `productName` field,
-     * which is your application's full capitalized name, and which will be preferred
-     * over `name` by Electron.
-     */
-    name: string;
-    /**
-     * A `boolean` which when `true` indicates that the app is currently running under
-     * an ARM64 translator (like the macOS Rosetta Translator Environment or Windows
-     * WOW).
-     *
-     * You can use this property to prompt users to download the arm64 version of your
-     * application when they are mistakenly running the x64 version under Rosetta or
-     * WOW.
-     *
-     * @platform darwin,win32
-     */
-    readonly runningUnderARM64Translation: boolean;
-    /**
      * A `string` which is the user agent string Electron will use as a global
      * fallback.
      *
@@ -1818,12 +1812,50 @@ declare namespace Electron {
      * app's initialization to ensure that your overridden value is used.
      */
     userAgentFallback: string;
+    /**
+     * fulfilled when Electron is initialized. May be used as a convenient alternative
+     * to checking `app.isReady()` and subscribing to the `ready` event if the app is
+     * not ready yet.
+     */
+    whenReady(): Promise<void>;
   }
 
   interface AutoUpdater extends NodeJS.EventEmitter {
 
     // Docs: https://electronjs.org/docs/api/auto-updater
 
+    addListener(event: 'before-quit-for-update', listener: () => void): this;
+    addListener(event: 'checking-for-update', listener: () => void): this;
+    addListener(event: 'error', listener: (error: Error) => void): this;
+    addListener(event: 'update-available', listener: () => void): this;
+    addListener(event: 'update-downloaded', listener: (event: Event,
+                                              releaseNotes: string,
+                                              releaseName: string,
+                                              releaseDate: Date,
+                                              updateURL: string) => void): this;
+    addListener(event: 'update-not-available', listener: () => void): this;
+    /**
+     * Asks the server whether there is an update. You must call `setFeedURL` before
+     * using this API.
+     *
+     * **Note:** If an update is available it will be downloaded automatically. Calling
+     * `autoUpdater.checkForUpdates()` twice will download the update two times.
+     */
+    checkForUpdates(): void;
+    /**
+     * The current update feed URL.
+     */
+    getFeedURL(): string;
+    off(event: 'before-quit-for-update', listener: () => void): this;
+    off(event: 'checking-for-update', listener: () => void): this;
+    off(event: 'error', listener: (error: Error) => void): this;
+    off(event: 'update-available', listener: () => void): this;
+    off(event: 'update-downloaded', listener: (event: Event,
+                                              releaseNotes: string,
+                                              releaseName: string,
+                                              releaseDate: Date,
+                                              updateURL: string) => void): this;
+    off(event: 'update-not-available', listener: () => void): this;
     /**
      * This event is emitted after a user calls `quitAndInstall()`.
      *
@@ -1833,35 +1865,19 @@ declare namespace Electron {
      * well as listening to `before-quit`.
      */
     on(event: 'before-quit-for-update', listener: () => void): this;
-    off(event: 'before-quit-for-update', listener: () => void): this;
-    once(event: 'before-quit-for-update', listener: () => void): this;
-    addListener(event: 'before-quit-for-update', listener: () => void): this;
-    removeListener(event: 'before-quit-for-update', listener: () => void): this;
     /**
      * Emitted when checking if an update has started.
      */
     on(event: 'checking-for-update', listener: () => void): this;
-    off(event: 'checking-for-update', listener: () => void): this;
-    once(event: 'checking-for-update', listener: () => void): this;
-    addListener(event: 'checking-for-update', listener: () => void): this;
-    removeListener(event: 'checking-for-update', listener: () => void): this;
     /**
      * Emitted when there is an error while updating.
      */
     on(event: 'error', listener: (error: Error) => void): this;
-    off(event: 'error', listener: (error: Error) => void): this;
-    once(event: 'error', listener: (error: Error) => void): this;
-    addListener(event: 'error', listener: (error: Error) => void): this;
-    removeListener(event: 'error', listener: (error: Error) => void): this;
     /**
      * Emitted when there is an available update. The update is downloaded
      * automatically.
      */
     on(event: 'update-available', listener: () => void): this;
-    off(event: 'update-available', listener: () => void): this;
-    once(event: 'update-available', listener: () => void): this;
-    addListener(event: 'update-available', listener: () => void): this;
-    removeListener(event: 'update-available', listener: () => void): this;
     /**
      * Emitted when an update has been downloaded.
      *
@@ -1875,46 +1891,20 @@ declare namespace Electron {
                                               releaseName: string,
                                               releaseDate: Date,
                                               updateURL: string) => void): this;
-    off(event: 'update-downloaded', listener: (event: Event,
-                                              releaseNotes: string,
-                                              releaseName: string,
-                                              releaseDate: Date,
-                                              updateURL: string) => void): this;
+    /**
+     * Emitted when there is no available update.
+     */
+    on(event: 'update-not-available', listener: () => void): this;
+    once(event: 'before-quit-for-update', listener: () => void): this;
+    once(event: 'checking-for-update', listener: () => void): this;
+    once(event: 'error', listener: (error: Error) => void): this;
+    once(event: 'update-available', listener: () => void): this;
     once(event: 'update-downloaded', listener: (event: Event,
                                               releaseNotes: string,
                                               releaseName: string,
                                               releaseDate: Date,
                                               updateURL: string) => void): this;
-    addListener(event: 'update-downloaded', listener: (event: Event,
-                                              releaseNotes: string,
-                                              releaseName: string,
-                                              releaseDate: Date,
-                                              updateURL: string) => void): this;
-    removeListener(event: 'update-downloaded', listener: (event: Event,
-                                              releaseNotes: string,
-                                              releaseName: string,
-                                              releaseDate: Date,
-                                              updateURL: string) => void): this;
-    /**
-     * Emitted when there is no available update.
-     */
-    on(event: 'update-not-available', listener: () => void): this;
-    off(event: 'update-not-available', listener: () => void): this;
     once(event: 'update-not-available', listener: () => void): this;
-    addListener(event: 'update-not-available', listener: () => void): this;
-    removeListener(event: 'update-not-available', listener: () => void): this;
-    /**
-     * Asks the server whether there is an update. You must call `setFeedURL` before
-     * using this API.
-     *
-     * **Note:** If an update is available it will be downloaded automatically. Calling
-     * `autoUpdater.checkForUpdates()` twice will download the update two times.
-     */
-    checkForUpdates(): void;
-    /**
-     * The current update feed URL.
-     */
-    getFeedURL(): string;
     /**
      * Restarts the app and installs the update after it has been downloaded. It should
      * only be called after `update-downloaded` has been emitted.
@@ -1928,6 +1918,16 @@ declare namespace Electron {
      * application starts.
      */
     quitAndInstall(): void;
+    removeListener(event: 'before-quit-for-update', listener: () => void): this;
+    removeListener(event: 'checking-for-update', listener: () => void): this;
+    removeListener(event: 'error', listener: (error: Error) => void): this;
+    removeListener(event: 'update-available', listener: () => void): this;
+    removeListener(event: 'update-downloaded', listener: (event: Event,
+                                              releaseNotes: string,
+                                              releaseName: string,
+                                              releaseDate: Date,
+                                              updateURL: string) => void): this;
+    removeListener(event: 'update-not-available', listener: () => void): this;
     /**
      * Sets the `url` and initialize the auto updater.
      */
@@ -7974,11 +7974,7 @@ declare namespace Electron {
 
     // Docs: https://electronjs.org/docs/api/in-app-purchase
 
-    on(event: 'transactions-updated', listener: () => void): this;
-    off(event: 'transactions-updated', listener: () => void): this;
-    once(event: 'transactions-updated', listener: () => void): this;
     addListener(event: 'transactions-updated', listener: () => void): this;
-    removeListener(event: 'transactions-updated', listener: () => void): this;
     /**
      * whether a user can make a payment.
      */
@@ -8001,6 +7997,9 @@ declare namespace Electron {
      * the path to the receipt.
      */
     getReceiptURL(): string;
+    off(event: 'transactions-updated', listener: () => void): this;
+    on(event: 'transactions-updated', listener: () => void): this;
+    once(event: 'transactions-updated', listener: () => void): this;
     /**
      * Returns `true` if the product is valid and added to the payment queue.
      *
@@ -8008,6 +8007,7 @@ declare namespace Electron {
      * certainly before you call `purchaseProduct`.
      */
     purchaseProduct(productID: string, opts?: (number) | (PurchaseProductOpts)): Promise<boolean>;
+    removeListener(event: 'transactions-updated', listener: () => void): this;
     /**
      * Restores finished transactions. This method can be called either to install
      * purchases on additional devices, or to restore purchases for an application that
@@ -9084,17 +9084,7 @@ declare namespace Electron {
 
     // Docs: https://electronjs.org/docs/api/native-theme
 
-    /**
-     * Emitted when something in the underlying NativeTheme has changed. This normally
-     * means that either the value of `shouldUseDarkColors`,
-     * `shouldUseHighContrastColors` or `shouldUseInvertedColorScheme` has changed. You
-     * will have to check them to determine which one has changed.
-     */
-    on(event: 'updated', listener: () => void): this;
-    off(event: 'updated', listener: () => void): this;
-    once(event: 'updated', listener: () => void): this;
     addListener(event: 'updated', listener: () => void): this;
-    removeListener(event: 'updated', listener: () => void): this;
     /**
      * A `boolean` indicating whether Chromium is in forced colors mode, controlled by
      * system accessibility settings. Currently, Windows high contrast is the only
@@ -9103,12 +9093,22 @@ declare namespace Electron {
      * @platform win32
      */
     readonly inForcedColorsMode: boolean;
+    off(event: 'updated', listener: () => void): this;
+    /**
+     * Emitted when something in the underlying NativeTheme has changed. This normally
+     * means that either the value of `shouldUseDarkColors`,
+     * `shouldUseHighContrastColors` or `shouldUseInvertedColorScheme` has changed. You
+     * will have to check them to determine which one has changed.
+     */
+    on(event: 'updated', listener: () => void): this;
+    once(event: 'updated', listener: () => void): this;
     /**
      * A `boolean` that indicates the whether the user has chosen via system
      * accessibility settings to reduce transparency at the OS level.
      *
      */
     readonly prefersReducedTransparency: boolean;
+    removeListener(event: 'updated', listener: () => void): this;
     /**
      * A `boolean` for if the OS / Chromium currently has a dark mode enabled or is
      * being instructed to show a dark-style UI.  If you want to modify this value you
@@ -9268,6 +9268,16 @@ declare namespace Electron {
      */
     isOnline(): boolean;
     /**
+     * A `boolean` property. Whether there is currently internet connection.
+     *
+     * A return value of `false` is a pretty strong indicator that the user won't be
+     * able to connect to remote sites. However, a return value of `true` is
+     * inconclusive; even if some link is up, it is uncertain whether a particular
+     * connection attempt to a particular remote site will be successful.
+     *
+     */
+    readonly online: boolean;
+    /**
      * Creates a `ClientRequest` instance using the provided `options` which are
      * directly forwarded to the `ClientRequest` constructor. The `net.request` method
      * would be used to issue both secure and insecure HTTP requests according to the
@@ -9281,22 +9291,18 @@ declare namespace Electron {
      * another session, use ses.resolveHost().
      */
     resolveHost(host: string, options?: ResolveHostOptions): Promise<Electron.ResolvedHost>;
-    /**
-     * A `boolean` property. Whether there is currently internet connection.
-     *
-     * A return value of `false` is a pretty strong indicator that the user won't be
-     * able to connect to remote sites. However, a return value of `true` is
-     * inconclusive; even if some link is up, it is uncertain whether a particular
-     * connection attempt to a particular remote site will be successful.
-     *
-     */
-    readonly online: boolean;
   }
 
   interface NetLog {
 
     // Docs: https://electronjs.org/docs/api/net-log
 
+    /**
+     * A `boolean` property that indicates whether network logs are currently being
+     * recorded.
+     *
+     */
+    readonly currentlyLogging: boolean;
     /**
      * resolves when the net log has begun recording.
      *
@@ -9310,12 +9316,6 @@ declare namespace Electron {
      * end when app quits.
      */
     stopLogging(): Promise<void>;
-    /**
-     * A `boolean` property that indicates whether network logs are currently being
-     * recorded.
-     *
-     */
-    readonly currentlyLogging: boolean;
   }
 
   class Notification extends NodeEventEmitter {
@@ -9628,19 +9628,19 @@ declare namespace Electron {
 
     // Docs: https://electronjs.org/docs/api/parent-port
 
+    addListener(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
+    off(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
     /**
      * Emitted when the process receives a message. Messages received on this port will
      * be queued up until a handler is registered for this event.
      */
     on(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
-    off(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
     once(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
-    addListener(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
-    removeListener(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
     /**
      * Sends a message from the process to its parent.
      */
     postMessage(message: any): void;
+    removeListener(event: 'message', listener: (messageEvent: MessageEvent) => void): this;
   }
 
   interface PaymentDiscount {
@@ -9719,206 +9719,35 @@ declare namespace Electron {
     // Docs: https://electronjs.org/docs/api/power-monitor
 
     /**
-     * Emitted when the system is about to lock the screen.
-     *
-     * @platform darwin,win32
-     */
-    on(event: 'lock-screen', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    off(event: 'lock-screen', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    once(event: 'lock-screen', listener: () => void): this;
-    /**
      * @platform darwin,win32
      */
     addListener(event: 'lock-screen', listener: () => void): this;
     /**
      * @platform darwin,win32
      */
-    removeListener(event: 'lock-screen', listener: () => void): this;
-    /**
-     * Emitted when the system changes to AC power.
-     *
-     * @platform darwin,win32
-     */
-    on(event: 'on-ac', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    off(event: 'on-ac', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    once(event: 'on-ac', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
     addListener(event: 'on-ac', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    removeListener(event: 'on-ac', listener: () => void): this;
-    /**
-     * Emitted when system changes to battery power.
-     *
-     * @platform darwin
-     */
-    on(event: 'on-battery', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'on-battery', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'on-battery', listener: () => void): this;
     /**
      * @platform darwin
      */
     addListener(event: 'on-battery', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'on-battery', listener: () => void): this;
-    /**
-     * Emitted when system is resuming.
-     */
-    on(event: 'resume', listener: () => void): this;
-    off(event: 'resume', listener: () => void): this;
-    once(event: 'resume', listener: () => void): this;
     addListener(event: 'resume', listener: () => void): this;
-    removeListener(event: 'resume', listener: () => void): this;
-    /**
-     * Emitted when the system is about to reboot or shut down. If the event handler
-     * invokes `e.preventDefault()`, Electron will attempt to delay system shutdown in
-     * order for the app to exit cleanly. If `e.preventDefault()` is called, the app
-     * should exit as soon as possible by calling something like `app.quit()`.
-     *
-     * @platform linux,darwin
-     */
-    on(event: 'shutdown', listener: () => void): this;
-    /**
-     * @platform linux,darwin
-     */
-    off(event: 'shutdown', listener: () => void): this;
-    /**
-     * @platform linux,darwin
-     */
-    once(event: 'shutdown', listener: () => void): this;
     /**
      * @platform linux,darwin
      */
     addListener(event: 'shutdown', listener: () => void): this;
     /**
-     * @platform linux,darwin
-     */
-    removeListener(event: 'shutdown', listener: () => void): this;
-    /**
-     * Notification of a change in the operating system's advertised speed limit for
-     * CPUs, in percent. Values below 100 indicate that the system is impairing
-     * processing power due to thermal management.
-     *
-     * @platform darwin,win32
-     */
-    on(event: 'speed-limit-change', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    off(event: 'speed-limit-change', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    once(event: 'speed-limit-change', listener: () => void): this;
-    /**
      * @platform darwin,win32
      */
     addListener(event: 'speed-limit-change', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    removeListener(event: 'speed-limit-change', listener: () => void): this;
-    /**
-     * Emitted when the system is suspending.
-     */
-    on(event: 'suspend', listener: () => void): this;
-    off(event: 'suspend', listener: () => void): this;
-    once(event: 'suspend', listener: () => void): this;
     addListener(event: 'suspend', listener: () => void): this;
-    removeListener(event: 'suspend', listener: () => void): this;
-    /**
-     * Emitted when the thermal state of the system changes. Notification of a change
-     * in the thermal status of the system, such as entering a critical temperature
-     * range. Depending on the severity, the system might take steps to reduce said
-     * temperature, for example, throttling the CPU or switching on the fans if
-     * available.
-     *
-     * Apps may react to the new state by reducing expensive computing tasks (e.g.
-     * video encoding), or notifying the user. The same state might be received
-     * repeatedly.
-     *
-     * See
-     * https://developer.apple.com/library/archive/documentation/Performance/Conceptual/power_efficiency_guidelines_osx/RespondToThermalStateChanges.html
-     *
-     * @platform darwin
-     */
-    on(event: 'thermal-state-change', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'thermal-state-change', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'thermal-state-change', listener: () => void): this;
     /**
      * @platform darwin
      */
     addListener(event: 'thermal-state-change', listener: () => void): this;
     /**
-     * @platform darwin
-     */
-    removeListener(event: 'thermal-state-change', listener: () => void): this;
-    /**
-     * Emitted as soon as the systems screen is unlocked.
-     *
-     * @platform darwin,win32
-     */
-    on(event: 'unlock-screen', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    off(event: 'unlock-screen', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    once(event: 'unlock-screen', listener: () => void): this;
-    /**
      * @platform darwin,win32
      */
     addListener(event: 'unlock-screen', listener: () => void): this;
-    /**
-     * @platform darwin,win32
-     */
-    removeListener(event: 'unlock-screen', listener: () => void): this;
-    /**
-     * Emitted when a login session is activated. See documentation for more
-     * information.
-     *
-     * @platform darwin
-     */
-    on(event: 'user-did-become-active', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'user-did-become-active', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'user-did-become-active', listener: () => void): this;
     /**
      * @platform darwin
      */
@@ -9926,30 +9755,7 @@ declare namespace Electron {
     /**
      * @platform darwin
      */
-    removeListener(event: 'user-did-become-active', listener: () => void): this;
-    /**
-     * Emitted when a login session is deactivated. See documentation for more
-     * information.
-     *
-     * @platform darwin
-     */
-    on(event: 'user-did-resign-active', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    off(event: 'user-did-resign-active', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    once(event: 'user-did-resign-active', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
     addListener(event: 'user-did-resign-active', listener: () => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'user-did-resign-active', listener: () => void): this;
     /**
      * The system's current thermal state. Can be `unknown`, `nominal`, `fair`,
      * `serious`, or `critical`.
@@ -9979,11 +9785,205 @@ declare namespace Electron {
      */
     isOnBatteryPower(): boolean;
     /**
+     * @platform darwin,win32
+     */
+    off(event: 'lock-screen', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    off(event: 'on-ac', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'on-battery', listener: () => void): this;
+    off(event: 'resume', listener: () => void): this;
+    /**
+     * @platform linux,darwin
+     */
+    off(event: 'shutdown', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    off(event: 'speed-limit-change', listener: () => void): this;
+    off(event: 'suspend', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'thermal-state-change', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    off(event: 'unlock-screen', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'user-did-become-active', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'user-did-resign-active', listener: () => void): this;
+    /**
+     * Emitted when the system is about to lock the screen.
+     *
+     * @platform darwin,win32
+     */
+    on(event: 'lock-screen', listener: () => void): this;
+    /**
+     * Emitted when the system changes to AC power.
+     *
+     * @platform darwin,win32
+     */
+    on(event: 'on-ac', listener: () => void): this;
+    /**
+     * Emitted when system changes to battery power.
+     *
+     * @platform darwin
+     */
+    on(event: 'on-battery', listener: () => void): this;
+    /**
+     * Emitted when system is resuming.
+     */
+    on(event: 'resume', listener: () => void): this;
+    /**
+     * Emitted when the system is about to reboot or shut down. If the event handler
+     * invokes `e.preventDefault()`, Electron will attempt to delay system shutdown in
+     * order for the app to exit cleanly. If `e.preventDefault()` is called, the app
+     * should exit as soon as possible by calling something like `app.quit()`.
+     *
+     * @platform linux,darwin
+     */
+    on(event: 'shutdown', listener: () => void): this;
+    /**
+     * Notification of a change in the operating system's advertised speed limit for
+     * CPUs, in percent. Values below 100 indicate that the system is impairing
+     * processing power due to thermal management.
+     *
+     * @platform darwin,win32
+     */
+    on(event: 'speed-limit-change', listener: () => void): this;
+    /**
+     * Emitted when the system is suspending.
+     */
+    on(event: 'suspend', listener: () => void): this;
+    /**
+     * Emitted when the thermal state of the system changes. Notification of a change
+     * in the thermal status of the system, such as entering a critical temperature
+     * range. Depending on the severity, the system might take steps to reduce said
+     * temperature, for example, throttling the CPU or switching on the fans if
+     * available.
+     *
+     * Apps may react to the new state by reducing expensive computing tasks (e.g.
+     * video encoding), or notifying the user. The same state might be received
+     * repeatedly.
+     *
+     * See
+     * https://developer.apple.com/library/archive/documentation/Performance/Conceptual/power_efficiency_guidelines_osx/RespondToThermalStateChanges.html
+     *
+     * @platform darwin
+     */
+    on(event: 'thermal-state-change', listener: () => void): this;
+    /**
+     * Emitted as soon as the systems screen is unlocked.
+     *
+     * @platform darwin,win32
+     */
+    on(event: 'unlock-screen', listener: () => void): this;
+    /**
+     * Emitted when a login session is activated. See documentation for more
+     * information.
+     *
+     * @platform darwin
+     */
+    on(event: 'user-did-become-active', listener: () => void): this;
+    /**
+     * Emitted when a login session is deactivated. See documentation for more
+     * information.
+     *
+     * @platform darwin
+     */
+    on(event: 'user-did-resign-active', listener: () => void): this;
+    /**
      * A `boolean` property. True if the system is on battery power.
      *
      * See `powerMonitor.isOnBatteryPower()`.
      */
     onBatteryPower: boolean;
+    /**
+     * @platform darwin,win32
+     */
+    once(event: 'lock-screen', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    once(event: 'on-ac', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'on-battery', listener: () => void): this;
+    once(event: 'resume', listener: () => void): this;
+    /**
+     * @platform linux,darwin
+     */
+    once(event: 'shutdown', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    once(event: 'speed-limit-change', listener: () => void): this;
+    once(event: 'suspend', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'thermal-state-change', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    once(event: 'unlock-screen', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'user-did-become-active', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    once(event: 'user-did-resign-active', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    removeListener(event: 'lock-screen', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    removeListener(event: 'on-ac', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'on-battery', listener: () => void): this;
+    removeListener(event: 'resume', listener: () => void): this;
+    /**
+     * @platform linux,darwin
+     */
+    removeListener(event: 'shutdown', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    removeListener(event: 'speed-limit-change', listener: () => void): this;
+    removeListener(event: 'suspend', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'thermal-state-change', listener: () => void): this;
+    /**
+     * @platform darwin,win32
+     */
+    removeListener(event: 'unlock-screen', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'user-did-become-active', listener: () => void): this;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'user-did-resign-active', listener: () => void): this;
   }
 
   interface PowerSaveBlocker {
@@ -10559,6 +10559,16 @@ declare namespace Electron {
     // Docs: https://electronjs.org/docs/api/push-notifications
 
     /**
+     * @platform darwin
+     */
+    addListener(event: 'received-apns-notification', listener: (event: Event,
+                                                       userInfo: Record<string, any>) => void): this;
+    /**
+     * @platform darwin
+     */
+    off(event: 'received-apns-notification', listener: (event: Event,
+                                                       userInfo: Record<string, any>) => void): this;
+    /**
      * Emitted when the app receives a remote notification while running. See:
      * https://developer.apple.com/documentation/appkit/nsapplicationdelegate/1428430-application?language=objc
      *
@@ -10569,22 +10579,7 @@ declare namespace Electron {
     /**
      * @platform darwin
      */
-    off(event: 'received-apns-notification', listener: (event: Event,
-                                                       userInfo: Record<string, any>) => void): this;
-    /**
-     * @platform darwin
-     */
     once(event: 'received-apns-notification', listener: (event: Event,
-                                                       userInfo: Record<string, any>) => void): this;
-    /**
-     * @platform darwin
-     */
-    addListener(event: 'received-apns-notification', listener: (event: Event,
-                                                       userInfo: Record<string, any>) => void): this;
-    /**
-     * @platform darwin
-     */
-    removeListener(event: 'received-apns-notification', listener: (event: Event,
                                                        userInfo: Record<string, any>) => void): this;
     /**
      * Registers the app with Apple Push Notification service (APNS) to receive Badge,
@@ -10596,6 +10591,11 @@ declare namespace Electron {
      * @platform darwin
      */
     registerForAPNSNotifications(): Promise<string>;
+    /**
+     * @platform darwin
+     */
+    removeListener(event: 'received-apns-notification', listener: (event: Event,
+                                                       userInfo: Record<string, any>) => void): this;
     /**
      * Unregisters the app from notifications received from APNS. See:
      * https://developer.apple.com/documentation/appkit/nsapplication/1428747-unregisterforremotenotifications?language=objc
@@ -10738,51 +10738,12 @@ declare namespace Electron {
 
     // Docs: https://electronjs.org/docs/api/screen
 
-    /**
-     * Emitted when `newDisplay` has been added.
-     */
-    on(event: 'display-added', listener: (event: Event,
-                                          newDisplay: Display) => void): this;
-    off(event: 'display-added', listener: (event: Event,
-                                          newDisplay: Display) => void): this;
-    once(event: 'display-added', listener: (event: Event,
-                                          newDisplay: Display) => void): this;
     addListener(event: 'display-added', listener: (event: Event,
                                           newDisplay: Display) => void): this;
-    removeListener(event: 'display-added', listener: (event: Event,
-                                          newDisplay: Display) => void): this;
-    /**
-     * Emitted when one or more metrics change in a `display`. The `changedMetrics` is
-     * an array of strings that describe the changes. Possible changes are `bounds`,
-     * `workArea`, `scaleFactor` and `rotation`.
-     */
-    on(event: 'display-metrics-changed', listener: (event: Event,
-                                                    display: Display,
-                                                    changedMetrics: string[]) => void): this;
-    off(event: 'display-metrics-changed', listener: (event: Event,
-                                                    display: Display,
-                                                    changedMetrics: string[]) => void): this;
-    once(event: 'display-metrics-changed', listener: (event: Event,
-                                                    display: Display,
-                                                    changedMetrics: string[]) => void): this;
     addListener(event: 'display-metrics-changed', listener: (event: Event,
                                                     display: Display,
                                                     changedMetrics: string[]) => void): this;
-    removeListener(event: 'display-metrics-changed', listener: (event: Event,
-                                                    display: Display,
-                                                    changedMetrics: string[]) => void): this;
-    /**
-     * Emitted when `oldDisplay` has been removed.
-     */
-    on(event: 'display-removed', listener: (event: Event,
-                                            oldDisplay: Display) => void): this;
-    off(event: 'display-removed', listener: (event: Event,
-                                            oldDisplay: Display) => void): this;
-    once(event: 'display-removed', listener: (event: Event,
-                                            oldDisplay: Display) => void): this;
     addListener(event: 'display-removed', listener: (event: Event,
-                                            oldDisplay: Display) => void): this;
-    removeListener(event: 'display-removed', listener: (event: Event,
                                             oldDisplay: Display) => void): this;
     /**
      * Converts a screen DIP point to a screen physical point. The DPI scale is
@@ -10821,6 +10782,45 @@ declare namespace Electron {
      * The primary display.
      */
     getPrimaryDisplay(): Display;
+    off(event: 'display-added', listener: (event: Event,
+                                          newDisplay: Display) => void): this;
+    off(event: 'display-metrics-changed', listener: (event: Event,
+                                                    display: Display,
+                                                    changedMetrics: string[]) => void): this;
+    off(event: 'display-removed', listener: (event: Event,
+                                            oldDisplay: Display) => void): this;
+    /**
+     * Emitted when `newDisplay` has been added.
+     */
+    on(event: 'display-added', listener: (event: Event,
+                                          newDisplay: Display) => void): this;
+    /**
+     * Emitted when one or more metrics change in a `display`. The `changedMetrics` is
+     * an array of strings that describe the changes. Possible changes are `bounds`,
+     * `workArea`, `scaleFactor` and `rotation`.
+     */
+    on(event: 'display-metrics-changed', listener: (event: Event,
+                                                    display: Display,
+                                                    changedMetrics: string[]) => void): this;
+    /**
+     * Emitted when `oldDisplay` has been removed.
+     */
+    on(event: 'display-removed', listener: (event: Event,
+                                            oldDisplay: Display) => void): this;
+    once(event: 'display-added', listener: (event: Event,
+                                          newDisplay: Display) => void): this;
+    once(event: 'display-metrics-changed', listener: (event: Event,
+                                                    display: Display,
+                                                    changedMetrics: string[]) => void): this;
+    once(event: 'display-removed', listener: (event: Event,
+                                            oldDisplay: Display) => void): this;
+    removeListener(event: 'display-added', listener: (event: Event,
+                                          newDisplay: Display) => void): this;
+    removeListener(event: 'display-metrics-changed', listener: (event: Event,
+                                                    display: Display,
+                                                    changedMetrics: string[]) => void): this;
+    removeListener(event: 'display-removed', listener: (event: Event,
+                                            oldDisplay: Display) => void): this;
     /**
      * Converts a screen physical point to a screen DIP point. The DPI scale is
      * performed relative to the display containing the physical point.
@@ -12158,29 +12158,16 @@ declare namespace Electron {
     // Docs: https://electronjs.org/docs/api/system-preferences
 
     /**
-     * @platform win32
+     * A `boolean` property which determines whether the app avoids using
+     * semitransparent backgrounds. This maps to
+     * NSWorkspace.accessibilityDisplayShouldReduceTransparency
+     *
+     * **Deprecated:** Use the new `nativeTheme.prefersReducedTransparency` API.
+     *
+     * @deprecated
+     * @platform darwin
      */
-    on(event: 'accent-color-changed', listener: (event: Event,
-                                                 /**
-                                                  * The new RGBA color the user assigned to be their system accent color.
-                                                  */
-                                                 newColor: string) => void): this;
-    /**
-     * @platform win32
-     */
-    off(event: 'accent-color-changed', listener: (event: Event,
-                                                 /**
-                                                  * The new RGBA color the user assigned to be their system accent color.
-                                                  */
-                                                 newColor: string) => void): this;
-    /**
-     * @platform win32
-     */
-    once(event: 'accent-color-changed', listener: (event: Event,
-                                                 /**
-                                                  * The new RGBA color the user assigned to be their system accent color.
-                                                  */
-                                                 newColor: string) => void): this;
+    accessibilityDisplayShouldReduceTransparency: boolean;
     /**
      * @platform win32
      */
@@ -12192,31 +12179,7 @@ declare namespace Electron {
     /**
      * @platform win32
      */
-    removeListener(event: 'accent-color-changed', listener: (event: Event,
-                                                 /**
-                                                  * The new RGBA color the user assigned to be their system accent color.
-                                                  */
-                                                 newColor: string) => void): this;
-    /**
-     * @platform win32
-     */
-    on(event: 'color-changed', listener: (event: Event) => void): this;
-    /**
-     * @platform win32
-     */
-    off(event: 'color-changed', listener: (event: Event) => void): this;
-    /**
-     * @platform win32
-     */
-    once(event: 'color-changed', listener: (event: Event) => void): this;
-    /**
-     * @platform win32
-     */
     addListener(event: 'color-changed', listener: (event: Event) => void): this;
-    /**
-     * @platform win32
-     */
-    removeListener(event: 'color-changed', listener: (event: Event) => void): this;
     /**
      * A promise that resolves with `true` if consent was granted and `false` if it was
      * denied. If an invalid `mediaType` is passed, the promise will be rejected. If an
@@ -12245,6 +12208,15 @@ declare namespace Electron {
      * @platform darwin
      */
     canPromptTouchID(): boolean;
+    /**
+     * A `string` property that can be `dark`, `light` or `unknown`.
+     *
+     * Returns the macOS appearance setting that is currently applied to your
+     * application, maps to NSApplication.effectiveAppearance
+     *
+     * @platform darwin
+     */
+    readonly effectiveAppearance: ('dark' | 'light' | 'unknown');
     /**
      * The users current system wide accent color preference in RGBA hexadecimal form.
      *
@@ -12350,6 +12322,42 @@ declare namespace Electron {
      */
     isTrustedAccessibilityClient(prompt: boolean): boolean;
     /**
+     * @platform win32
+     */
+    off(event: 'accent-color-changed', listener: (event: Event,
+                                                 /**
+                                                  * The new RGBA color the user assigned to be their system accent color.
+                                                  */
+                                                 newColor: string) => void): this;
+    /**
+     * @platform win32
+     */
+    off(event: 'color-changed', listener: (event: Event) => void): this;
+    /**
+     * @platform win32
+     */
+    on(event: 'accent-color-changed', listener: (event: Event,
+                                                 /**
+                                                  * The new RGBA color the user assigned to be their system accent color.
+                                                  */
+                                                 newColor: string) => void): this;
+    /**
+     * @platform win32
+     */
+    on(event: 'color-changed', listener: (event: Event) => void): this;
+    /**
+     * @platform win32
+     */
+    once(event: 'accent-color-changed', listener: (event: Event,
+                                                 /**
+                                                  * The new RGBA color the user assigned to be their system accent color.
+                                                  */
+                                                 newColor: string) => void): this;
+    /**
+     * @platform win32
+     */
+    once(event: 'color-changed', listener: (event: Event) => void): this;
+    /**
      * Posts `event` as native notifications of macOS. The `userInfo` is an Object that
      * contains the user information dictionary sent along with the notification.
      *
@@ -12389,6 +12397,18 @@ declare namespace Electron {
      * @platform darwin
      */
     registerDefaults(defaults: Record<string, (string) | (boolean) | (number)>): void;
+    /**
+     * @platform win32
+     */
+    removeListener(event: 'accent-color-changed', listener: (event: Event,
+                                                 /**
+                                                  * The new RGBA color the user assigned to be their system accent color.
+                                                  */
+                                                 newColor: string) => void): this;
+    /**
+     * @platform win32
+     */
+    removeListener(event: 'color-changed', listener: (event: Event) => void): this;
     /**
      * Removes the `key` in `NSUserDefaults`. This can be used to restore the default
      * or global value of a `key` previously set with `setUserDefault`.
@@ -12481,26 +12501,6 @@ declare namespace Electron {
      * @platform darwin
      */
     unsubscribeWorkspaceNotification(id: number): void;
-    /**
-     * A `boolean` property which determines whether the app avoids using
-     * semitransparent backgrounds. This maps to
-     * NSWorkspace.accessibilityDisplayShouldReduceTransparency
-     *
-     * **Deprecated:** Use the new `nativeTheme.prefersReducedTransparency` API.
-     *
-     * @deprecated
-     * @platform darwin
-     */
-    accessibilityDisplayShouldReduceTransparency: boolean;
-    /**
-     * A `string` property that can be `dark`, `light` or `unknown`.
-     *
-     * Returns the macOS appearance setting that is currently applied to your
-     * application, maps to NSApplication.effectiveAppearance
-     *
-     * @platform darwin
-     */
-    readonly effectiveAppearance: ('dark' | 'light' | 'unknown');
   }
 
   interface Task {
@@ -16707,6 +16707,13 @@ declare namespace Electron {
      */
     findFrameByRoutingId(routingId: number): WebFrame;
     /**
+     * A `WebFrame | null` representing the first child frame of `webFrame`, the
+     * property would be `null` if `webFrame` has no children or if first child is not
+     * in the current renderer process.
+     *
+     */
+    readonly firstChild: (WebFrame) | (null);
+    /**
      * The frame element in `webFrame's` document selected by `selector`, `null` would
      * be returned if `selector` does not select a frame or if the frame is not in the
      * current renderer process.
@@ -16757,10 +16764,37 @@ declare namespace Electron {
      */
     isWordMisspelled(word: string): boolean;
     /**
+     * A `WebFrame | null` representing next sibling frame, the property would be
+     * `null` if `webFrame` is the last frame in its parent or if the next sibling is
+     * not in the current renderer process.
+     *
+     */
+    readonly nextSibling: (WebFrame) | (null);
+    /**
+     * A `WebFrame | null` representing the frame which opened `webFrame`, the property
+     * would be `null` if there's no opener or opener is not in the current renderer
+     * process.
+     *
+     */
+    readonly opener: (WebFrame) | (null);
+    /**
+     * A `WebFrame | null` representing parent frame of `webFrame`, the property would
+     * be `null` if `webFrame` is top or parent is not in the current renderer process.
+     *
+     */
+    readonly parent: (WebFrame) | (null);
+    /**
      * Removes the inserted CSS from the current web page. The stylesheet is identified
      * by its key, which is returned from `webFrame.insertCSS(css)`.
      */
     removeInsertedCSS(key: string): void;
+    /**
+     * An `Integer` representing the unique frame id in the current renderer process.
+     * Distinct WebFrame instances that refer to the same underlying frame will have
+     * the same `routingId`.
+     *
+     */
+    readonly routingId: number;
     /**
      * Set the security origin, content security policy and name of the isolated world.
      * Note: If the `csp` is specified, then the `securityOrigin` also has to be
@@ -16811,40 +16845,6 @@ declare namespace Electron {
      * per-window.
      */
     setZoomLevel(level: number): void;
-    /**
-     * A `WebFrame | null` representing the first child frame of `webFrame`, the
-     * property would be `null` if `webFrame` has no children or if first child is not
-     * in the current renderer process.
-     *
-     */
-    readonly firstChild: (WebFrame) | (null);
-    /**
-     * A `WebFrame | null` representing next sibling frame, the property would be
-     * `null` if `webFrame` is the last frame in its parent or if the next sibling is
-     * not in the current renderer process.
-     *
-     */
-    readonly nextSibling: (WebFrame) | (null);
-    /**
-     * A `WebFrame | null` representing the frame which opened `webFrame`, the property
-     * would be `null` if there's no opener or opener is not in the current renderer
-     * process.
-     *
-     */
-    readonly opener: (WebFrame) | (null);
-    /**
-     * A `WebFrame | null` representing parent frame of `webFrame`, the property would
-     * be `null` if `webFrame` is top or parent is not in the current renderer process.
-     *
-     */
-    readonly parent: (WebFrame) | (null);
-    /**
-     * An `Integer` representing the unique frame id in the current renderer process.
-     * Distinct WebFrame instances that refer to the same underlying frame will have
-     * the same `routingId`.
-     *
-     */
-    readonly routingId: number;
     /**
      * A `WebFrame | null` representing top frame in frame hierarchy to which
      * `webFrame` belongs, the property would be `null` if top frame is not in the
@@ -17421,65 +17421,53 @@ declare namespace Electron {
      * asynchronous resource loads.
      */
     addEventListener(event: 'load-commit', listener: (event: LoadCommitEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'load-commit', listener: (event: LoadCommitEvent) => void): this;
     /**
      * Fired when the navigation is done, i.e. the spinner of the tab will stop
      * spinning, and the `onload` event is dispatched.
      */
     addEventListener(event: 'did-finish-load', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-finish-load', listener: (event: DOMEvent) => void): this;
     /**
      * This event is like `did-finish-load`, but fired when the load failed or was
      * cancelled, e.g. `window.stop()` is invoked.
      */
     addEventListener(event: 'did-fail-load', listener: (event: DidFailLoadEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-fail-load', listener: (event: DidFailLoadEvent) => void): this;
     /**
      * Fired when a frame has done navigation.
      */
     addEventListener(event: 'did-frame-finish-load', listener: (event: DidFrameFinishLoadEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-frame-finish-load', listener: (event: DidFrameFinishLoadEvent) => void): this;
     /**
      * Corresponds to the points in time when the spinner of the tab starts spinning.
      */
     addEventListener(event: 'did-start-loading', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-start-loading', listener: (event: DOMEvent) => void): this;
     /**
      * Corresponds to the points in time when the spinner of the tab stops spinning.
      */
     addEventListener(event: 'did-stop-loading', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-stop-loading', listener: (event: DOMEvent) => void): this;
     /**
      * Fired when attached to the embedder web contents.
      */
     addEventListener(event: 'did-attach', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-attach', listener: (event: DOMEvent) => void): this;
     /**
      * Fired when document in the given frame is loaded.
      */
     addEventListener(event: 'dom-ready', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'dom-ready', listener: (event: DOMEvent) => void): this;
     /**
      * Fired when page title is set during navigation. `explicitSet` is false when
      * title is synthesized from file url.
      */
     addEventListener(event: 'page-title-updated', listener: (event: PageTitleUpdatedEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'page-title-updated', listener: (event: PageTitleUpdatedEvent) => void): this;
     /**
      * Fired when page receives favicon urls.
      */
     addEventListener(event: 'page-favicon-updated', listener: (event: PageFaviconUpdatedEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'page-favicon-updated', listener: (event: PageFaviconUpdatedEvent) => void): this;
     /**
      * Fired when page enters fullscreen triggered by HTML API.
      */
     addEventListener(event: 'enter-html-full-screen', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'enter-html-full-screen', listener: (event: DOMEvent) => void): this;
     /**
      * Fired when page leaves fullscreen triggered by HTML API.
      */
     addEventListener(event: 'leave-html-full-screen', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'leave-html-full-screen', listener: (event: DOMEvent) => void): this;
     /**
      * Fired when the guest window logs a console message.
      *
@@ -17487,12 +17475,10 @@ declare namespace Electron {
      * without regard for log level or other properties.
      */
     addEventListener(event: 'console-message', listener: (event: ConsoleMessageEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'console-message', listener: (event: ConsoleMessageEvent) => void): this;
     /**
      * Fired when a result is available for `webview.findInPage` request.
      */
     addEventListener(event: 'found-in-page', listener: (event: FoundInPageEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'found-in-page', listener: (event: FoundInPageEvent) => void): this;
     /**
      * Emitted when a user or the page wants to start navigation. It can happen when
      * the `window.location` object is changed or a user clicks a link in the page.
@@ -17507,7 +17493,6 @@ declare namespace Electron {
      * Calling `event.preventDefault()` does **NOT** have any effect.
      */
     addEventListener(event: 'will-navigate', listener: (event: WillNavigateEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'will-navigate', listener: (event: WillNavigateEvent) => void): this;
     /**
      * Emitted when a user or the page wants to start navigation anywhere in the
      * `<webview>` or any frames embedded within. It can happen when the
@@ -17523,19 +17508,16 @@ declare namespace Electron {
      * Calling `event.preventDefault()` does **NOT** have any effect.
      */
     addEventListener(event: 'will-frame-navigate', listener: (event: WillFrameNavigateEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'will-frame-navigate', listener: (event: WillFrameNavigateEvent) => void): this;
     /**
      * Emitted when any frame (including main) starts navigating. `isInPlace` will be
      * `true` for in-page navigations.
      */
     addEventListener(event: 'did-start-navigation', listener: (event: DidStartNavigationEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-start-navigation', listener: (event: DidStartNavigationEvent) => void): this;
     /**
      * Emitted after a server side redirect occurs during navigation. For example a 302
      * redirect.
      */
     addEventListener(event: 'did-redirect-navigation', listener: (event: DidRedirectNavigationEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-redirect-navigation', listener: (event: DidRedirectNavigationEvent) => void): this;
     /**
      * Emitted when a navigation is done.
      *
@@ -17544,7 +17526,6 @@ declare namespace Electron {
      * this purpose.
      */
     addEventListener(event: 'did-navigate', listener: (event: DidNavigateEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-navigate', listener: (event: DidNavigateEvent) => void): this;
     /**
      * Emitted when any frame navigation is done.
      *
@@ -17553,7 +17534,6 @@ declare namespace Electron {
      * this purpose.
      */
     addEventListener(event: 'did-frame-navigate', listener: (event: DidFrameNavigateEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-frame-navigate', listener: (event: DidFrameNavigateEvent) => void): this;
     /**
      * Emitted when an in-page navigation happened.
      *
@@ -17562,7 +17542,6 @@ declare namespace Electron {
      * are clicked or when the DOM `hashchange` event is triggered.
      */
     addEventListener(event: 'did-navigate-in-page', listener: (event: DidNavigateInPageEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-navigate-in-page', listener: (event: DidNavigateInPageEvent) => void): this;
     /**
      * Fired when the guest page attempts to close itself.
      *
@@ -17570,7 +17549,6 @@ declare namespace Electron {
      * guest attempts to close itself.
      */
     addEventListener(event: 'close', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'close', listener: (event: DOMEvent) => void): this;
     /**
      * Fired when the guest page has sent an asynchronous message to embedder page.
      *
@@ -17578,75 +17556,59 @@ declare namespace Electron {
      * guest page and embedder page:
      */
     addEventListener(event: 'ipc-message', listener: (event: IpcMessageEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'ipc-message', listener: (event: IpcMessageEvent) => void): this;
     /**
      * Fired when the renderer process unexpectedly disappears. This is normally
      * because it was crashed or killed.
      */
     addEventListener(event: 'render-process-gone', listener: (event: RenderProcessGoneEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'render-process-gone', listener: (event: RenderProcessGoneEvent) => void): this;
     /**
      * Fired when a plugin process is crashed.
      */
     addEventListener(event: 'plugin-crashed', listener: (event: PluginCrashedEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'plugin-crashed', listener: (event: PluginCrashedEvent) => void): this;
     /**
      * Fired when the WebContents is destroyed.
      */
     addEventListener(event: 'destroyed', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'destroyed', listener: (event: DOMEvent) => void): this;
     /**
      * Emitted when media starts playing.
      */
     addEventListener(event: 'media-started-playing', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'media-started-playing', listener: (event: DOMEvent) => void): this;
     /**
      * Emitted when media is paused or done playing.
      */
     addEventListener(event: 'media-paused', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'media-paused', listener: (event: DOMEvent) => void): this;
     /**
      * Emitted when a page's theme color changes. This is usually due to encountering a
      * meta tag:
      */
     addEventListener(event: 'did-change-theme-color', listener: (event: DidChangeThemeColorEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'did-change-theme-color', listener: (event: DidChangeThemeColorEvent) => void): this;
     /**
      * Emitted when mouse moves over a link or the keyboard moves the focus to a link.
      */
     addEventListener(event: 'update-target-url', listener: (event: UpdateTargetUrlEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'update-target-url', listener: (event: UpdateTargetUrlEvent) => void): this;
     addEventListener(event: 'devtools-open-url', listener: (event: DevtoolsOpenUrlEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'devtools-open-url', listener: (event: DevtoolsOpenUrlEvent) => void): this;
     /**
      * Emitted when 'Search' is selected for text in its context menu.
      */
     addEventListener(event: 'devtools-search-query', listener: (event: DevtoolsSearchQueryEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'devtools-search-query', listener: (event: DevtoolsSearchQueryEvent) => void): this;
     /**
      * Emitted when DevTools is opened.
      */
     addEventListener(event: 'devtools-opened', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'devtools-opened', listener: (event: DOMEvent) => void): this;
     /**
      * Emitted when DevTools is closed.
      */
     addEventListener(event: 'devtools-closed', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'devtools-closed', listener: (event: DOMEvent) => void): this;
     /**
      * Emitted when DevTools is focused / opened.
      */
     addEventListener(event: 'devtools-focused', listener: (event: DOMEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'devtools-focused', listener: (event: DOMEvent) => void): this;
     /**
      * Emitted when there is a new context menu that needs to be handled.
      */
     addEventListener(event: 'context-menu', listener: (event: ContextMenuEvent) => void, useCapture?: boolean): this;
-    removeEventListener(event: 'context-menu', listener: (event: ContextMenuEvent) => void): this;
     addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, useCapture?: boolean): void;
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
-    removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, useCapture?: boolean): void;
-    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
     /**
      * Adjusts the current text selection starting and ending points in the focused
      * frame by the given amounts. A negative amount moves the selection towards the
@@ -17656,6 +17618,11 @@ declare namespace Electron {
      * See `webContents.adjustSelection` for examples.
      */
     adjustSelection(options: AdjustSelectionOptions): void;
+    /**
+     * A `boolean`. When this attribute is present the guest page will be allowed to
+     * open new windows. Popups are disabled by default.
+     */
+    allowpopups: boolean;
     /**
      * Whether the guest page can go back.
      */
@@ -17700,9 +17667,28 @@ declare namespace Electron {
      */
     delete(): void;
     /**
+     * A `string` which is a list of strings which specifies the blink features to be
+     * disabled separated by `,`. The full list of supported feature strings can be
+     * found in the RuntimeEnabledFeatures.json5 file.
+     */
+    disableblinkfeatures: string;
+    /**
+     * A `boolean`. When this attribute is present the guest page will have web
+     * security disabled. Web security is enabled by default.
+     *
+     * This value can only be modified before the first navigation.
+     */
+    disablewebsecurity: boolean;
+    /**
      * Initiates a download of the resource at `url` without navigating.
      */
     downloadURL(url: string, options?: DownloadURLOptions): void;
+    /**
+     * A `string` which is a list of strings which specifies the blink features to be
+     * enabled separated by `,`. The full list of supported feature strings can be
+     * found in the RuntimeEnabledFeatures.json5 file.
+     */
+    enableblinkfeatures: string;
     /**
      * A promise that resolves with the result of the executed code or is rejected if
      * the result of the code is a rejected promise.
@@ -17759,6 +17745,10 @@ declare namespace Electron {
      * Navigates to the specified offset from the "current entry".
      */
     goToOffset(offset: number): void;
+    /**
+     * A `string` that sets the referrer URL for the guest page.
+     */
+    httpreferrer: string;
     /**
      * A promise that resolves with a key for the inserted CSS that can later be used
      * to remove the CSS via `<webview>.removeInsertedCSS(key)`.
@@ -17826,9 +17816,36 @@ declare namespace Electron {
      */
     loadURL(url: string, options?: LoadURLOptions): Promise<void>;
     /**
+     * A `boolean`. When this attribute is present the guest page in `webview` will
+     * have node integration and can use node APIs like `require` and `process` to
+     * access low level system resources. Node integration is disabled by default in
+     * the guest page.
+     */
+    nodeintegration: boolean;
+    /**
+     * A `boolean` for the experimental option for enabling NodeJS support in
+     * sub-frames such as iframes inside the `webview`. All your preloads will load for
+     * every iframe, you can use `process.isMainFrame` to determine if you are in the
+     * main frame or not. This option is disabled by default in the guest page.
+     */
+    nodeintegrationinsubframes: boolean;
+    /**
      * Opens a DevTools window for guest page.
      */
     openDevTools(): void;
+    /**
+     * A `string` that sets the session used by the page. If `partition` starts with
+     * `persist:`, the page will use a persistent session available to all pages in the
+     * app with the same `partition`. if there is no `persist:` prefix, the page will
+     * use an in-memory session. By assigning the same `partition`, multiple pages can
+     * share the same session. If the `partition` is unset then default session of the
+     * app will be used.
+     *
+     * This value can only be modified before the first navigation, since the session
+     * of an active renderer process cannot change. Subsequent attempts to modify the
+     * value will fail with a DOM exception.
+     */
+    partition: string;
     /**
      * Executes editing command `paste` in page.
      */
@@ -17837,6 +17854,22 @@ declare namespace Electron {
      * Executes editing command `pasteAndMatchStyle` in page.
      */
     pasteAndMatchStyle(): void;
+    /**
+     * A `boolean`. When this attribute is present the guest page in `webview` will be
+     * able to use browser plugins. Plugins are disabled by default.
+     */
+    plugins: boolean;
+    /**
+     * A `string` that specifies a script that will be loaded before other scripts run
+     * in the guest page. The protocol of script's URL must be `file:` (even when using
+     * `asar:` archives) because it will be loaded by Node's `require` under the hood,
+     * which treats `asar:` archives as virtual directories.
+     *
+     * When the guest page doesn't have node integration this script will still have
+     * access to all Node APIs, but global objects injected by Node will be deleted
+     * after this script has finished executing.
+     */
+    preload: string;
     /**
      * Prints `webview`'s web page. Same as `webContents.print([options])`.
      */
@@ -17859,6 +17892,44 @@ declare namespace Electron {
      * Reloads the guest page and ignores cache.
      */
     reloadIgnoringCache(): void;
+    removeEventListener(event: 'load-commit', listener: (event: LoadCommitEvent) => void): this;
+    removeEventListener(event: 'did-finish-load', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'did-fail-load', listener: (event: DidFailLoadEvent) => void): this;
+    removeEventListener(event: 'did-frame-finish-load', listener: (event: DidFrameFinishLoadEvent) => void): this;
+    removeEventListener(event: 'did-start-loading', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'did-stop-loading', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'did-attach', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'dom-ready', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'page-title-updated', listener: (event: PageTitleUpdatedEvent) => void): this;
+    removeEventListener(event: 'page-favicon-updated', listener: (event: PageFaviconUpdatedEvent) => void): this;
+    removeEventListener(event: 'enter-html-full-screen', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'leave-html-full-screen', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'console-message', listener: (event: ConsoleMessageEvent) => void): this;
+    removeEventListener(event: 'found-in-page', listener: (event: FoundInPageEvent) => void): this;
+    removeEventListener(event: 'will-navigate', listener: (event: WillNavigateEvent) => void): this;
+    removeEventListener(event: 'will-frame-navigate', listener: (event: WillFrameNavigateEvent) => void): this;
+    removeEventListener(event: 'did-start-navigation', listener: (event: DidStartNavigationEvent) => void): this;
+    removeEventListener(event: 'did-redirect-navigation', listener: (event: DidRedirectNavigationEvent) => void): this;
+    removeEventListener(event: 'did-navigate', listener: (event: DidNavigateEvent) => void): this;
+    removeEventListener(event: 'did-frame-navigate', listener: (event: DidFrameNavigateEvent) => void): this;
+    removeEventListener(event: 'did-navigate-in-page', listener: (event: DidNavigateInPageEvent) => void): this;
+    removeEventListener(event: 'close', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'ipc-message', listener: (event: IpcMessageEvent) => void): this;
+    removeEventListener(event: 'render-process-gone', listener: (event: RenderProcessGoneEvent) => void): this;
+    removeEventListener(event: 'plugin-crashed', listener: (event: PluginCrashedEvent) => void): this;
+    removeEventListener(event: 'destroyed', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'media-started-playing', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'media-paused', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'did-change-theme-color', listener: (event: DidChangeThemeColorEvent) => void): this;
+    removeEventListener(event: 'update-target-url', listener: (event: UpdateTargetUrlEvent) => void): this;
+    removeEventListener(event: 'devtools-open-url', listener: (event: DevtoolsOpenUrlEvent) => void): this;
+    removeEventListener(event: 'devtools-search-query', listener: (event: DevtoolsSearchQueryEvent) => void): this;
+    removeEventListener(event: 'devtools-opened', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'devtools-closed', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'devtools-focused', listener: (event: DOMEvent) => void): this;
+    removeEventListener(event: 'context-menu', listener: (event: ContextMenuEvent) => void): this;
+    removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, useCapture?: boolean): void;
+    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
     /**
      * Resolves if the removal was successful.
      *
@@ -17944,6 +18015,16 @@ declare namespace Electron {
      */
     showDefinitionForSelection(): void;
     /**
+     * A `string` representing the visible URL. Writing to this attribute initiates
+     * top-level navigation.
+     *
+     * Assigning `src` its own value will reload the current page.
+     *
+     * The `src` attribute can also accept data URLs, such as `data:text/plain,Hello,
+     * world!`.
+     */
+    src: string;
+    /**
      * Stops any pending navigation.
      */
     stop(): void;
@@ -17959,87 +18040,6 @@ declare namespace Electron {
      * Executes editing command `unselect` in page.
      */
     unselect(): void;
-    /**
-     * A `boolean`. When this attribute is present the guest page will be allowed to
-     * open new windows. Popups are disabled by default.
-     */
-    allowpopups: boolean;
-    /**
-     * A `string` which is a list of strings which specifies the blink features to be
-     * disabled separated by `,`. The full list of supported feature strings can be
-     * found in the RuntimeEnabledFeatures.json5 file.
-     */
-    disableblinkfeatures: string;
-    /**
-     * A `boolean`. When this attribute is present the guest page will have web
-     * security disabled. Web security is enabled by default.
-     *
-     * This value can only be modified before the first navigation.
-     */
-    disablewebsecurity: boolean;
-    /**
-     * A `string` which is a list of strings which specifies the blink features to be
-     * enabled separated by `,`. The full list of supported feature strings can be
-     * found in the RuntimeEnabledFeatures.json5 file.
-     */
-    enableblinkfeatures: string;
-    /**
-     * A `string` that sets the referrer URL for the guest page.
-     */
-    httpreferrer: string;
-    /**
-     * A `boolean`. When this attribute is present the guest page in `webview` will
-     * have node integration and can use node APIs like `require` and `process` to
-     * access low level system resources. Node integration is disabled by default in
-     * the guest page.
-     */
-    nodeintegration: boolean;
-    /**
-     * A `boolean` for the experimental option for enabling NodeJS support in
-     * sub-frames such as iframes inside the `webview`. All your preloads will load for
-     * every iframe, you can use `process.isMainFrame` to determine if you are in the
-     * main frame or not. This option is disabled by default in the guest page.
-     */
-    nodeintegrationinsubframes: boolean;
-    /**
-     * A `string` that sets the session used by the page. If `partition` starts with
-     * `persist:`, the page will use a persistent session available to all pages in the
-     * app with the same `partition`. if there is no `persist:` prefix, the page will
-     * use an in-memory session. By assigning the same `partition`, multiple pages can
-     * share the same session. If the `partition` is unset then default session of the
-     * app will be used.
-     *
-     * This value can only be modified before the first navigation, since the session
-     * of an active renderer process cannot change. Subsequent attempts to modify the
-     * value will fail with a DOM exception.
-     */
-    partition: string;
-    /**
-     * A `boolean`. When this attribute is present the guest page in `webview` will be
-     * able to use browser plugins. Plugins are disabled by default.
-     */
-    plugins: boolean;
-    /**
-     * A `string` that specifies a script that will be loaded before other scripts run
-     * in the guest page. The protocol of script's URL must be `file:` (even when using
-     * `asar:` archives) because it will be loaded by Node's `require` under the hood,
-     * which treats `asar:` archives as virtual directories.
-     *
-     * When the guest page doesn't have node integration this script will still have
-     * access to all Node APIs, but global objects injected by Node will be deleted
-     * after this script has finished executing.
-     */
-    preload: string;
-    /**
-     * A `string` representing the visible URL. Writing to this attribute initiates
-     * top-level navigation.
-     *
-     * Assigning `src` its own value will reload the current page.
-     *
-     * The `src` attribute can also accept data URLs, such as `data:text/plain,Hello,
-     * world!`.
-     */
-    src: string;
     /**
      * A `string` that sets the user agent for the guest page before the page is
      * navigated to. Once the page is loaded, use the `setUserAgent` method to change
@@ -18097,33 +18097,21 @@ declare namespace Electron {
      */
     applicationVersion?: string;
     /**
-     * Copyright information.
-     */
-    copyright?: string;
-    /**
-     * The app's build version number.
-     *
-     * @platform darwin
-     */
-    version?: string;
-    /**
-     * Credit information.
-     *
-     * @platform darwin,win32
-     */
-    credits?: string;
-    /**
      * List of app authors.
      *
      * @platform linux
      */
     authors?: string[];
     /**
-     * The app's website.
-     *
-     * @platform linux
+     * Copyright information.
      */
-    website?: string;
+    copyright?: string;
+    /**
+     * Credit information.
+     *
+     * @platform darwin,win32
+     */
+    credits?: string;
     /**
      * Path to the app's icon in a JPEG or PNG file format. On Linux, will be shown as
      * 64x64 pixels while retaining aspect ratio. On Windows, a 48x48 PNG will result
@@ -18132,21 +18120,21 @@ declare namespace Electron {
      * @platform linux,win32
      */
     iconPath?: string;
+    /**
+     * The app's build version number.
+     *
+     * @platform darwin
+     */
+    version?: string;
+    /**
+     * The app's website.
+     *
+     * @platform linux
+     */
+    website?: string;
   }
 
   interface AddRepresentationOptions {
-    /**
-     * The scale factor to add the image representation for.
-     */
-    scaleFactor?: number;
-    /**
-     * Defaults to 0. Required if a bitmap buffer is specified as `buffer`.
-     */
-    width?: number;
-    /**
-     * Defaults to 0. Required if a bitmap buffer is specified as `buffer`.
-     */
-    height?: number;
     /**
      * The buffer containing the raw image data.
      */
@@ -18155,52 +18143,64 @@ declare namespace Electron {
      * The data URL containing either a base 64 encoded PNG or JPEG image.
      */
     dataURL?: string;
+    /**
+     * Defaults to 0. Required if a bitmap buffer is specified as `buffer`.
+     */
+    height?: number;
+    /**
+     * The scale factor to add the image representation for.
+     */
+    scaleFactor?: number;
+    /**
+     * Defaults to 0. Required if a bitmap buffer is specified as `buffer`.
+     */
+    width?: number;
   }
 
   interface AdjustSelectionOptions {
     /**
-     * Amount to shift the start index of the current selection.
-     */
-    start?: number;
-    /**
      * Amount to shift the end index of the current selection.
      */
     end?: number;
+    /**
+     * Amount to shift the start index of the current selection.
+     */
+    start?: number;
   }
 
   interface AnimationSettings {
     /**
-     * Returns true if rich animations should be rendered. Looks at session type (e.g.
-     * remote desktop) and accessibility settings to give guidance for heavy
-     * animations.
+     * Determines whether the user desires reduced motion based on platform APIs.
      */
-    shouldRenderRichAnimation: boolean;
+    prefersReducedMotion: boolean;
     /**
      * Determines on a per-platform basis whether scroll animations (e.g. produced by
      * home/end key) should be enabled.
      */
     scrollAnimationsEnabledBySystem: boolean;
     /**
-     * Determines whether the user desires reduced motion based on platform APIs.
+     * Returns true if rich animations should be rendered. Looks at session type (e.g.
+     * remote desktop) and accessibility settings to give guidance for heavy
+     * animations.
      */
-    prefersReducedMotion: boolean;
+    shouldRenderRichAnimation: boolean;
   }
 
   interface AppDetailsOptions {
-    /**
-     * Window's App User Model ID. It has to be set, otherwise the other options will
-     * have no effect.
-     */
-    appId?: string;
-    /**
-     * Window's Relaunch Icon.
-     */
-    appIconPath?: string;
     /**
      * Index of the icon in `appIconPath`. Ignored when `appIconPath` is not set.
      * Default is `0`.
      */
     appIconIndex?: number;
+    /**
+     * Window's Relaunch Icon.
+     */
+    appIconPath?: string;
+    /**
+     * Window's App User Model ID. It has to be set, otherwise the other options will
+     * have no effect.
+     */
+    appId?: string;
     /**
      * Window's Relaunch Command.
      */
@@ -18217,34 +18217,29 @@ declare namespace Electron {
      */
     icon: NativeImage;
     /**
-     * installation path of the app handling the protocol.
-     */
-    path: string;
-    /**
      * display name of the app handling the protocol.
      */
     name: string;
+    /**
+     * installation path of the app handling the protocol.
+     */
+    path: string;
   }
 
   interface AuthenticationResponseDetails {
-    url: string;
     pid: number;
+    url: string;
   }
 
   interface AuthInfo {
-    isProxy: boolean;
-    scheme: string;
     host: string;
+    isProxy: boolean;
     port: number;
     realm: string;
+    scheme: string;
   }
 
   interface AutoResizeOptions {
-    /**
-     * If `true`, the view's width will grow and shrink together with the window.
-     * `false` by default.
-     */
-    width?: boolean;
     /**
      * If `true`, the view's height will grow and shrink together with the window.
      * `false` by default.
@@ -18260,6 +18255,11 @@ declare namespace Electron {
      * with the window. `false` by default.
      */
     vertical?: boolean;
+    /**
+     * If `true`, the view's width will grow and shrink together with the window.
+     * `false` by default.
+     */
+    width?: boolean;
   }
 
   interface BeforeSendResponse {
@@ -18290,11 +18290,11 @@ declare namespace Electron {
 
   interface BluetoothPairingHandlerHandlerDetails {
     deviceId: string;
+    frame: WebFrameMain;
     /**
      * The type of pairing prompt being requested. One of the following values:
      */
     pairingKind: ('confirm' | 'confirmPin' | 'providePin');
-    frame: WebFrameMain;
     /**
      * The pin value to verify if `pairingKind` is `confirmPin`.
      */
@@ -18339,26 +18339,26 @@ declare namespace Electron {
 
   interface ClearDataOptions {
     /**
-     * The types of data to clear. By default, this will clear all types of data.
-     */
-    dataTypes?: Array<'backgroundFetch' | 'cache' | 'cookies' | 'downloads' | 'fileSystems' | 'indexedDB' | 'localStorage' | 'serviceWorkers' | 'webSQL'>;
-    /**
-     * Clear data for only these origins. Cannot be used with `excludeOrigins`.
-     */
-    origins?: string[];
-    /**
-     * Clear data for all origins except these ones. Cannot be used with `origins`.
-     */
-    excludeOrigins?: string[];
-    /**
      * Skips deleting cookies that would close current network connections. (Default:
      * `false`)
      */
     avoidClosingConnections?: boolean;
     /**
+     * The types of data to clear. By default, this will clear all types of data.
+     */
+    dataTypes?: Array<'backgroundFetch' | 'cache' | 'cookies' | 'downloads' | 'fileSystems' | 'indexedDB' | 'localStorage' | 'serviceWorkers' | 'webSQL'>;
+    /**
+     * Clear data for all origins except these ones. Cannot be used with `origins`.
+     */
+    excludeOrigins?: string[];
+    /**
      * The behavior for matching data to origins.
      */
     originMatchingMode?: ('third-parties-included' | 'origin-in-all-contexts');
+    /**
+     * Clear data for only these origins. Cannot be used with `excludeOrigins`.
+     */
+    origins?: string[];
   }
 
   interface ClearStorageDataOptions {
@@ -18367,42 +18367,24 @@ declare namespace Electron {
      */
     origin?: string;
     /**
+     * The types of quotas to clear, can be `temporary`, `syncable`. If not specified,
+     * clear all quotas.
+     */
+    quotas?: Array<'temporary' | 'syncable'>;
+    /**
      * The types of storages to clear, can be `cookies`, `filesystem`, `indexdb`,
      * `localstorage`, `shadercache`, `websql`, `serviceworkers`, `cachestorage`. If
      * not specified, clear all storage types.
      */
     storages?: Array<'cookies' | 'filesystem' | 'indexdb' | 'localstorage' | 'shadercache' | 'websql' | 'serviceworkers' | 'cachestorage'>;
-    /**
-     * The types of quotas to clear, can be `temporary`, `syncable`. If not specified,
-     * clear all quotas.
-     */
-    quotas?: Array<'temporary' | 'syncable'>;
   }
 
   interface ClientRequestConstructorOptions {
     /**
-     * The HTTP request method. Defaults to the GET method.
+     * can be `default`, `no-store`, `reload`, `no-cache`, `force-cache` or
+     * `only-if-cached`.
      */
-    method?: string;
-    /**
-     * The request URL. Must be provided in the absolute form with the protocol scheme
-     * specified as http or https.
-     */
-    url?: string;
-    /**
-     * Headers to be sent with the request.
-     */
-    headers?: Record<string, (string) | (string[])>;
-    /**
-     * The `Session` instance with which the request is associated.
-     */
-    session?: Session;
-    /**
-     * The name of the `partition` with which the request is associated. Defaults to
-     * the empty string. The `session` option supersedes `partition`. Thus if a
-     * `session` is explicitly specified, `partition` is ignored.
-     */
-    partition?: string;
+    cache?: ('default' | 'no-store' | 'reload' | 'no-cache' | 'force-cache' | 'only-if-cached');
     /**
      * Can be `include`, `omit` or `same-origin`. Whether to send credentials with this
      * request. If set to `include`, credentials from the session associated with the
@@ -18415,15 +18397,9 @@ declare namespace Electron {
      */
     credentials?: ('include' | 'omit' | 'same-origin');
     /**
-     * Whether to send cookies with this request from the provided session. If
-     * `credentials` is specified, this option has no effect. Default is `false`.
+     * Headers to be sent with the request.
      */
-    useSessionCookies?: boolean;
-    /**
-     * Can be `http:` or `https:`. The protocol scheme in the form 'scheme:'. Defaults
-     * to 'http:'.
-     */
-    protocol?: ('http:' | 'https:');
+    headers?: Record<string, (string) | (string[])>;
     /**
      * The server host provided as a concatenation of the hostname and the port number
      * 'hostname:port'.
@@ -18434,13 +18410,32 @@ declare namespace Electron {
      */
     hostname?: string;
     /**
-     * The server's listening port number.
+     * The HTTP request method. Defaults to the GET method.
      */
-    port?: number;
+    method?: string;
+    /**
+     * The origin URL of the request.
+     */
+    origin?: string;
+    /**
+     * The name of the `partition` with which the request is associated. Defaults to
+     * the empty string. The `session` option supersedes `partition`. Thus if a
+     * `session` is explicitly specified, `partition` is ignored.
+     */
+    partition?: string;
     /**
      * The path part of the request URL.
      */
     path?: string;
+    /**
+     * The server's listening port number.
+     */
+    port?: number;
+    /**
+     * Can be `http:` or `https:`. The protocol scheme in the form 'scheme:'. Defaults
+     * to 'http:'.
+     */
+    protocol?: ('http:' | 'https:');
     /**
      * Can be `follow`, `error` or `manual`. The redirect mode for this request. When
      * mode is `error`, any redirection will be aborted. When mode is `manual` the
@@ -18449,10 +18444,6 @@ declare namespace Electron {
      */
     redirect?: ('follow' | 'error' | 'manual');
     /**
-     * The origin URL of the request.
-     */
-    origin?: string;
-    /**
      * can be "", `no-referrer`, `no-referrer-when-downgrade`, `origin`,
      * `origin-when-cross-origin`, `unsafe-url`, `same-origin`, `strict-origin`, or
      * `strict-origin-when-cross-origin`. Defaults to
@@ -18460,10 +18451,19 @@ declare namespace Electron {
      */
     referrerPolicy?: ('' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'unsafe-url' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin');
     /**
-     * can be `default`, `no-store`, `reload`, `no-cache`, `force-cache` or
-     * `only-if-cached`.
+     * The `Session` instance with which the request is associated.
      */
-    cache?: ('default' | 'no-store' | 'reload' | 'no-cache' | 'force-cache' | 'only-if-cached');
+    session?: Session;
+    /**
+     * The request URL. Must be provided in the absolute form with the protocol scheme
+     * specified as http or https.
+     */
+    url?: string;
+    /**
+     * Whether to send cookies with this request from the provided session. If
+     * `credentials` is specified, this option has no effect. Default is `false`.
+     */
+    useSessionCookies?: boolean;
   }
 
   interface CloseOpts {
@@ -18477,16 +18477,6 @@ declare namespace Electron {
 
   interface Config {
     /**
-     * Can be `tls1`, `tls1.1`, `tls1.2` or `tls1.3`. The minimum SSL version to allow
-     * when connecting to remote servers. Defaults to `tls1`.
-     */
-    minVersion?: ('tls1' | 'tls1.1' | 'tls1.2' | 'tls1.3');
-    /**
-     * Can be `tls1.2` or `tls1.3`. The maximum SSL version to allow when connecting to
-     * remote servers. Defaults to `tls1.3`.
-     */
-    maxVersion?: ('tls1.2' | 'tls1.3');
-    /**
      * List of cipher suites which should be explicitly prevented from being used in
      * addition to those disabled by the net built-in policy. Supported literal forms:
      * 0xAABB, where AA is `cipher_suite[0]` and BB is `cipher_suite[1]`, as defined in
@@ -18496,9 +18486,26 @@ declare namespace Electron {
      * that TLSv1.3 ciphers cannot be disabled using this mechanism.
      */
     disabledCipherSuites?: number[];
+    /**
+     * Can be `tls1.2` or `tls1.3`. The maximum SSL version to allow when connecting to
+     * remote servers. Defaults to `tls1.3`.
+     */
+    maxVersion?: ('tls1.2' | 'tls1.3');
+    /**
+     * Can be `tls1`, `tls1.1`, `tls1.2` or `tls1.3`. The minimum SSL version to allow
+     * when connecting to remote servers. Defaults to `tls1`.
+     */
+    minVersion?: ('tls1' | 'tls1.1' | 'tls1.2' | 'tls1.3');
   }
 
   interface ConfigureHostResolverOptions {
+    /**
+     * Controls whether additional DNS query types, e.g. HTTPS (DNS type 65) will be
+     * allowed besides the traditional A and AAAA queries when a request is being made
+     * via insecure DNS. Has no effect on Secure DNS which always allows additional
+     * types. Defaults to true.
+     */
+    enableAdditionalDnsQueryTypes?: boolean;
     /**
      * Whether the built-in host resolver is used in preference to getaddrinfo. When
      * enabled, the built-in resolver will attempt to use the system's DNS settings to
@@ -18522,13 +18529,6 @@ declare namespace Electron {
      * are no DoH servers provided in this list.
      */
     secureDnsServers?: string[];
-    /**
-     * Controls whether additional DNS query types, e.g. HTTPS (DNS type 65) will be
-     * allowed besides the traditional A and AAAA queries when a request is being made
-     * via insecure DNS. Has no effect on Secure DNS which always allows additional
-     * types. Defaults to true.
-     */
-    enableAdditionalDnsQueryTypes?: boolean;
   }
 
   interface ConsoleMessageEvent extends DOMEvent {
@@ -18538,13 +18538,13 @@ declare namespace Electron {
      */
     level: number;
     /**
-     * The actual console message
-     */
-    message: string;
-    /**
      * The line number of the source that triggered this console message
      */
     line: number;
+    /**
+     * The actual console message
+     */
+    message: string;
     sourceId: string;
   }
 
@@ -18554,94 +18554,19 @@ declare namespace Electron {
 
   interface ContextMenuParams {
     /**
-     * x coordinate.
-     */
-    x: number;
-    /**
-     * y coordinate.
-     */
-    y: number;
-    /**
-     * Frame from which the context menu was invoked.
-     */
-    frame: WebFrameMain;
-    /**
-     * URL of the link that encloses the node the context menu was invoked on.
-     */
-    linkURL: string;
-    /**
-     * Text associated with the link. May be an empty string if the contents of the
-     * link are an image.
-     */
-    linkText: string;
-    /**
-     * URL of the top level page that the context menu was invoked on.
-     */
-    pageURL: string;
-    /**
-     * URL of the subframe that the context menu was invoked on.
-     */
-    frameURL: string;
-    /**
-     * Source URL for the element that the context menu was invoked on. Elements with
-     * source URLs are images, audio and video.
-     */
-    srcURL: string;
-    /**
-     * Type of the node the context menu was invoked on. Can be `none`, `image`,
-     * `audio`, `video`, `canvas`, `file` or `plugin`.
-     */
-    mediaType: ('none' | 'image' | 'audio' | 'video' | 'canvas' | 'file' | 'plugin');
-    /**
-     * Whether the context menu was invoked on an image which has non-empty contents.
-     */
-    hasImageContents: boolean;
-    /**
-     * Whether the context is editable.
-     */
-    isEditable: boolean;
-    /**
-     * Text of the selection that the context menu was invoked on.
-     */
-    selectionText: string;
-    /**
-     * Title text of the selection that the context menu was invoked on.
-     */
-    titleText: string;
-    /**
      * Alt text of the selection that the context menu was invoked on.
      */
     altText: string;
-    /**
-     * Suggested filename to be used when saving file through 'Save Link As' option of
-     * context menu.
-     */
-    suggestedFilename: string;
-    /**
-     * Rect representing the coordinates in the document space of the selection.
-     */
-    selectionRect: Rectangle;
-    /**
-     * Start position of the selection text.
-     */
-    selectionStartOffset: number;
-    /**
-     * The referrer policy of the frame on which the menu is invoked.
-     */
-    referrerPolicy: Referrer;
-    /**
-     * The misspelled word under the cursor, if any.
-     */
-    misspelledWord: string;
     /**
      * An array of suggested words to show the user to replace the `misspelledWord`.
      * Only available if there is a misspelled word and spellchecker is enabled.
      */
     dictionarySuggestions: string[];
     /**
-     * The character encoding of the frame on which the menu was invoked.
+     * These flags indicate whether the renderer believes it is able to perform the
+     * corresponding action.
      */
-    frameCharset: string;
+    editFlags: EditFlags;
     /**
      * The source that the context menu was invoked on. Possible values include `none`,
      * `button-button`, `field-set`, `input-button`, `input-checkbox`, `input-color`,
@@ -18654,9 +18579,43 @@ declare namespace Electron {
      */
     formControlType: ('none' | 'button-button' | 'field-set' | 'input-button' | 'input-checkbox' | 'input-color' | 'input-date' | 'input-datetime-local' | 'input-email' | 'input-file' | 'input-hidden' | 'input-image' | 'input-month' | 'input-number' | 'input-password' | 'input-radio' | 'input-range' | 'input-reset' | 'input-search' | 'input-submit' | 'input-telephone' | 'input-text' | 'input-time' | 'input-url' | 'input-week' | 'output' | 'reset-button' | 'select-list' | 'select-list' | 'select-multiple' | 'select-one' | 'submit-button' | 'text-area');
     /**
-     * If the context is editable, whether or not spellchecking is enabled.
+     * Frame from which the context menu was invoked.
      */
-    spellcheckEnabled: boolean;
+    frame: WebFrameMain;
+    /**
+     * The character encoding of the frame on which the menu was invoked.
+     */
+    frameCharset: string;
+    /**
+     * URL of the subframe that the context menu was invoked on.
+     */
+    frameURL: string;
+    /**
+     * Whether the context menu was invoked on an image which has non-empty contents.
+     */
+    hasImageContents: boolean;
+    /**
+     * Whether the context is editable.
+     */
+    isEditable: boolean;
+    /**
+     * Text associated with the link. May be an empty string if the contents of the
+     * link are an image.
+     */
+    linkText: string;
+    /**
+     * URL of the link that encloses the node the context menu was invoked on.
+     */
+    linkURL: string;
+    /**
+     * The flags for the media element the context menu was invoked on.
+     */
+    mediaFlags: MediaFlags;
+    /**
+     * Type of the node the context menu was invoked on. Can be `none`, `image`,
+     * `audio`, `video`, `canvas`, `file` or `plugin`.
+     */
+    mediaType: ('none' | 'image' | 'audio' | 'video' | 'canvas' | 'file' | 'plugin');
     /**
      * Input source that invoked the context menu. Can be `none`, `mouse`, `keyboard`,
      * `touch`, `touchMenu`, `longPress`, `longTap`, `touchHandle`, `stylus`,
@@ -18664,14 +18623,55 @@ declare namespace Electron {
      */
     menuSourceType: ('none' | 'mouse' | 'keyboard' | 'touch' | 'touchMenu' | 'longPress' | 'longTap' | 'touchHandle' | 'stylus' | 'adjustSelection' | 'adjustSelectionReset');
     /**
-     * The flags for the media element the context menu was invoked on.
+     * The misspelled word under the cursor, if any.
      */
-    mediaFlags: MediaFlags;
+    misspelledWord: string;
     /**
-     * These flags indicate whether the renderer believes it is able to perform the
-     * corresponding action.
+     * URL of the top level page that the context menu was invoked on.
      */
-    editFlags: EditFlags;
+    pageURL: string;
+    /**
+     * The referrer policy of the frame on which the menu is invoked.
+     */
+    referrerPolicy: Referrer;
+    /**
+     * Rect representing the coordinates in the document space of the selection.
+     */
+    selectionRect: Rectangle;
+    /**
+     * Start position of the selection text.
+     */
+    selectionStartOffset: number;
+    /**
+     * Text of the selection that the context menu was invoked on.
+     */
+    selectionText: string;
+    /**
+     * If the context is editable, whether or not spellchecking is enabled.
+     */
+    spellcheckEnabled: boolean;
+    /**
+     * Source URL for the element that the context menu was invoked on. Elements with
+     * source URLs are images, audio and video.
+     */
+    srcURL: string;
+    /**
+     * Suggested filename to be used when saving file through 'Save Link As' option of
+     * context menu.
+     */
+    suggestedFilename: string;
+    /**
+     * Title text of the selection that the context menu was invoked on.
+     */
+    titleText: string;
+    /**
+     * x coordinate.
+     */
+    x: number;
+    /**
+     * y coordinate.
+     */
+    y: number;
   }
 
   interface ContinueActivityDetails {
@@ -18684,18 +18684,17 @@ declare namespace Electron {
 
   interface CookiesGetFilter {
     /**
-     * Retrieves cookies which are associated with `url`. Empty implies retrieving
-     * cookies of all URLs.
+     * Retrieves cookies whose domains match or are subdomains of `domains`.
      */
-    url?: string;
+    domain?: string;
+    /**
+     * Filters cookies by httpOnly.
+     */
+    httpOnly?: boolean;
     /**
      * Filters cookies by name.
      */
     name?: string;
-    /**
-     * Retrieves cookies whose domains match or are subdomains of `domains`.
-     */
-    domain?: string;
     /**
      * Retrieves cookies whose path matches `path`.
      */
@@ -18709,43 +18708,18 @@ declare namespace Electron {
      */
     session?: boolean;
     /**
-     * Filters cookies by httpOnly.
+     * Retrieves cookies which are associated with `url`. Empty implies retrieving
+     * cookies of all URLs.
      */
-    httpOnly?: boolean;
+    url?: string;
   }
 
   interface CookiesSetDetails {
-    /**
-     * The URL to associate the cookie with. The promise will be rejected if the URL is
-     * invalid.
-     */
-    url: string;
-    /**
-     * The name of the cookie. Empty by default if omitted.
-     */
-    name?: string;
-    /**
-     * The value of the cookie. Empty by default if omitted.
-     */
-    value?: string;
     /**
      * The domain of the cookie; this will be normalized with a preceding dot so that
      * it's also valid for subdomains. Empty by default if omitted.
      */
     domain?: string;
-    /**
-     * The path of the cookie. Empty by default if omitted.
-     */
-    path?: string;
-    /**
-     * Whether the cookie should be marked as Secure. Defaults to false unless Same
-     * Site=None attribute is used.
-     */
-    secure?: boolean;
-    /**
-     * Whether the cookie should be marked as HTTP only. Defaults to false.
-     */
-    httpOnly?: boolean;
     /**
      * The expiration date of the cookie as the number of seconds since the UNIX epoch.
      * If omitted then the cookie becomes a session cookie and will not be retained
@@ -18753,45 +18727,45 @@ declare namespace Electron {
      */
     expirationDate?: number;
     /**
+     * Whether the cookie should be marked as HTTP only. Defaults to false.
+     */
+    httpOnly?: boolean;
+    /**
+     * The name of the cookie. Empty by default if omitted.
+     */
+    name?: string;
+    /**
+     * The path of the cookie. Empty by default if omitted.
+     */
+    path?: string;
+    /**
      * The Same Site policy to apply to this cookie.  Can be `unspecified`,
      * `no_restriction`, `lax` or `strict`.  Default is `lax`.
      */
     sameSite?: ('unspecified' | 'no_restriction' | 'lax' | 'strict');
+    /**
+     * Whether the cookie should be marked as Secure. Defaults to false unless Same
+     * Site=None attribute is used.
+     */
+    secure?: boolean;
+    /**
+     * The URL to associate the cookie with. The promise will be rejected if the URL is
+     * invalid.
+     */
+    url: string;
+    /**
+     * The value of the cookie. Empty by default if omitted.
+     */
+    value?: string;
   }
 
   interface CrashReporterStartOptions {
-    /**
-     * URL that crash reports will be sent to as POST. Required unless `uploadToServer`
-     * is `false`.
-     */
-    submitURL?: string;
-    /**
-     * Defaults to `app.name`.
-     */
-    productName?: string;
     /**
      * Deprecated alias for `{ globalExtra: { _companyName: ... } }`.
      *
      * @deprecated
      */
     companyName?: string;
-    /**
-     * Whether crash reports should be sent to the server. If false, crash reports will
-     * be collected and stored in the crashes directory, but not uploaded. Default is
-     * `true`.
-     */
-    uploadToServer?: boolean;
-    /**
-     * If true, crashes generated in the main process will not be forwarded to the
-     * system crash handler. Default is `false`.
-     */
-    ignoreSystemCrashHandler?: boolean;
-    /**
-     * If true, limit the number of crashes uploaded to 1/hour. Default is `false`.
-     *
-     * @platform darwin,win32
-     */
-    rateLimit?: boolean;
     /**
      * If true, crash reports will be compressed and uploaded with `Content-Encoding:
      * gzip`. Default is `true`.
@@ -18814,22 +18788,44 @@ declare namespace Electron {
      * well as the Electron version.
      */
     globalExtra?: Record<string, string>;
+    /**
+     * If true, crashes generated in the main process will not be forwarded to the
+     * system crash handler. Default is `false`.
+     */
+    ignoreSystemCrashHandler?: boolean;
+    /**
+     * Defaults to `app.name`.
+     */
+    productName?: string;
+    /**
+     * If true, limit the number of crashes uploaded to 1/hour. Default is `false`.
+     *
+     * @platform darwin,win32
+     */
+    rateLimit?: boolean;
+    /**
+     * URL that crash reports will be sent to as POST. Required unless `uploadToServer`
+     * is `false`.
+     */
+    submitURL?: string;
+    /**
+     * Whether crash reports should be sent to the server. If false, crash reports will
+     * be collected and stored in the crashes directory, but not uploaded. Default is
+     * `true`.
+     */
+    uploadToServer?: boolean;
   }
 
   interface CreateFromBitmapOptions {
-    width: number;
     height: number;
     /**
      * Defaults to 1.0.
      */
     scaleFactor?: number;
+    width: number;
   }
 
   interface CreateFromBufferOptions {
-    /**
-     * Required for bitmap buffers.
-     */
-    width?: number;
     /**
      * Required for bitmap buffers.
      */
@@ -18838,68 +18834,56 @@ declare namespace Electron {
      * Defaults to 1.0.
      */
     scaleFactor?: number;
+    /**
+     * Required for bitmap buffers.
+     */
+    width?: number;
   }
 
   interface CreateInterruptedDownloadOptions {
     /**
-     * Absolute path of the download.
+     * ETag header value.
      */
-    path: string;
+    eTag?: string;
     /**
-     * Complete URL chain for the download.
+     * Last-Modified header value.
      */
-    urlChain: string[];
+    lastModified?: string;
+    /**
+     * Total length of the download.
+     */
+    length: number;
     mimeType?: string;
     /**
      * Start range for the download.
      */
     offset: number;
     /**
-     * Total length of the download.
+     * Absolute path of the download.
      */
-    length: number;
-    /**
-     * Last-Modified header value.
-     */
-    lastModified?: string;
-    /**
-     * ETag header value.
-     */
-    eTag?: string;
+    path: string;
     /**
      * Time when download was started in number of seconds since UNIX epoch.
      */
     startTime?: number;
+    /**
+     * Complete URL chain for the download.
+     */
+    urlChain: string[];
   }
 
   interface Data {
-    text?: string;
-    html?: string;
-    image?: NativeImage;
-    rtf?: string;
     /**
      * The title of the URL at `text`.
      */
     bookmark?: string;
+    html?: string;
+    image?: NativeImage;
+    rtf?: string;
+    text?: string;
   }
 
   interface DefaultFontFamily {
-    /**
-     * Defaults to `Times New Roman`.
-     */
-    standard?: string;
-    /**
-     * Defaults to `Times New Roman`.
-     */
-    serif?: string;
-    /**
-     * Defaults to `Arial`.
-     */
-    sansSerif?: string;
-    /**
-     * Defaults to `Courier New`.
-     */
-    monospace?: string;
     /**
      * Defaults to `Script`.
      */
@@ -18912,34 +18896,54 @@ declare namespace Electron {
      * Defaults to `Latin Modern Math`.
      */
     math?: string;
+    /**
+     * Defaults to `Courier New`.
+     */
+    monospace?: string;
+    /**
+     * Defaults to `Arial`.
+     */
+    sansSerif?: string;
+    /**
+     * Defaults to `Times New Roman`.
+     */
+    serif?: string;
+    /**
+     * Defaults to `Times New Roman`.
+     */
+    standard?: string;
   }
 
   interface Details {
-    /**
-     * Process type. One of the following values:
-     */
-    type: ('Utility' | 'Zygote' | 'Sandbox helper' | 'GPU' | 'Pepper Plugin' | 'Pepper Plugin Broker' | 'Unknown');
-    /**
-     * The reason the child process is gone. Possible values:
-     */
-    reason: ('clean-exit' | 'abnormal-exit' | 'killed' | 'crashed' | 'oom' | 'launch-failed' | 'integrity-failure');
     /**
      * The exit code for the process (e.g. status from waitpid if on posix, from
      * GetExitCodeProcess on Windows).
      */
     exitCode: number;
     /**
-     * The non-localized name of the process.
-     */
-    serviceName?: string;
-    /**
      * The name of the process. Examples for utility: `Audio Service`, `Content
      * Decryption Module Service`, `Network Service`, `Video Capture`, etc.
      */
     name?: string;
+    /**
+     * The reason the child process is gone. Possible values:
+     */
+    reason: ('clean-exit' | 'abnormal-exit' | 'killed' | 'crashed' | 'oom' | 'launch-failed' | 'integrity-failure');
+    /**
+     * The non-localized name of the process.
+     */
+    serviceName?: string;
+    /**
+     * Process type. One of the following values:
+     */
+    type: ('Utility' | 'Zygote' | 'Sandbox helper' | 'GPU' | 'Pepper Plugin' | 'Pepper Plugin Broker' | 'Unknown');
   }
 
   interface DevicePermissionHandlerHandlerDetails {
+    /**
+     * the device that permission is being requested for.
+     */
+    device: (HIDDevice) | (SerialPort) | (USBDevice);
     /**
      * The type of device that permission is being requested on, can be `hid`,
      * `serial`, or `usb`.
@@ -18949,10 +18953,6 @@ declare namespace Electron {
      * The origin URL of the device permission check.
      */
     origin: string;
-    /**
-     * the device that permission is being requested for.
-     */
-    device: (HIDDevice) | (SerialPort) | (USBDevice);
   }
 
   interface DevtoolsOpenUrlEvent extends DOMEvent {
@@ -18976,9 +18976,9 @@ declare namespace Electron {
 
   interface DidCreateWindowDetails {
     /**
-     * URL for the created window.
+     * Can be `default`, `foreground-tab`, `background-tab`, `new-window` or `other`.
      */
-    url: string;
+    disposition: ('default' | 'foreground-tab' | 'background-tab' | 'new-window' | 'other');
     /**
      * Name given to the created window in the `window.open()` call.
      */
@@ -18991,11 +18991,6 @@ declare namespace Electron {
      */
     options: BrowserWindowConstructorOptions;
     /**
-     * The referrer that will be passed to the new window. May or may not result in the
-     * `Referer` header being sent, depending on the referrer policy.
-     */
-    referrer: Referrer;
-    /**
      * The post data that will be sent to the new window, along with the appropriate
      * headers that will be set. If no post data is to be sent, the value will be
      * `null`. Only defined when the window is being created by a form that set
@@ -19003,16 +18998,21 @@ declare namespace Electron {
      */
     postBody?: PostBody;
     /**
-     * Can be `default`, `foreground-tab`, `background-tab`, `new-window` or `other`.
+     * The referrer that will be passed to the new window. May or may not result in the
+     * `Referer` header being sent, depending on the referrer policy.
      */
-    disposition: ('default' | 'foreground-tab' | 'background-tab' | 'new-window' | 'other');
+    referrer: Referrer;
+    /**
+     * URL for the created window.
+     */
+    url: string;
   }
 
   interface DidFailLoadEvent extends DOMEvent {
     errorCode: number;
     errorDescription: string;
-    validatedURL: string;
     isMainFrame: boolean;
+    validatedURL: string;
   }
 
   interface DidFrameFinishLoadEvent extends DOMEvent {
@@ -19020,7 +19020,8 @@ declare namespace Electron {
   }
 
   interface DidFrameNavigateEvent extends DOMEvent {
-    url: string;
+    frameProcessId: number;
+    frameRoutingId: number;
     /**
      * -1 for non HTTP navigations
      */
@@ -19030,8 +19031,7 @@ declare namespace Electron {
      */
     httpStatusText: string;
     isMainFrame: boolean;
-    frameProcessId: number;
-    frameRoutingId: number;
+    url: string;
   }
 
   interface DidNavigateEvent extends DOMEvent {
@@ -19044,22 +19044,23 @@ declare namespace Electron {
   }
 
   interface DidRedirectNavigationEvent extends DOMEvent {
-    url: string;
-    isInPlace: boolean;
-    isMainFrame: boolean;
     frameProcessId: number;
     frameRoutingId: number;
+    isInPlace: boolean;
+    isMainFrame: boolean;
+    url: string;
   }
 
   interface DidStartNavigationEvent extends DOMEvent {
-    url: string;
-    isInPlace: boolean;
-    isMainFrame: boolean;
     frameProcessId: number;
     frameRoutingId: number;
+    isInPlace: boolean;
+    isMainFrame: boolean;
+    url: string;
   }
 
   interface DisplayBalloonOptions {
+    content: string;
     /**
      * Icon to use when `iconType` is `custom`.
      */
@@ -19068,8 +19069,6 @@ declare namespace Electron {
      * Can be `none`, `info`, `warning`, `error` or `custom`. Default is `custom`.
      */
     iconType?: ('none' | 'info' | 'warning' | 'error' | 'custom');
-    title: string;
-    content: string;
     /**
      * The large version of the icon should be used. Default is `true`. Maps to
      * `NIIF_LARGE_ICON`.
@@ -19084,9 +19083,14 @@ declare namespace Electron {
      * Default is `false`. Maps to `NIIF_RESPECT_QUIET_TIME`.
      */
     respectQuietTime?: boolean;
+    title: string;
   }
 
   interface DisplayMediaRequestHandlerHandlerRequest {
+    /**
+     * true if the web content requested an audio stream.
+     */
+    audioRequested: boolean;
     /**
      * Frame that is requesting access to media.
      */
@@ -19096,17 +19100,13 @@ declare namespace Electron {
      */
     securityOrigin: string;
     /**
-     * true if the web content requested a video stream.
-     */
-    videoRequested: boolean;
-    /**
-     * true if the web content requested an audio stream.
-     */
-    audioRequested: boolean;
-    /**
      * Whether a user gesture was active when this request was triggered.
      */
     userGesture: boolean;
+    /**
+     * true if the web content requested a video stream.
+     */
+    videoRequested: boolean;
   }
 
   interface DisplayMediaRequestHandlerOpts {
@@ -19126,17 +19126,17 @@ declare namespace Electron {
 
   interface EnableNetworkEmulationOptions {
     /**
-     * Whether to emulate network outage. Defaults to false.
+     * Download rate in Bps. Defaults to 0 which will disable download throttling.
      */
-    offline?: boolean;
+    downloadThroughput?: number;
     /**
      * RTT in ms. Defaults to 0 which will disable latency throttling.
      */
     latency?: number;
     /**
-     * Download rate in Bps. Defaults to 0 which will disable download throttling.
+     * Whether to emulate network outage. Defaults to false.
      */
-    downloadThroughput?: number;
+    offline?: boolean;
     /**
      * Upload rate in Bps. Defaults to 0 which will disable upload throttling.
      */
@@ -19145,17 +19145,16 @@ declare namespace Electron {
 
   interface EntryAtIndex {
     /**
-     * The URL of the navigation entry at the given index.
-     */
-    url: string;
-    /**
      * The page title of the navigation entry at the given index.
      */
     title: string;
+    /**
+     * The URL of the navigation entry at the given index.
+     */
+    url: string;
   }
 
   interface FeedURLOptions {
-    url: string;
     /**
      * HTTP request headers.
      *
@@ -19168,6 +19167,7 @@ declare namespace Electron {
      * @platform darwin
      */
     serverType?: ('json' | 'default');
+    url: string;
   }
 
   interface FileIconOptions {
@@ -19176,13 +19176,13 @@ declare namespace Electron {
 
   interface FileSystemAccessRestrictedDetails {
     /**
-     * The origin that initiated access to the blocked path.
-     */
-    origin: string;
-    /**
      * Whether or not the path is a directory.
      */
     isDirectory: boolean;
+    /**
+     * The origin that initiated access to the blocked path.
+     */
+    origin: string;
     /**
      * The blocked path attempting to be accessed.
      */
@@ -19191,14 +19191,14 @@ declare namespace Electron {
 
   interface FindInPageOptions {
     /**
-     * Whether to search forward or backward, defaults to `true`.
-     */
-    forward?: boolean;
-    /**
      * Whether to begin a new text finding session with this request. Should be `true`
      * for initial requests, and `false` for follow-up requests. Defaults to `false`.
      */
     findNext?: boolean;
+    /**
+     * Whether to search forward or backward, defaults to `true`.
+     */
+    forward?: boolean;
     /**
      * Whether search should be case-sensitive, defaults to `false`.
      */
@@ -19216,34 +19216,6 @@ declare namespace Electron {
 
   interface ForkOptions {
     /**
-     * Environment key-value pairs. Default is `process.env`.
-     */
-    env?: Env;
-    /**
-     * List of string arguments passed to the executable.
-     */
-    execArgv?: string[];
-    /**
-     * Current working directory of the child process.
-     */
-    cwd?: string;
-    /**
-     * Allows configuring the mode for `stdout` and `stderr` of the child process.
-     * Default is `inherit`. String value can be one of `pipe`, `ignore`, `inherit`,
-     * for more details on these values you can refer to stdio documentation from
-     * Node.js. Currently this option only supports configuring `stdout` and `stderr`
-     * to either `pipe`, `inherit` or `ignore`. Configuring `stdin` to any property
-     * other than `ignore` is not supported and will result in an error. For example,
-     * the supported values will be processed as following:
-     */
-    stdio?: (Array<'pipe' | 'ignore' | 'inherit'>) | (string);
-    /**
-     * Name of the process that will appear in `name` property of `ProcessMetric`
-     * returned by `app.getAppMetrics` and `child-process-gone` event of `app`. Default
-     * is `Node Utility Process`.
-     */
-    serviceName?: string;
-    /**
      * With this flag, the utility process will be launched via the `Electron Helper
      * (Plugin).app` helper executable on macOS, which can be codesigned with
      * `com.apple.security.cs.disable-library-validation` and
@@ -19255,11 +19227,39 @@ declare namespace Electron {
      */
     allowLoadingUnsignedLibraries?: boolean;
     /**
+     * Current working directory of the child process.
+     */
+    cwd?: string;
+    /**
+     * Environment key-value pairs. Default is `process.env`.
+     */
+    env?: Env;
+    /**
+     * List of string arguments passed to the executable.
+     */
+    execArgv?: string[];
+    /**
      * With this flag, all HTTP 401 and 407 network requests created via the net module
      * will allow responding to them via the `app#login` event in the main process
      * instead of the default `login` event on the `ClientRequest` object.
      */
     respondToAuthRequestsFromMainProcess?: boolean;
+    /**
+     * Name of the process that will appear in `name` property of `ProcessMetric`
+     * returned by `app.getAppMetrics` and `child-process-gone` event of `app`. Default
+     * is `Node Utility Process`.
+     */
+    serviceName?: string;
+    /**
+     * Allows configuring the mode for `stdout` and `stderr` of the child process.
+     * Default is `inherit`. String value can be one of `pipe`, `ignore`, `inherit`,
+     * for more details on these values you can refer to stdio documentation from
+     * Node.js. Currently this option only supports configuring `stdout` and `stderr`
+     * to either `pipe`, `inherit` or `ignore`. Configuring `stdin` to any property
+     * other than `ignore` is not supported and will result in an error. For example,
+     * the supported values will be processed as following:
+     */
+    stdio?: (Array<'pipe' | 'ignore' | 'inherit'>) | (string);
   }
 
   interface FoundInPageEvent extends DOMEvent {
@@ -19286,28 +19286,17 @@ declare namespace Electron {
 
   interface HandlerDetails {
     /**
-     * The _resolved_ version of the URL passed to `window.open()`. e.g. opening a
-     * window with `window.open('foo')` will yield something like
-     * `https://the-origin/the/current/path/foo`.
+     * Can be `default`, `foreground-tab`, `background-tab`, `new-window` or `other`.
      */
-    url: string;
-    /**
-     * Name of the window provided in `window.open()`
-     */
-    frameName: string;
+    disposition: ('default' | 'foreground-tab' | 'background-tab' | 'new-window' | 'other');
     /**
      * Comma separated list of window features provided to `window.open()`.
      */
     features: string;
     /**
-     * Can be `default`, `foreground-tab`, `background-tab`, `new-window` or `other`.
+     * Name of the window provided in `window.open()`
      */
-    disposition: ('default' | 'foreground-tab' | 'background-tab' | 'new-window' | 'other');
-    /**
-     * The referrer that will be passed to the new window. May or may not result in the
-     * `Referer` header being sent, depending on the referrer policy.
-     */
-    referrer: Referrer;
+    frameName: string;
     /**
      * The post data that will be sent to the new window, along with the appropriate
      * headers that will be set. If no post data is to be sent, the value will be
@@ -19315,6 +19304,17 @@ declare namespace Electron {
      * `target=_blank`.
      */
     postBody?: PostBody;
+    /**
+     * The referrer that will be passed to the new window. May or may not result in the
+     * `Referer` header being sent, depending on the referrer policy.
+     */
+    referrer: Referrer;
+    /**
+     * The _resolved_ version of the URL passed to `window.open()`. e.g. opening a
+     * window with `window.open('foo')` will yield something like
+     * `https://the-origin/the/current/path/foo`.
+     */
+    url: string;
   }
 
   interface HeadersReceivedResponse {
@@ -19331,15 +19331,15 @@ declare namespace Electron {
   }
 
   interface HeapStatistics {
-    totalHeapSize: number;
-    totalHeapSizeExecutable: number;
-    totalPhysicalSize: number;
-    totalAvailableSize: number;
-    usedHeapSize: number;
+    doesZapGarbage: boolean;
     heapSizeLimit: number;
     mallocedMemory: number;
     peakMallocedMemory: number;
-    doesZapGarbage: boolean;
+    totalAvailableSize: number;
+    totalHeapSize: number;
+    totalHeapSizeExecutable: number;
+    totalPhysicalSize: number;
+    usedHeapSize: number;
   }
 
   interface HidDeviceAddedDetails {
@@ -19384,10 +19384,6 @@ declare namespace Electron {
 
   interface Info {
     /**
-     * Security origin for the isolated world.
-     */
-    securityOrigin?: string;
-    /**
      * Content Security Policy for the isolated world.
      */
     csp?: string;
@@ -19395,21 +19391,25 @@ declare namespace Electron {
      * Name for isolated world. Useful in devtools.
      */
     name?: string;
+    /**
+     * Security origin for the isolated world.
+     */
+    securityOrigin?: string;
   }
 
   interface Input {
     /**
-     * Either `keyUp` or `keyDown`.
+     * Equivalent to KeyboardEvent.altKey.
      */
-    type: string;
-    /**
-     * Equivalent to KeyboardEvent.key.
-     */
-    key: string;
+    alt: boolean;
     /**
      * Equivalent to KeyboardEvent.code.
      */
     code: string;
+    /**
+     * Equivalent to KeyboardEvent.controlKey.
+     */
+    control: boolean;
     /**
      * Equivalent to KeyboardEvent.repeat.
      */
@@ -19419,29 +19419,29 @@ declare namespace Electron {
      */
     isComposing: boolean;
     /**
-     * Equivalent to KeyboardEvent.shiftKey.
+     * Equivalent to KeyboardEvent.key.
      */
-    shift: boolean;
-    /**
-     * Equivalent to KeyboardEvent.controlKey.
-     */
-    control: boolean;
-    /**
-     * Equivalent to KeyboardEvent.altKey.
-     */
-    alt: boolean;
-    /**
-     * Equivalent to KeyboardEvent.metaKey.
-     */
-    meta: boolean;
+    key: string;
     /**
      * Equivalent to KeyboardEvent.location.
      */
     location: number;
     /**
+     * Equivalent to KeyboardEvent.metaKey.
+     */
+    meta: boolean;
+    /**
      * See InputEvent.modifiers.
      */
     modifiers: string[];
+    /**
+     * Equivalent to KeyboardEvent.shiftKey.
+     */
+    shift: boolean;
+    /**
+     * Either `keyUp` or `keyDown`.
+     */
+    type: string;
   }
 
   interface InsertCSSOptions {
@@ -19453,12 +19453,12 @@ declare namespace Electron {
   }
 
   interface IpcMessageEvent extends DOMEvent {
+    args: any[];
+    channel: string;
     /**
      * pair of `[processId, frameId]`.
      */
     frameId: [number, number];
-    channel: string;
-    args: any[];
   }
 
   interface Item {
@@ -19493,8 +19493,8 @@ declare namespace Electron {
   }
 
   interface LoadCommitEvent extends DOMEvent {
-    url: string;
     isMainFrame: boolean;
+    url: string;
   }
 
   interface LoadExtensionOptions {
@@ -19510,37 +19510,37 @@ declare namespace Electron {
     /**
      * Passed to `url.format()`.
      */
+    hash?: string;
+    /**
+     * Passed to `url.format()`.
+     */
     query?: Record<string, string>;
     /**
      * Passed to `url.format()`.
      */
     search?: string;
-    /**
-     * Passed to `url.format()`.
-     */
-    hash?: string;
   }
 
   interface LoadURLOptions {
-    /**
-     * An HTTP Referrer url.
-     */
-    httpReferrer?: (string) | (Referrer);
-    /**
-     * A user agent originating the request.
-     */
-    userAgent?: string;
-    /**
-     * Extra headers separated by "\n"
-     */
-    extraHeaders?: string;
-    postData?: Array<(UploadRawData) | (UploadFile)>;
     /**
      * Base url (with trailing path separator) for files to be loaded by the data url.
      * This is needed only if the specified `url` is a data url and needs to load other
      * files.
      */
     baseURLForDataURL?: string;
+    /**
+     * Extra headers separated by "\n"
+     */
+    extraHeaders?: string;
+    /**
+     * An HTTP Referrer url.
+     */
+    httpReferrer?: (string) | (Referrer);
+    postData?: Array<(UploadRawData) | (UploadFile)>;
+    /**
+     * A user agent originating the request.
+     */
+    userAgent?: string;
   }
 
   interface LoginAuthenticationResponseDetails {
@@ -19549,9 +19549,15 @@ declare namespace Electron {
 
   interface LoginItemSettings {
     /**
-     * `true` if the app is set to open at login.
+     * `true` if app is set to open at login and its run key is not deactivated. This
+     * differs from `openAtLogin` as it ignores the `args` option, this property will
+     * be true if the given executable would be launched at login with **any**
+     * arguments.
+     *
+     * @platform win32
      */
-    openAtLogin: boolean;
+    executableWillLaunchAtLogin: boolean;
+    launchItems: LaunchItems[];
     /**
      * `true` if the app is set to open as hidden at login. This does not work on macOS
      * 13 and up.
@@ -19561,20 +19567,9 @@ declare namespace Electron {
      */
     openAsHidden: boolean;
     /**
-     * `true` if the app was opened at login automatically.
-     *
-     * @platform darwin
+     * `true` if the app is set to open at login.
      */
-    wasOpenedAtLogin: boolean;
-    /**
-     * `true` if the app was opened as a hidden login item. This indicates that the app
-     * should not open any windows at startup. This setting is not available on MAS
-     * builds or on macOS 13 and up.
-     *
-     * @deprecated
-     * @platform darwin
-     */
-    wasOpenedAsHidden: boolean;
+    openAtLogin: boolean;
     /**
      * `true` if the app was opened as a login item that should restore the state from
      * the previous session. This indicates that the app should restore the windows
@@ -19592,26 +19587,35 @@ declare namespace Electron {
      */
     status: string;
     /**
-     * `true` if app is set to open at login and its run key is not deactivated. This
-     * differs from `openAtLogin` as it ignores the `args` option, this property will
-     * be true if the given executable would be launched at login with **any**
-     * arguments.
+     * `true` if the app was opened as a hidden login item. This indicates that the app
+     * should not open any windows at startup. This setting is not available on MAS
+     * builds or on macOS 13 and up.
      *
-     * @platform win32
+     * @deprecated
+     * @platform darwin
      */
-    executableWillLaunchAtLogin: boolean;
-    launchItems: LaunchItems[];
+    wasOpenedAsHidden: boolean;
+    /**
+     * `true` if the app was opened at login automatically.
+     *
+     * @platform darwin
+     */
+    wasOpenedAtLogin: boolean;
   }
 
   interface LoginItemSettingsOptions {
     /**
-     * Can be one of `mainAppService`, `agentService`, `daemonService`, or
-     * `loginItemService`. Defaults to `mainAppService`. Only available on macOS 13 and
-     * up. See app.setLoginItemSettings for more information about each type.
+     * The command-line arguments to compare against. Defaults to an empty array.
      *
-     * @platform darwin
+     * @platform win32
      */
-    type?: string;
+    args?: string[];
+    /**
+     * The executable path to compare against. Defaults to `process.execPath`.
+     *
+     * @platform win32
+     */
+    path?: string;
     /**
      * The name of the service. Required if `type` is non-default. Only available on
      * macOS 13 and up.
@@ -19620,25 +19624,72 @@ declare namespace Electron {
      */
     serviceName?: string;
     /**
-     * The executable path to compare against. Defaults to `process.execPath`.
+     * Can be one of `mainAppService`, `agentService`, `daemonService`, or
+     * `loginItemService`. Defaults to `mainAppService`. Only available on macOS 13 and
+     * up. See app.setLoginItemSettings for more information about each type.
      *
-     * @platform win32
+     * @platform darwin
      */
-    path?: string;
-    /**
-     * The command-line arguments to compare against. Defaults to an empty array.
-     *
-     * @platform win32
-     */
-    args?: string[];
+    type?: string;
   }
 
   interface MenuItemConstructorOptions {
+    accelerator?: Accelerator;
+    /**
+     * default is `true`, and when `false` will prevent the accelerator from triggering
+     * the item if the item is not visible.
+     *
+     * @platform darwin
+     */
+    acceleratorWorksWhenHidden?: boolean;
+    /**
+     * Inserts this item after the item with the specified id. If the referenced item
+     * doesn't exist the item will be inserted at the end of the menu.
+     */
+    after?: string[];
+    /**
+     * Provides a means for a single context menu to declare the placement of their
+     * containing group after the containing group of the item with the specified id.
+     */
+    afterGroupContaining?: string[];
+    /**
+     * Inserts this item before the item with the specified id. If the referenced item
+     * doesn't exist the item will be inserted at the end of  the menu. Also implies
+     * that the menu item in question should be placed in the same “group” as the item.
+     */
+    before?: string[];
+    /**
+     * Provides a means for a single context menu to declare the placement of their
+     * containing group before the containing group of the item with the specified id.
+     */
+    beforeGroupContaining?: string[];
+    /**
+     * Should only be specified for `checkbox` or `radio` type menu items.
+     */
+    checked?: boolean;
     /**
      * Will be called with `click(menuItem, window, event)` when the menu item is
      * clicked.
      */
     click?: (menuItem: MenuItem, window: (BaseWindow) | (undefined), event: KeyboardEvent) => void;
+    /**
+     * If false, the menu item will be greyed out and unclickable.
+     */
+    enabled?: boolean;
+    icon?: (NativeImage) | (string);
+    /**
+     * Unique within a single menu. If defined then it can be used as a reference to
+     * this item by the position attribute.
+     */
+    id?: string;
+    label?: string;
+    /**
+     * If false, the accelerator won't be registered with the system, but it will still
+     * be displayed. Defaults to true.
+     *
+     * @platform linux,win32
+     */
+    registerAccelerator?: boolean;
     /**
      * Can be `undo`, `redo`, `cut`, `copy`, `paste`, `pasteAndMatchStyle`, `delete`,
      * `selectAll`, `reload`, `forceReload`, `toggleDevTools`, `resetZoom`, `zoomIn`,
@@ -19654,51 +19705,12 @@ declare namespace Electron {
      */
     role?: ('undo' | 'redo' | 'cut' | 'copy' | 'paste' | 'pasteAndMatchStyle' | 'delete' | 'selectAll' | 'reload' | 'forceReload' | 'toggleDevTools' | 'resetZoom' | 'zoomIn' | 'zoomOut' | 'toggleSpellChecker' | 'togglefullscreen' | 'window' | 'minimize' | 'close' | 'help' | 'about' | 'services' | 'hide' | 'hideOthers' | 'unhide' | 'quit' | 'showSubstitutions' | 'toggleSmartQuotes' | 'toggleSmartDashes' | 'toggleTextReplacement' | 'startSpeaking' | 'stopSpeaking' | 'zoom' | 'front' | 'appMenu' | 'fileMenu' | 'editMenu' | 'viewMenu' | 'shareMenu' | 'recentDocuments' | 'toggleTabBar' | 'selectNextTab' | 'selectPreviousTab' | 'showAllTabs' | 'mergeAllWindows' | 'clearRecentDocuments' | 'moveTabToNewWindow' | 'windowMenu');
     /**
-     * Can be `normal`, `separator`, `submenu`, `checkbox` or `radio`.
-     */
-    type?: ('normal' | 'separator' | 'submenu' | 'checkbox' | 'radio');
-    label?: string;
-    sublabel?: string;
-    /**
-     * Hover text for this menu item.
-     *
-     * @platform darwin
-     */
-    toolTip?: string;
-    accelerator?: Accelerator;
-    icon?: (NativeImage) | (string);
-    /**
-     * If false, the menu item will be greyed out and unclickable.
-     */
-    enabled?: boolean;
-    /**
-     * default is `true`, and when `false` will prevent the accelerator from triggering
-     * the item if the item is not visible.
-     *
-     * @platform darwin
-     */
-    acceleratorWorksWhenHidden?: boolean;
-    /**
-     * If false, the menu item will be entirely hidden.
-     */
-    visible?: boolean;
-    /**
-     * Should only be specified for `checkbox` or `radio` type menu items.
-     */
-    checked?: boolean;
-    /**
-     * If false, the accelerator won't be registered with the system, but it will still
-     * be displayed. Defaults to true.
-     *
-     * @platform linux,win32
-     */
-    registerAccelerator?: boolean;
-    /**
      * The item to share when the `role` is `shareMenu`.
      *
      * @platform darwin
      */
     sharingItem?: SharingItem;
+    sublabel?: string;
     /**
      * Should be specified for `submenu` type menu items. If `submenu` is specified,
      * the `type: 'submenu'` can be omitted. If the value is not a `Menu` then it will
@@ -19706,54 +19718,73 @@ declare namespace Electron {
      */
     submenu?: (MenuItemConstructorOptions[]) | (Menu);
     /**
-     * Unique within a single menu. If defined then it can be used as a reference to
-     * this item by the position attribute.
+     * Hover text for this menu item.
+     *
+     * @platform darwin
      */
-    id?: string;
+    toolTip?: string;
     /**
-     * Inserts this item before the item with the specified id. If the referenced item
-     * doesn't exist the item will be inserted at the end of  the menu. Also implies
-     * that the menu item in question should be placed in the same “group” as the item.
+     * Can be `normal`, `separator`, `submenu`, `checkbox` or `radio`.
      */
-    before?: string[];
+    type?: ('normal' | 'separator' | 'submenu' | 'checkbox' | 'radio');
     /**
-     * Inserts this item after the item with the specified id. If the referenced item
-     * doesn't exist the item will be inserted at the end of the menu.
+     * If false, the menu item will be entirely hidden.
      */
-    after?: string[];
-    /**
-     * Provides a means for a single context menu to declare the placement of their
-     * containing group before the containing group of the item with the specified id.
-     */
-    beforeGroupContaining?: string[];
-    /**
-     * Provides a means for a single context menu to declare the placement of their
-     * containing group after the containing group of the item with the specified id.
-     */
-    afterGroupContaining?: string[];
+    visible?: boolean;
   }
 
   interface MessageBoxOptions {
-    /**
-     * Content of the message box.
-     */
-    message: string;
-    /**
-     * Can be `none`, `info`, `error`, `question` or `warning`. On Windows, `question`
-     * displays the same icon as `info`, unless you set an icon using the `icon`
-     * option. On macOS, both `warning` and `error` display the same warning icon.
-     */
-    type?: ('none' | 'info' | 'error' | 'question' | 'warning');
     /**
      * Array of texts for buttons. On Windows, an empty array will result in one button
      * labeled "OK".
      */
     buttons?: string[];
     /**
+     * The index of the button to be used to cancel the dialog, via the `Esc` key. By
+     * default this is assigned to the first button with "cancel" or "no" as the label.
+     * If no such labeled buttons exist and this option is not set, `0` will be used as
+     * the return value.
+     */
+    cancelId?: number;
+    /**
+     * Initial checked state of the checkbox. `false` by default.
+     */
+    checkboxChecked?: boolean;
+    /**
+     * If provided, the message box will include a checkbox with the given label.
+     */
+    checkboxLabel?: string;
+    /**
      * Index of the button in the buttons array which will be selected by default when
      * the message box opens.
      */
     defaultId?: number;
+    /**
+     * Extra information of the message.
+     */
+    detail?: string;
+    icon?: (NativeImage) | (string);
+    /**
+     * Content of the message box.
+     */
+    message: string;
+    /**
+     * On Windows Electron will try to figure out which one of the `buttons` are common
+     * buttons (like "Cancel" or "Yes"), and show the others as command links in the
+     * dialog. This can make the dialog appear in the style of modern Windows apps. If
+     * you don't like this behavior, you can set `noLink` to `true`.
+     */
+    noLink?: boolean;
+    /**
+     * Normalize the keyboard access keys across platforms. Default is `false`.
+     * Enabling this assumes `&` is used in the button labels for the placement of the
+     * keyboard shortcut access key and labels will be converted so they work correctly
+     * on each platform, `&` characters are removed on macOS, converted to `_` on
+     * Linux, and left untouched on Windows. For example, a button label of `Vie&w`
+     * will be converted to `Vie_w` on Linux and `View` on macOS and can be selected
+     * via `Alt-W` on Windows and Linux.
+     */
+    normalizeAccessKeys?: boolean;
     /**
      * Pass an instance of AbortSignal to optionally close the message box, the message
      * box will behave as if it was cancelled by the user. On macOS, `signal` does not
@@ -19762,101 +19793,40 @@ declare namespace Electron {
      */
     signal?: AbortSignal;
     /**
-     * Title of the message box, some platforms will not show it.
-     */
-    title?: string;
-    /**
-     * Extra information of the message.
-     */
-    detail?: string;
-    /**
-     * If provided, the message box will include a checkbox with the given label.
-     */
-    checkboxLabel?: string;
-    /**
-     * Initial checked state of the checkbox. `false` by default.
-     */
-    checkboxChecked?: boolean;
-    icon?: (NativeImage) | (string);
-    /**
      * Custom width of the text in the message box.
      *
      * @platform darwin
      */
     textWidth?: number;
     /**
-     * The index of the button to be used to cancel the dialog, via the `Esc` key. By
-     * default this is assigned to the first button with "cancel" or "no" as the label.
-     * If no such labeled buttons exist and this option is not set, `0` will be used as
-     * the return value.
+     * Title of the message box, some platforms will not show it.
      */
-    cancelId?: number;
-    /**
-     * On Windows Electron will try to figure out which one of the `buttons` are common
-     * buttons (like "Cancel" or "Yes"), and show the others as command links in the
-     * dialog. This can make the dialog appear in the style of modern Windows apps. If
-     * you don't like this behavior, you can set `noLink` to `true`.
-     */
-    noLink?: boolean;
-    /**
-     * Normalize the keyboard access keys across platforms. Default is `false`.
-     * Enabling this assumes `&` is used in the button labels for the placement of the
-     * keyboard shortcut access key and labels will be converted so they work correctly
-     * on each platform, `&` characters are removed on macOS, converted to `_` on
-     * Linux, and left untouched on Windows. For example, a button label of `Vie&w`
-     * will be converted to `Vie_w` on Linux and `View` on macOS and can be selected
-     * via `Alt-W` on Windows and Linux.
-     */
-    normalizeAccessKeys?: boolean;
-  }
-
-  interface MessageBoxReturnValue {
-    /**
-     * The index of the clicked button.
-     */
-    response: number;
-    /**
-     * The checked state of the checkbox if `checkboxLabel` was set. Otherwise `false`.
-     */
-    checkboxChecked: boolean;
-  }
-
-  interface MessageBoxSyncOptions {
-    /**
-     * Content of the message box.
-     */
-    message: string;
+    title?: string;
     /**
      * Can be `none`, `info`, `error`, `question` or `warning`. On Windows, `question`
      * displays the same icon as `info`, unless you set an icon using the `icon`
      * option. On macOS, both `warning` and `error` display the same warning icon.
      */
     type?: ('none' | 'info' | 'error' | 'question' | 'warning');
+  }
+
+  interface MessageBoxReturnValue {
+    /**
+     * The checked state of the checkbox if `checkboxLabel` was set. Otherwise `false`.
+     */
+    checkboxChecked: boolean;
+    /**
+     * The index of the clicked button.
+     */
+    response: number;
+  }
+
+  interface MessageBoxSyncOptions {
     /**
      * Array of texts for buttons. On Windows, an empty array will result in one button
      * labeled "OK".
      */
     buttons?: string[];
-    /**
-     * Index of the button in the buttons array which will be selected by default when
-     * the message box opens.
-     */
-    defaultId?: number;
-    /**
-     * Title of the message box, some platforms will not show it.
-     */
-    title?: string;
-    /**
-     * Extra information of the message.
-     */
-    detail?: string;
-    icon?: (NativeImage) | (string);
-    /**
-     * Custom width of the text in the message box.
-     *
-     * @platform darwin
-     */
-    textWidth?: number;
     /**
      * The index of the button to be used to cancel the dialog, via the `Esc` key. By
      * default this is assigned to the first button with "cancel" or "no" as the label.
@@ -19864,6 +19834,20 @@ declare namespace Electron {
      * the return value.
      */
     cancelId?: number;
+    /**
+     * Index of the button in the buttons array which will be selected by default when
+     * the message box opens.
+     */
+    defaultId?: number;
+    /**
+     * Extra information of the message.
+     */
+    detail?: string;
+    icon?: (NativeImage) | (string);
+    /**
+     * Content of the message box.
+     */
+    message: string;
     /**
      * On Windows Electron will try to figure out which one of the `buttons` are common
      * buttons (like "Cancel" or "Yes"), and show the others as command links in the
@@ -19881,17 +19865,38 @@ declare namespace Electron {
      * via `Alt-W` on Windows and Linux.
      */
     normalizeAccessKeys?: boolean;
+    /**
+     * Custom width of the text in the message box.
+     *
+     * @platform darwin
+     */
+    textWidth?: number;
+    /**
+     * Title of the message box, some platforms will not show it.
+     */
+    title?: string;
+    /**
+     * Can be `none`, `info`, `error`, `question` or `warning`. On Windows, `question`
+     * displays the same icon as `info`, unless you set an icon using the `icon`
+     * option. On macOS, both `warning` and `error` display the same warning icon.
+     */
+    type?: ('none' | 'info' | 'error' | 'question' | 'warning');
   }
 
   interface MessageDetails {
     /**
+     * The log level, from 0 to 3. In order it matches `verbose`, `info`, `warning` and
+     * `error`.
+     */
+    level: number;
+    /**
+     * The line number of the source that triggered this console message
+     */
+    lineNumber: number;
+    /**
      * The actual console message
      */
     message: string;
-    /**
-     * The version ID of the service worker that sent the log message
-     */
-    versionId: number;
     /**
      * The type of source for this message.  Can be `javascript`, `xml`, `network`,
      * `console-api`, `storage`, `rendering`, `security`, `deprecation`, `worker`,
@@ -19899,18 +19904,13 @@ declare namespace Electron {
      */
     source: ('javascript' | 'xml' | 'network' | 'console-api' | 'storage' | 'rendering' | 'security' | 'deprecation' | 'worker' | 'violation' | 'intervention' | 'recommendation' | 'other');
     /**
-     * The log level, from 0 to 3. In order it matches `verbose`, `info`, `warning` and
-     * `error`.
-     */
-    level: number;
-    /**
      * The URL the message came from
      */
     sourceUrl: string;
     /**
-     * The line number of the source that triggered this console message
+     * The version ID of the service worker that sent the log message
      */
-    lineNumber: number;
+    versionId: number;
   }
 
   interface MessageEvent {
@@ -19927,68 +19927,17 @@ declare namespace Electron {
 
   interface NotificationConstructorOptions {
     /**
-     * A title for the notification, which will be displayed at the top of the
-     * notification window when it is shown.
-     */
-    title?: string;
-    /**
-     * A subtitle for the notification, which will be displayed below the title.
-     *
-     * @platform darwin
-     */
-    subtitle?: string;
-    /**
-     * The body text of the notification, which will be displayed below the title or
-     * subtitle.
-     */
-    body?: string;
-    /**
-     * Whether or not to suppress the OS notification noise when showing the
-     * notification.
-     */
-    silent?: boolean;
-    /**
-     * An icon to use in the notification. If a string is passed, it must be a valid
-     * path to a local icon file.
-     */
-    icon?: (string) | (NativeImage);
-    /**
-     * Whether or not to add an inline reply option to the notification.
-     *
-     * @platform darwin
-     */
-    hasReply?: boolean;
-    /**
-     * The timeout duration of the notification. Can be 'default' or 'never'.
-     *
-     * @platform linux,win32
-     */
-    timeoutType?: ('default' | 'never');
-    /**
-     * The placeholder to write in the inline reply input field.
-     *
-     * @platform darwin
-     */
-    replyPlaceholder?: string;
-    /**
-     * The name of the sound file to play when the notification is shown.
-     *
-     * @platform darwin
-     */
-    sound?: string;
-    /**
-     * The urgency level of the notification. Can be 'normal', 'critical', or 'low'.
-     *
-     * @platform linux
-     */
-    urgency?: ('normal' | 'critical' | 'low');
-    /**
      * Actions to add to the notification. Please read the available actions and
      * limitations in the `NotificationAction` documentation.
      *
      * @platform darwin
      */
     actions?: NotificationAction[];
+    /**
+     * The body text of the notification, which will be displayed below the title or
+     * subtitle.
+     */
+    body?: string;
     /**
      * A custom title for the close button of an alert. An empty string will cause the
      * default localized text to be used.
@@ -19997,176 +19946,232 @@ declare namespace Electron {
      */
     closeButtonText?: string;
     /**
+     * Whether or not to add an inline reply option to the notification.
+     *
+     * @platform darwin
+     */
+    hasReply?: boolean;
+    /**
+     * An icon to use in the notification. If a string is passed, it must be a valid
+     * path to a local icon file.
+     */
+    icon?: (string) | (NativeImage);
+    /**
+     * The placeholder to write in the inline reply input field.
+     *
+     * @platform darwin
+     */
+    replyPlaceholder?: string;
+    /**
+     * Whether or not to suppress the OS notification noise when showing the
+     * notification.
+     */
+    silent?: boolean;
+    /**
+     * The name of the sound file to play when the notification is shown.
+     *
+     * @platform darwin
+     */
+    sound?: string;
+    /**
+     * A subtitle for the notification, which will be displayed below the title.
+     *
+     * @platform darwin
+     */
+    subtitle?: string;
+    /**
+     * The timeout duration of the notification. Can be 'default' or 'never'.
+     *
+     * @platform linux,win32
+     */
+    timeoutType?: ('default' | 'never');
+    /**
+     * A title for the notification, which will be displayed at the top of the
+     * notification window when it is shown.
+     */
+    title?: string;
+    /**
      * A custom description of the Notification on Windows superseding all properties
      * above. Provides full customization of design and behavior of the notification.
      *
      * @platform win32
      */
     toastXml?: string;
+    /**
+     * The urgency level of the notification. Can be 'normal', 'critical', or 'low'.
+     *
+     * @platform linux
+     */
+    urgency?: ('normal' | 'critical' | 'low');
   }
 
   interface OnBeforeRedirectListenerDetails {
-    id: number;
-    url: string;
-    method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
     frame?: WebFrameMain;
-    /**
-     * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
-     * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
-     */
-    resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
-    timestamp: number;
-    redirectURL: string;
-    statusCode: number;
-    statusLine: string;
+    fromCache: boolean;
+    id: number;
     /**
      * The server IP address that the request was actually sent to.
      */
     ip?: string;
-    fromCache: boolean;
+    method: string;
+    redirectURL: string;
+    referrer: string;
+    /**
+     * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
+     * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
+     */
+    resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
     responseHeaders?: Record<string, string[]>;
+    statusCode: number;
+    statusLine: string;
+    timestamp: number;
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
   }
 
   interface OnBeforeRequestListenerDetails {
-    id: number;
-    url: string;
-    method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
     frame?: WebFrameMain;
+    id: number;
+    method: string;
+    referrer: string;
     /**
      * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
      * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
      */
     resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
     timestamp: number;
     uploadData: UploadData[];
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
   }
 
   interface OnBeforeSendHeadersListenerDetails {
-    id: number;
-    url: string;
-    method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
     frame?: WebFrameMain;
+    id: number;
+    method: string;
+    referrer: string;
+    requestHeaders: Record<string, string>;
     /**
      * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
      * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
      */
     resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
     timestamp: number;
     uploadData?: UploadData[];
-    requestHeaders: Record<string, string>;
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
   }
 
   interface OnCompletedListenerDetails {
-    id: number;
-    url: string;
-    method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
+    error: string;
     frame?: WebFrameMain;
+    fromCache: boolean;
+    id: number;
+    method: string;
+    referrer: string;
     /**
      * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
      * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
      */
     resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
-    timestamp: number;
     responseHeaders?: Record<string, string[]>;
-    fromCache: boolean;
     statusCode: number;
     statusLine: string;
-    error: string;
+    timestamp: number;
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
   }
 
   interface OnErrorOccurredListenerDetails {
-    id: number;
-    url: string;
-    method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
-    frame?: WebFrameMain;
-    /**
-     * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
-     * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
-     */
-    resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
-    timestamp: number;
-    fromCache: boolean;
     /**
      * The error description.
      */
     error: string;
+    frame?: WebFrameMain;
+    fromCache: boolean;
+    id: number;
+    method: string;
+    referrer: string;
+    /**
+     * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
+     * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
+     */
+    resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
+    timestamp: number;
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
   }
 
   interface OnHeadersReceivedListenerDetails {
-    id: number;
-    url: string;
-    method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
     frame?: WebFrameMain;
+    id: number;
+    method: string;
+    referrer: string;
     /**
      * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
      * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
      */
     resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
-    timestamp: number;
-    statusLine: string;
-    statusCode: number;
     responseHeaders?: Record<string, string[]>;
+    statusCode: number;
+    statusLine: string;
+    timestamp: number;
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
   }
 
   interface OnResponseStartedListenerDetails {
-    id: number;
-    url: string;
-    method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
     frame?: WebFrameMain;
-    /**
-     * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
-     * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
-     */
-    resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
-    timestamp: number;
-    responseHeaders?: Record<string, string[]>;
     /**
      * Indicates whether the response was fetched from disk cache.
      */
     fromCache: boolean;
-    statusCode: number;
-    statusLine: string;
-  }
-
-  interface OnSendHeadersListenerDetails {
     id: number;
-    url: string;
     method: string;
-    webContentsId?: number;
-    webContents?: WebContents;
-    frame?: WebFrameMain;
+    referrer: string;
     /**
      * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
      * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
      */
     resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
-    referrer: string;
+    responseHeaders?: Record<string, string[]>;
+    statusCode: number;
+    statusLine: string;
     timestamp: number;
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
+  }
+
+  interface OnSendHeadersListenerDetails {
+    frame?: WebFrameMain;
+    id: number;
+    method: string;
+    referrer: string;
     requestHeaders: Record<string, string>;
+    /**
+     * Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`,
+     * `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
+     */
+    resourceType: ('mainFrame' | 'subFrame' | 'stylesheet' | 'script' | 'image' | 'font' | 'object' | 'xhr' | 'ping' | 'cspReport' | 'media' | 'webSocket' | 'other');
+    timestamp: number;
+    url: string;
+    webContents?: WebContents;
+    webContentsId?: number;
   }
 
   interface OpenDevToolsOptions {
+    /**
+     * Whether to bring the opened devtools window to the foreground. The default is
+     * `true`.
+     */
+    activate?: boolean;
     /**
      * Opens the devtools with specified dock state, can be `left`, `right`, `bottom`,
      * `undocked`, `detach`. Defaults to last used dock state. In `undocked` mode it's
@@ -20174,30 +20179,19 @@ declare namespace Electron {
      */
     mode: ('left' | 'right' | 'bottom' | 'undocked' | 'detach');
     /**
-     * Whether to bring the opened devtools window to the foreground. The default is
-     * `true`.
-     */
-    activate?: boolean;
-    /**
      * A title for the DevTools window (only in `undocked` or `detach` mode).
      */
     title?: string;
   }
 
   interface OpenDialogOptions {
-    title?: string;
-    defaultPath?: string;
     /**
      * Custom label for the confirmation button, when left empty the default label will
      * be used.
      */
     buttonLabel?: string;
+    defaultPath?: string;
     filters?: FileFilter[];
-    /**
-     * Contains which features the dialog should use. The following values are
-     * supported:
-     */
-    properties?: Array<'openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent'>;
     /**
      * Message to display above input boxes.
      *
@@ -20205,14 +20199,28 @@ declare namespace Electron {
      */
     message?: string;
     /**
+     * Contains which features the dialog should use. The following values are
+     * supported:
+     */
+    properties?: Array<'openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent'>;
+    /**
      * Create security scoped bookmarks when packaged for the Mac App Store.
      *
      * @platform darwin,mas
      */
     securityScopedBookmarks?: boolean;
+    title?: string;
   }
 
   interface OpenDialogReturnValue {
+    /**
+     * An array matching the `filePaths` array of base64 encoded strings which contains
+     * security scoped bookmark data. `securityScopedBookmarks` must be enabled for
+     * this to be populated. (For return values, see table here.)
+     *
+     * @platform darwin,mas
+     */
+    bookmarks?: string[];
     /**
      * whether or not the dialog was canceled.
      */
@@ -20222,30 +20230,16 @@ declare namespace Electron {
      * be an empty array.
      */
     filePaths: string[];
-    /**
-     * An array matching the `filePaths` array of base64 encoded strings which contains
-     * security scoped bookmark data. `securityScopedBookmarks` must be enabled for
-     * this to be populated. (For return values, see table here.)
-     *
-     * @platform darwin,mas
-     */
-    bookmarks?: string[];
   }
 
   interface OpenDialogSyncOptions {
-    title?: string;
-    defaultPath?: string;
     /**
      * Custom label for the confirmation button, when left empty the default label will
      * be used.
      */
     buttonLabel?: string;
+    defaultPath?: string;
     filters?: FileFilter[];
-    /**
-     * Contains which features the dialog should use. The following values are
-     * supported:
-     */
-    properties?: Array<'openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent'>;
     /**
      * Message to display above input boxes.
      *
@@ -20253,11 +20247,17 @@ declare namespace Electron {
      */
     message?: string;
     /**
+     * Contains which features the dialog should use. The following values are
+     * supported:
+     */
+    properties?: Array<'openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent'>;
+    /**
      * Create security scoped bookmarks when packaged for the Mac App Store.
      *
      * @platform darwin,mas
      */
     securityScopedBookmarks?: boolean;
+    title?: string;
   }
 
   interface OpenExternalOptions {
@@ -20268,18 +20268,18 @@ declare namespace Electron {
      */
     activate?: boolean;
     /**
-     * The working directory.
-     *
-     * @platform win32
-     */
-    workingDirectory?: string;
-    /**
      * Indicates a user initiated launch that enables tracking of frequently used
      * programs and other behaviors. The default is `false`.
      *
      * @platform win32
      */
     logUsage?: boolean;
+    /**
+     * The working directory.
+     *
+     * @platform win32
+     */
+    workingDirectory?: string;
   }
 
   interface Options {
@@ -20287,13 +20287,13 @@ declare namespace Electron {
 
   interface Opts {
     /**
-     *  Keep the page hidden instead of visible. Default is `false`.
-     */
-    stayHidden?: boolean;
-    /**
      *  Keep the system awake instead of allowing it to sleep. Default is `false`.
      */
     stayAwake?: boolean;
+    /**
+     *  Keep the page hidden instead of visible. Default is `false`.
+     */
+    stayHidden?: boolean;
   }
 
   interface PageFaviconUpdatedEvent extends DOMEvent {
@@ -20304,11 +20304,21 @@ declare namespace Electron {
   }
 
   interface PageTitleUpdatedEvent extends DOMEvent {
-    title: string;
     explicitSet: boolean;
+    title: string;
   }
 
   interface Parameters {
+    /**
+     * Set the device scale factor (if zero defaults to original device scale factor)
+     * (default: `0`).
+     */
+    deviceScaleFactor: number;
+    /**
+     * Scale of emulated view inside available space (not in fit to view mode)
+     * (default: `1`).
+     */
+    scale: number;
     /**
      * Specify the screen type to emulate (default: `desktop`):
      */
@@ -20323,30 +20333,12 @@ declare namespace Electron {
      */
     viewPosition: Point;
     /**
-     * Set the device scale factor (if zero defaults to original device scale factor)
-     * (default: `0`).
-     */
-    deviceScaleFactor: number;
-    /**
      * Set the emulated view size (empty means no override)
      */
     viewSize: Size;
-    /**
-     * Scale of emulated view inside available space (not in fit to view mode)
-     * (default: `1`).
-     */
-    scale: number;
   }
 
   interface Payment {
-    /**
-     * The identifier of the purchased product.
-     */
-    productIdentifier: string;
-    /**
-     * The quantity purchased.
-     */
-    quantity: number;
     /**
      * An opaque identifier for the user’s account on your system.
      */
@@ -20355,6 +20347,14 @@ declare namespace Electron {
      * The details of the discount offer to apply to the payment.
      */
     paymentDiscount?: PaymentDiscount;
+    /**
+     * The identifier of the purchased product.
+     */
+    productIdentifier: string;
+    /**
+     * The quantity purchased.
+     */
+    quantity: number;
   }
 
   interface PermissionCheckHandlerHandlerDetails {
@@ -20364,9 +20364,9 @@ declare namespace Electron {
      */
     embeddingOrigin?: string;
     /**
-     * The security origin of the `media` check.
+     * Whether the frame making the request is the main frame
      */
-    securityOrigin?: string;
+    isMainFrame: boolean;
     /**
      * The type of media access being requested, can be `video`, `audio` or `unknown`
      */
@@ -20377,9 +20377,9 @@ declare namespace Electron {
      */
     requestingUrl?: string;
     /**
-     * Whether the frame making the request is the main frame
+     * The security origin of the `media` check.
      */
-    isMainFrame: boolean;
+    securityOrigin?: string;
   }
 
   interface PluginCrashedEvent extends DOMEvent {
@@ -20389,19 +20389,9 @@ declare namespace Electron {
 
   interface PopupOptions {
     /**
-     * Default is the focused window.
+     * Called when menu is closed.
      */
-    window?: BrowserWindow;
-    /**
-     * Default is the current mouse cursor position. Must be declared if `y` is
-     * declared.
-     */
-    x?: number;
-    /**
-     * Default is the current mouse cursor position. Must be declared if `x` is
-     * declared.
-     */
-    y?: number;
+    callback?: () => void;
     /**
      * The index of the menu item to be positioned under the mouse cursor at the
      * specified coordinates. Default is -1.
@@ -20420,69 +20410,49 @@ declare namespace Electron {
      */
     sourceType?: ('none' | 'mouse' | 'keyboard' | 'touch' | 'touchMenu' | 'longPress' | 'longTap' | 'touchHandle' | 'stylus' | 'adjustSelection' | 'adjustSelectionReset');
     /**
-     * Called when menu is closed.
+     * Default is the focused window.
      */
-    callback?: () => void;
+    window?: BrowserWindow;
+    /**
+     * Default is the current mouse cursor position. Must be declared if `y` is
+     * declared.
+     */
+    x?: number;
+    /**
+     * Default is the current mouse cursor position. Must be declared if `x` is
+     * declared.
+     */
+    y?: number;
   }
 
   interface PreconnectOptions {
     /**
-     * URL for preconnect. Only the origin is relevant for opening the socket.
-     */
-    url: string;
-    /**
      * number of sockets to preconnect. Must be between 1 and 6. Defaults to 1.
      */
     numSockets?: number;
+    /**
+     * URL for preconnect. Only the origin is relevant for opening the socket.
+     */
+    url: string;
   }
 
   interface PrintToPDFOptions {
     /**
-     * Paper orientation.`true` for landscape, `false` for portrait. Defaults to false.
-     */
-    landscape?: boolean;
-    /**
      * Whether to display header and footer. Defaults to false.
      */
     displayHeaderFooter?: boolean;
-    /**
-     * Whether to print background graphics. Defaults to false.
-     */
-    printBackground?: boolean;
-    /**
-     * Scale of the webpage rendering. Defaults to 1.
-     */
-    scale?: number;
-    /**
-     * Specify page size of the generated PDF. Can be `A0`, `A1`, `A2`, `A3`, `A4`,
-     * `A5`, `A6`, `Legal`, `Letter`, `Tabloid`, `Ledger`, or an Object containing
-     * `height` and `width` in inches. Defaults to `Letter`.
-     */
-    pageSize?: (('A0' | 'A1' | 'A2' | 'A3' | 'A4' | 'A5' | 'A6' | 'Legal' | 'Letter' | 'Tabloid' | 'Ledger')) | (Size);
-    margins?: Margins;
-    /**
-     * Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which
-     * means print all pages.
-     */
-    pageRanges?: string;
-    /**
-     * HTML template for the print header. Should be valid HTML markup with following
-     * classes used to inject printing values into them: `date` (formatted print date),
-     * `title` (document title), `url` (document location), `pageNumber` (current page
-     * number) and `totalPages` (total pages in the document). For example, `<span
-     * class=title></span>` would generate span containing the title.
-     */
-    headerTemplate?: string;
     /**
      * HTML template for the print footer. Should use the same format as the
      * `headerTemplate`.
      */
     footerTemplate?: string;
     /**
-     * Whether or not to prefer page size as defined by css. Defaults to false, in
-     * which case the content will be scaled to fit the paper size.
+     * Whether or not to generate a PDF document outline from content headers. Defaults
+     * to false.
+     *
+     * @experimental
      */
-    preferCSSPageSize?: boolean;
+    generateDocumentOutline?: boolean;
     /**
      * Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this
      * property is experimental, the generated PDF may not adhere fully to PDF/UA and
@@ -20492,27 +20462,45 @@ declare namespace Electron {
      */
     generateTaggedPDF?: boolean;
     /**
-     * Whether or not to generate a PDF document outline from content headers. Defaults
-     * to false.
-     *
-     * @experimental
+     * HTML template for the print header. Should be valid HTML markup with following
+     * classes used to inject printing values into them: `date` (formatted print date),
+     * `title` (document title), `url` (document location), `pageNumber` (current page
+     * number) and `totalPages` (total pages in the document). For example, `<span
+     * class=title></span>` would generate span containing the title.
      */
-    generateDocumentOutline?: boolean;
+    headerTemplate?: string;
+    /**
+     * Paper orientation.`true` for landscape, `false` for portrait. Defaults to false.
+     */
+    landscape?: boolean;
+    margins?: Margins;
+    /**
+     * Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which
+     * means print all pages.
+     */
+    pageRanges?: string;
+    /**
+     * Specify page size of the generated PDF. Can be `A0`, `A1`, `A2`, `A3`, `A4`,
+     * `A5`, `A6`, `Legal`, `Letter`, `Tabloid`, `Ledger`, or an Object containing
+     * `height` and `width` in inches. Defaults to `Letter`.
+     */
+    pageSize?: (('A0' | 'A1' | 'A2' | 'A3' | 'A4' | 'A5' | 'A6' | 'Legal' | 'Letter' | 'Tabloid' | 'Ledger')) | (Size);
+    /**
+     * Whether or not to prefer page size as defined by css. Defaults to false, in
+     * which case the content will be scaled to fit the paper size.
+     */
+    preferCSSPageSize?: boolean;
+    /**
+     * Whether to print background graphics. Defaults to false.
+     */
+    printBackground?: boolean;
+    /**
+     * Scale of the webpage rendering. Defaults to 1.
+     */
+    scale?: number;
   }
 
   interface Privileges {
-    /**
-     * Default false.
-     */
-    standard?: boolean;
-    /**
-     * Default false.
-     */
-    secure?: boolean;
-    /**
-     * Default false.
-     */
-    bypassCSP?: boolean;
     /**
      * Default false.
      */
@@ -20520,7 +20508,12 @@ declare namespace Electron {
     /**
      * Default false.
      */
-    supportFetchAPI?: boolean;
+    bypassCSP?: boolean;
+    /**
+     * Enable V8 code cache for the scheme, only works when `standard` is also set to
+     * true. Default false.
+     */
+    codeCache?: boolean;
     /**
      * Default false.
      */
@@ -20528,12 +20521,19 @@ declare namespace Electron {
     /**
      * Default false.
      */
+    secure?: boolean;
+    /**
+     * Default false.
+     */
+    standard?: boolean;
+    /**
+     * Default false.
+     */
     stream?: boolean;
     /**
-     * Enable V8 code cache for the scheme, only works when `standard` is also set to
-     * true. Default false.
+     * Default false.
      */
-    codeCache?: boolean;
+    supportFetchAPI?: boolean;
   }
 
   interface ProgressBarOptions {
@@ -20584,9 +20584,12 @@ declare namespace Electron {
   }
 
   interface Request {
-    hostname: string;
     certificate: Certificate;
-    validatedCertificate: Certificate;
+    /**
+     * Error code.
+     */
+    errorCode: number;
+    hostname: string;
     /**
      * `true` if Chromium recognises the root CA as a standard root. If it isn't then
      * it's probably the case that this certificate was generated by a MITM proxy whose
@@ -20594,21 +20597,14 @@ declare namespace Electron {
      * not be trusted if the `verificationResult` is not `OK`.
      */
     isIssuedByKnownRoot: boolean;
+    validatedCertificate: Certificate;
     /**
      * `OK` if the certificate is trusted, otherwise an error like `CERT_REVOKED`.
      */
     verificationResult: string;
-    /**
-     * Error code.
-     */
-    errorCode: number;
   }
 
   interface ResizeOptions {
-    /**
-     * Defaults to the image's width.
-     */
-    width?: number;
     /**
      * Defaults to the image's height.
      */
@@ -20622,14 +20618,28 @@ declare namespace Electron {
      * platform.
      */
     quality?: ('good' | 'better' | 'best');
+    /**
+     * Defaults to the image's width.
+     */
+    width?: number;
   }
 
   interface ResolveHostOptions {
+    /**
+     * Indicates what DNS cache entries, if any, can be used to provide a response. One
+     * of the following values:
+     */
+    cacheUsage?: ('allowed' | 'staleAllowed' | 'disallowed');
     /**
      * Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both)
      * based on IPv4/IPv6 settings:
      */
     queryType?: ('A' | 'AAAA');
+    /**
+     * Controls the resolver's Secure DNS behavior for this request. One of the
+     * following values:
+     */
+    secureDnsPolicy?: ('allow' | 'disable');
     /**
      * The source to use for resolved addresses. Default allows the resolver to pick an
      * appropriate source. Only affects use of big external sources (e.g. calling the
@@ -20638,25 +20648,15 @@ declare namespace Electron {
      * following values:
      */
     source?: ('any' | 'system' | 'dns' | 'mdns' | 'localOnly');
-    /**
-     * Indicates what DNS cache entries, if any, can be used to provide a response. One
-     * of the following values:
-     */
-    cacheUsage?: ('allowed' | 'staleAllowed' | 'disallowed');
-    /**
-     * Controls the resolver's Secure DNS behavior for this request. One of the
-     * following values:
-     */
-    secureDnsPolicy?: ('allow' | 'disable');
   }
 
   interface ResourceUsage {
-    images: MemoryUsageDetails;
-    scripts: MemoryUsageDetails;
     cssStyleSheets: MemoryUsageDetails;
-    xslStyleSheets: MemoryUsageDetails;
     fonts: MemoryUsageDetails;
+    images: MemoryUsageDetails;
     other: MemoryUsageDetails;
+    scripts: MemoryUsageDetails;
+    xslStyleSheets: MemoryUsageDetails;
   }
 
   interface Response {
@@ -20675,36 +20675,32 @@ declare namespace Electron {
   }
 
   interface Result {
-    requestId: number;
     /**
      * Position of the active match.
      */
     activeMatchOrdinal: number;
+    finalUpdate: boolean;
     /**
      * Number of Matches.
      */
     matches: number;
+    requestId: number;
     /**
      * Coordinates of first match region.
      */
     selectionArea: Rectangle;
-    finalUpdate: boolean;
   }
 
   interface SaveDialogOptions {
-    /**
-     * The dialog title. Cannot be displayed on some _Linux_ desktop environments.
-     */
-    title?: string;
-    /**
-     * Absolute directory path, absolute file path, or file name to use by default.
-     */
-    defaultPath?: string;
     /**
      * Custom label for the confirmation button, when left empty the default label will
      * be used.
      */
     buttonLabel?: string;
+    /**
+     * Absolute directory path, absolute file path, or file name to use by default.
+     */
+    defaultPath?: string;
     filters?: FileFilter[];
     /**
      * Message to display above text fields.
@@ -20718,12 +20714,6 @@ declare namespace Electron {
      * @platform darwin
      */
     nameFieldLabel?: string;
-    /**
-     * Show the tags input box, defaults to `true`.
-     *
-     * @platform darwin
-     */
-    showsTagField?: boolean;
     properties?: Array<'showHiddenFiles' | 'createDirectory' | 'treatPackageAsDirectory' | 'showOverwriteConfirmation' | 'dontAddToRecent'>;
     /**
      * Create a security scoped bookmark when packaged for the Mac App Store. If this
@@ -20733,17 +20723,19 @@ declare namespace Electron {
      * @platform darwin,mas
      */
     securityScopedBookmarks?: boolean;
+    /**
+     * Show the tags input box, defaults to `true`.
+     *
+     * @platform darwin
+     */
+    showsTagField?: boolean;
+    /**
+     * The dialog title. Cannot be displayed on some _Linux_ desktop environments.
+     */
+    title?: string;
   }
 
   interface SaveDialogReturnValue {
-    /**
-     * whether or not the dialog was canceled.
-     */
-    canceled: boolean;
-    /**
-     * If the dialog is canceled, this will be an empty string.
-     */
-    filePath: string;
     /**
      * Base64 encoded string which contains the security scoped bookmark data for the
      * saved file. `securityScopedBookmarks` must be enabled for this to be present.
@@ -20752,22 +20744,26 @@ declare namespace Electron {
      * @platform darwin,mas
      */
     bookmark?: string;
+    /**
+     * whether or not the dialog was canceled.
+     */
+    canceled: boolean;
+    /**
+     * If the dialog is canceled, this will be an empty string.
+     */
+    filePath: string;
   }
 
   interface SaveDialogSyncOptions {
-    /**
-     * The dialog title. Cannot be displayed on some _Linux_ desktop environments.
-     */
-    title?: string;
-    /**
-     * Absolute directory path, absolute file path, or file name to use by default.
-     */
-    defaultPath?: string;
     /**
      * Custom label for the confirmation button, when left empty the default label will
      * be used.
      */
     buttonLabel?: string;
+    /**
+     * Absolute directory path, absolute file path, or file name to use by default.
+     */
+    defaultPath?: string;
     filters?: FileFilter[];
     /**
      * Message to display above text fields.
@@ -20781,12 +20777,6 @@ declare namespace Electron {
      * @platform darwin
      */
     nameFieldLabel?: string;
-    /**
-     * Show the tags input box, defaults to `true`.
-     *
-     * @platform darwin
-     */
-    showsTagField?: boolean;
     properties?: Array<'showHiddenFiles' | 'createDirectory' | 'treatPackageAsDirectory' | 'showOverwriteConfirmation' | 'dontAddToRecent'>;
     /**
      * Create a security scoped bookmark when packaged for the Mac App Store. If this
@@ -20796,6 +20786,16 @@ declare namespace Electron {
      * @platform darwin,mas
      */
     securityScopedBookmarks?: boolean;
+    /**
+     * Show the tags input box, defaults to `true`.
+     *
+     * @platform darwin
+     */
+    showsTagField?: boolean;
+    /**
+     * The dialog title. Cannot be displayed on some _Linux_ desktop environments.
+     */
+    title?: string;
   }
 
   interface SelectHidDeviceDetails {
@@ -20809,51 +20809,15 @@ declare namespace Electron {
   }
 
   interface SerialPortRevokedDetails {
-    port: SerialPort;
     frame: WebFrameMain;
     /**
      * The origin that the device has been revoked from.
      */
     origin: string;
+    port: SerialPort;
   }
 
   interface Settings {
-    /**
-     * `true` to open the app at login, `false` to remove the app as a login item.
-     * Defaults to `false`.
-     */
-    openAtLogin?: boolean;
-    /**
-     * `true` to open the app as hidden. Defaults to `false`. The user can edit this
-     * setting from the System Preferences so
-     * `app.getLoginItemSettings().wasOpenedAsHidden` should be checked when the app is
-     * opened to know the current value. This setting is not available on MAS builds or
-     * on macOS 13 and up.
-     *
-     * @deprecated
-     * @platform darwin
-     */
-    openAsHidden?: boolean;
-    /**
-     * The type of service to add as a login item. Defaults to `mainAppService`. Only
-     * available on macOS 13 and up.
-     *
-     * @platform darwin
-     */
-    type?: ('mainAppService' | 'agentService' | 'daemonService' | 'loginItemService');
-    /**
-     * The name of the service. Required if `type` is non-default. Only available on
-     * macOS 13 and up.
-     *
-     * @platform darwin
-     */
-    serviceName?: string;
-    /**
-     * The executable to launch at login. Defaults to `process.execPath`.
-     *
-     * @platform win32
-     */
-    path?: string;
     /**
      * The command-line arguments to pass to the executable. Defaults to an empty
      * array. Take care to wrap paths in quotes.
@@ -20874,14 +20838,51 @@ declare namespace Electron {
      * @platform win32
      */
     name?: string;
+    /**
+     * `true` to open the app as hidden. Defaults to `false`. The user can edit this
+     * setting from the System Preferences so
+     * `app.getLoginItemSettings().wasOpenedAsHidden` should be checked when the app is
+     * opened to know the current value. This setting is not available on MAS builds or
+     * on macOS 13 and up.
+     *
+     * @deprecated
+     * @platform darwin
+     */
+    openAsHidden?: boolean;
+    /**
+     * `true` to open the app at login, `false` to remove the app as a login item.
+     * Defaults to `false`.
+     */
+    openAtLogin?: boolean;
+    /**
+     * The executable to launch at login. Defaults to `process.execPath`.
+     *
+     * @platform win32
+     */
+    path?: string;
+    /**
+     * The name of the service. Required if `type` is non-default. Only available on
+     * macOS 13 and up.
+     *
+     * @platform darwin
+     */
+    serviceName?: string;
+    /**
+     * The type of service to add as a login item. Defaults to `mainAppService`. Only
+     * available on macOS 13 and up.
+     *
+     * @platform darwin
+     */
+    type?: ('mainAppService' | 'agentService' | 'daemonService' | 'loginItemService');
   }
 
   interface SourcesOptions {
     /**
-     * An array of strings that lists the types of desktop sources to be captured,
-     * available types can be `screen` and `window`.
+     * Set to true to enable fetching window icons. The default value is false. When
+     * false the appIcon property of the sources return null. Same if a source has the
+     * type screen.
      */
-    types: Array<'screen' | 'window'>;
+    fetchWindowIcons?: boolean;
     /**
      * The size that the media source thumbnail should be scaled to. Default is `150` x
      * `150`. Set width or height to 0 when you do not need the thumbnails. This will
@@ -20890,11 +20891,10 @@ declare namespace Electron {
      */
     thumbnailSize?: Size;
     /**
-     * Set to true to enable fetching window icons. The default value is false. When
-     * false the appIcon property of the sources return null. Same if a source has the
-     * type screen.
+     * An array of strings that lists the types of desktop sources to be captured,
+     * available types can be `screen` and `window`.
      */
-    fetchWindowIcons?: boolean;
+    types: Array<'screen' | 'window'>;
   }
 
   interface StartLoggingOptions {
@@ -20913,7 +20913,6 @@ declare namespace Electron {
   }
 
   interface Streams {
-    video?: (Video) | (WebFrameMain);
     /**
      * If a string is specified, can be `loopback` or `loopbackWithMute`. Specifying a
      * loopback device will capture system audio, and is currently only supported on
@@ -20927,17 +20926,20 @@ declare namespace Electron {
      * while recording). Default is `false`.
      */
     enableLocalEcho?: boolean;
+    video?: (Video) | (WebFrameMain);
   }
 
   interface SystemMemoryInfo {
     /**
-     * The total amount of physical memory in Kilobytes available to the system.
-     */
-    total: number;
-    /**
      * The total amount of memory not being used by applications or disk cache.
      */
     free: number;
+    /**
+     * The free amount of swap memory in Kilobytes available to the system.
+     *
+     * @platform win32,linux
+     */
+    swapFree: number;
     /**
      * The total amount of swap memory in Kilobytes available to the system.
      *
@@ -20945,11 +20947,9 @@ declare namespace Electron {
      */
     swapTotal: number;
     /**
-     * The free amount of swap memory in Kilobytes available to the system.
-     *
-     * @platform win32,linux
+     * The total amount of physical memory in Kilobytes available to the system.
      */
-    swapFree: number;
+    total: number;
   }
 
   interface TitleBarOverlay {
@@ -20961,17 +20961,17 @@ declare namespace Electron {
      */
     color?: string;
     /**
+     * The height of the title bar and Window Controls Overlay in pixels. Default is
+     * system height.
+     */
+    height?: number;
+    /**
      * The CSS color of the symbols on the Window Controls Overlay when enabled.
      * Default is the system color.
      *
      * @platform win32
      */
     symbolColor?: string;
-    /**
-     * The height of the title bar and Window Controls Overlay in pixels. Default is
-     * system height.
-     */
-    height?: number;
   }
 
   interface TitleBarOverlayOptions {
@@ -20980,13 +20980,13 @@ declare namespace Electron {
      */
     color?: string;
     /**
-     * The CSS color of the symbols on the Window Controls Overlay when enabled.
-     */
-    symbolColor?: string;
-    /**
      * The height of the title bar and Window Controls Overlay in pixels.
      */
     height?: number;
+    /**
+     * The CSS color of the symbols on the Window Controls Overlay when enabled.
+     */
+    symbolColor?: string;
   }
 
   interface TitleOptions {
@@ -21021,10 +21021,6 @@ declare namespace Electron {
 
   interface TouchBarButtonConstructorOptions {
     /**
-     * Button text.
-     */
-    label?: string;
-    /**
      * A short description of the button for use by screenreaders like VoiceOver.
      */
     accessibilityLabel?: string;
@@ -21032,6 +21028,14 @@ declare namespace Electron {
      * Button background color in hex format, i.e `#ABCDEF`.
      */
     backgroundColor?: string;
+    /**
+     * Function to call when the button is clicked.
+     */
+    click?: () => void;
+    /**
+     * Whether the button is in an enabled state.  Default is `true`.
+     */
+    enabled?: boolean;
     /**
      * Button icon.
      */
@@ -21041,13 +21045,9 @@ declare namespace Electron {
      */
     iconPosition?: ('left' | 'right' | 'overlay');
     /**
-     * Function to call when the button is clicked.
+     * Button text.
      */
-    click?: () => void;
-    /**
-     * Whether the button is in an enabled state.  Default is `true`.
-     */
-    enabled?: boolean;
+    label?: string;
   }
 
   interface TouchBarColorPickerConstructorOptions {
@@ -21056,18 +21056,18 @@ declare namespace Electron {
      */
     availableColors?: string[];
     /**
-     * The selected hex color in the picker, i.e `#ABCDEF`.
-     */
-    selectedColor?: string;
-    /**
      * Function to call when a color is selected.
      */
     change?: (color: string) => void;
+    /**
+     * The selected hex color in the picker, i.e `#ABCDEF`.
+     */
+    selectedColor?: string;
   }
 
   interface TouchBarConstructorOptions {
-    items?: Array<(TouchBarButton) | (TouchBarColorPicker) | (TouchBarGroup) | (TouchBarLabel) | (TouchBarPopover) | (TouchBarScrubber) | (TouchBarSegmentedControl) | (TouchBarSlider) | (TouchBarSpacer)>;
     escapeItem?: (TouchBarButton) | (TouchBarColorPicker) | (TouchBarGroup) | (TouchBarLabel) | (TouchBarPopover) | (TouchBarScrubber) | (TouchBarSegmentedControl) | (TouchBarSlider) | (TouchBarSpacer) | (null);
+    items?: Array<(TouchBarButton) | (TouchBarColorPicker) | (TouchBarGroup) | (TouchBarLabel) | (TouchBarPopover) | (TouchBarScrubber) | (TouchBarSegmentedControl) | (TouchBarSlider) | (TouchBarSpacer)>;
   }
 
   interface TouchBarGroupConstructorOptions {
@@ -21079,13 +21079,13 @@ declare namespace Electron {
 
   interface TouchBarLabelConstructorOptions {
     /**
-     * Text to display.
-     */
-    label?: string;
-    /**
      * A short description of the button for use by screenreaders like VoiceOver.
      */
     accessibilityLabel?: string;
+    /**
+     * Text to display.
+     */
+    label?: string;
     /**
      * Hex color of text, i.e `#ABCDEF`.
      */
@@ -21093,10 +21093,6 @@ declare namespace Electron {
   }
 
   interface TouchBarPopoverConstructorOptions {
-    /**
-     * Popover button text.
-     */
-    label?: string;
     /**
      * Popover button icon.
      */
@@ -21106,6 +21102,10 @@ declare namespace Electron {
      */
     items: TouchBar;
     /**
+     * Popover button text.
+     */
+    label?: string;
+    /**
      * `true` to display a close button on the left of the popover, `false` to not show
      * it. Default is `true`.
      */
@@ -21114,47 +21114,47 @@ declare namespace Electron {
 
   interface TouchBarScrubberConstructorOptions {
     /**
-     * An array of items to place in this scrubber.
+     * Defaults to `true`.
      */
-    items: ScrubberItem[];
-    /**
-     * Called when the user taps an item that was not the last tapped item.
-     */
-    select?: (selectedIndex: number) => void;
+    continuous?: boolean;
     /**
      * Called when the user taps any item.
      */
     highlight?: (highlightedIndex: number) => void;
     /**
-     * Selected item style. Can be `background`, `outline` or `none`. Defaults to
-     * `none`.
+     * An array of items to place in this scrubber.
      */
-    selectedStyle?: ('background' | 'outline' | 'none');
+    items: ScrubberItem[];
+    /**
+     * Can be `fixed` or `free`. The default is `free`.
+     */
+    mode?: ('fixed' | 'free');
     /**
      * Selected overlay item style. Can be `background`, `outline` or `none`. Defaults
      * to `none`.
      */
     overlayStyle?: ('background' | 'outline' | 'none');
     /**
+     * Called when the user taps an item that was not the last tapped item.
+     */
+    select?: (selectedIndex: number) => void;
+    /**
+     * Selected item style. Can be `background`, `outline` or `none`. Defaults to
+     * `none`.
+     */
+    selectedStyle?: ('background' | 'outline' | 'none');
+    /**
      * Whether to show arrow buttons. Defaults to `false` and is only shown if `items`
      * is non-empty.
      */
     showArrowButtons?: boolean;
-    /**
-     * Can be `fixed` or `free`. The default is `free`.
-     */
-    mode?: ('fixed' | 'free');
-    /**
-     * Defaults to `true`.
-     */
-    continuous?: boolean;
   }
 
   interface TouchBarSegmentedControlConstructorOptions {
     /**
-     * Style of the segments:
+     * Called when the user selects a new segment.
      */
-    segmentStyle?: ('automatic' | 'rounded' | 'textured-rounded' | 'round-rect' | 'textured-square' | 'capsule' | 'small-square' | 'separated');
+    change?: (selectedIndex: number, isSelected: boolean) => void;
     /**
      * The selection mode of the control:
      */
@@ -21164,37 +21164,37 @@ declare namespace Electron {
      */
     segments: SegmentedControlSegment[];
     /**
+     * Style of the segments:
+     */
+    segmentStyle?: ('automatic' | 'rounded' | 'textured-rounded' | 'round-rect' | 'textured-square' | 'capsule' | 'small-square' | 'separated');
+    /**
      * The index of the currently selected segment, will update automatically with user
      * interaction. When the mode is `multiple` it will be the last selected item.
      */
     selectedIndex?: number;
-    /**
-     * Called when the user selects a new segment.
-     */
-    change?: (selectedIndex: number, isSelected: boolean) => void;
   }
 
   interface TouchBarSliderConstructorOptions {
+    /**
+     * Function to call when the slider is changed.
+     */
+    change?: (newValue: number) => void;
     /**
      * Label text.
      */
     label?: string;
     /**
-     * Selected value.
+     * Maximum value.
      */
-    value?: number;
+    maxValue?: number;
     /**
      * Minimum value.
      */
     minValue?: number;
     /**
-     * Maximum value.
+     * Selected value.
      */
-    maxValue?: number;
-    /**
-     * Function to call when the slider is changed.
-     */
-    change?: (newValue: number) => void;
+    value?: number;
   }
 
   interface TouchBarSpacerConstructorOptions {
@@ -21205,19 +21205,19 @@ declare namespace Electron {
   }
 
   interface TraceBufferUsageReturnValue {
-    value: number;
     percentage: number;
+    value: number;
   }
 
   interface UdpPortRange {
     /**
-     * The minimum UDP port number that WebRTC should use.
-     */
-    min: number;
-    /**
      * The maximum UDP port number that WebRTC should use.
      */
     max: number;
+    /**
+     * The minimum UDP port number that WebRTC should use.
+     */
+    min: number;
   }
 
   interface UpdateTargetUrlEvent extends DOMEvent {
@@ -21231,14 +21231,14 @@ declare namespace Electron {
      */
     active: boolean;
     /**
+     * The number of bytes that have been uploaded so far
+     */
+    current: number;
+    /**
      * Whether the upload has started. If this is false both `current` and `total` will
      * be set to 0.
      */
     started: boolean;
-    /**
-     * The number of bytes that have been uploaded so far
-     */
-    current: number;
     /**
      * The number of bytes that will be uploaded this request
      */
@@ -21262,12 +21262,6 @@ declare namespace Electron {
 
   interface VisibleOnAllWorkspacesOptions {
     /**
-     * Sets whether the window should be visible above fullscreen windows.
-     *
-     * @platform darwin
-     */
-    visibleOnFullScreen?: boolean;
-    /**
      * Calling setVisibleOnAllWorkspaces will by default transform the process type
      * between UIElementApplication and ForegroundApplication to ensure the correct
      * behavior. However, this will hide the window and dock for a short time every
@@ -21277,6 +21271,12 @@ declare namespace Electron {
      * @platform darwin
      */
     skipTransformProcessType?: boolean;
+    /**
+     * Sets whether the window should be visible above fullscreen windows.
+     *
+     * @platform darwin
+     */
+    visibleOnFullScreen?: boolean;
   }
 
   interface WebContentsAudioStateChangedEventParams {
@@ -21288,20 +21288,6 @@ declare namespace Electron {
 
   interface WebContentsDidRedirectNavigationEventParams {
     /**
-     * The URL the frame is navigating to.
-     */
-    url: string;
-    /**
-     * Whether the navigation happened without changing document. Examples of same
-     * document navigations are reference fragment navigations, pushState/replaceState,
-     * and same page history navigation.
-     */
-    isSameDocument: boolean;
-    /**
-     * True if the navigation is taking place in a main frame.
-     */
-    isMainFrame: boolean;
-    /**
      * The frame to be navigated.
      */
     frame: WebFrameMain;
@@ -21312,24 +21298,24 @@ declare namespace Electron {
      * event was emitted.
      */
     initiator?: WebFrameMain;
+    /**
+     * True if the navigation is taking place in a main frame.
+     */
+    isMainFrame: boolean;
+    /**
+     * Whether the navigation happened without changing document. Examples of same
+     * document navigations are reference fragment navigations, pushState/replaceState,
+     * and same page history navigation.
+     */
+    isSameDocument: boolean;
+    /**
+     * The URL the frame is navigating to.
+     */
+    url: string;
   }
 
   interface WebContentsDidStartNavigationEventParams {
     /**
-     * The URL the frame is navigating to.
-     */
-    url: string;
-    /**
-     * Whether the navigation happened without changing document. Examples of same
-     * document navigations are reference fragment navigations, pushState/replaceState,
-     * and same page history navigation.
-     */
-    isSameDocument: boolean;
-    /**
-     * True if the navigation is taking place in a main frame.
-     */
-    isMainFrame: boolean;
-    /**
      * The frame to be navigated.
      */
     frame: WebFrameMain;
@@ -21340,102 +21326,102 @@ declare namespace Electron {
      * event was emitted.
      */
     initiator?: WebFrameMain;
+    /**
+     * True if the navigation is taking place in a main frame.
+     */
+    isMainFrame: boolean;
+    /**
+     * Whether the navigation happened without changing document. Examples of same
+     * document navigations are reference fragment navigations, pushState/replaceState,
+     * and same page history navigation.
+     */
+    isSameDocument: boolean;
+    /**
+     * The URL the frame is navigating to.
+     */
+    url: string;
   }
 
   interface WebContentsPrintOptions {
-    /**
-     * Don't ask user for print settings. Default is `false`.
-     */
-    silent?: boolean;
-    /**
-     * Prints the background color and image of the web page. Default is `false`.
-     */
-    printBackground?: boolean;
-    /**
-     * Set the printer device name to use. Must be the system-defined name and not the
-     * 'friendly' name, e.g 'Brother_QL_820NWB' and not 'Brother QL-820NWB'.
-     */
-    deviceName?: string;
-    /**
-     * Set whether the printed web page will be in color or grayscale. Default is
-     * `true`.
-     */
-    color?: boolean;
-    margins?: Margins;
-    /**
-     * Whether the web page should be printed in landscape mode. Default is `false`.
-     */
-    landscape?: boolean;
-    /**
-     * The scale factor of the web page.
-     */
-    scaleFactor?: number;
-    /**
-     * The number of pages to print per page sheet.
-     */
-    pagesPerSheet?: number;
     /**
      * Whether the web page should be collated.
      */
     collate?: boolean;
     /**
+     * Set whether the printed web page will be in color or grayscale. Default is
+     * `true`.
+     */
+    color?: boolean;
+    /**
      * The number of copies of the web page to print.
      */
     copies?: number;
     /**
-     * The page range to print. On macOS, only one range is honored.
+     * Set the printer device name to use. Must be the system-defined name and not the
+     * 'friendly' name, e.g 'Brother_QL_820NWB' and not 'Brother QL-820NWB'.
      */
-    pageRanges?: PageRanges[];
+    deviceName?: string;
+    dpi?: Record<string, number>;
     /**
      * Set the duplex mode of the printed web page. Can be `simplex`, `shortEdge`, or
      * `longEdge`.
      */
     duplexMode?: ('simplex' | 'shortEdge' | 'longEdge');
-    dpi?: Record<string, number>;
+    /**
+     * string to be printed as page footer.
+     */
+    footer?: string;
     /**
      * string to be printed as page header.
      */
     header?: string;
     /**
-     * string to be printed as page footer.
+     * Whether the web page should be printed in landscape mode. Default is `false`.
      */
-    footer?: string;
+    landscape?: boolean;
+    margins?: Margins;
+    /**
+     * The page range to print. On macOS, only one range is honored.
+     */
+    pageRanges?: PageRanges[];
     /**
      * Specify page size of the printed document. Can be `A0`, `A1`, `A2`, `A3`, `A4`,
      * `A5`, `A6`, `Legal`, `Letter`, `Tabloid` or an Object containing `height` and
      * `width`.
      */
     pageSize?: (('A0' | 'A1' | 'A2' | 'A3' | 'A4' | 'A5' | 'A6' | 'Legal' | 'Letter' | 'Tabloid')) | (Size);
+    /**
+     * The number of pages to print per page sheet.
+     */
+    pagesPerSheet?: number;
+    /**
+     * Prints the background color and image of the web page. Default is `false`.
+     */
+    printBackground?: boolean;
+    /**
+     * The scale factor of the web page.
+     */
+    scaleFactor?: number;
+    /**
+     * Don't ask user for print settings. Default is `false`.
+     */
+    silent?: boolean;
   }
 
   interface WebContentsViewConstructorOptions {
-    /**
-     * Settings of web page's features.
-     */
-    webPreferences?: WebPreferences;
     /**
      * If present, the given WebContents will be adopted by the WebContentsView. A
      * WebContents may only be presented in one WebContentsView at a time.
      */
     webContents?: WebContents;
+    /**
+     * Settings of web page's features.
+     */
+    webPreferences?: WebPreferences;
   }
 
   interface WebContentsWillFrameNavigateEventParams {
     /**
-     * The URL the frame is navigating to.
-     */
-    url: string;
-    /**
-     * This event does not fire for same document navigations using window.history api
-     * and reference fragment navigations. This property is always set to `false` for
-     * this event.
-     */
-    isSameDocument: boolean;
-    /**
-     * True if the navigation is taking place in a main frame.
-     */
-    isMainFrame: boolean;
-    /**
      * The frame to be navigated.
      */
     frame: WebFrameMain;
@@ -21446,13 +21432,38 @@ declare namespace Electron {
      * event was emitted.
      */
     initiator?: WebFrameMain;
+    /**
+     * True if the navigation is taking place in a main frame.
+     */
+    isMainFrame: boolean;
+    /**
+     * This event does not fire for same document navigations using window.history api
+     * and reference fragment navigations. This property is always set to `false` for
+     * this event.
+     */
+    isSameDocument: boolean;
+    /**
+     * The URL the frame is navigating to.
+     */
+    url: string;
   }
 
   interface WebContentsWillNavigateEventParams {
     /**
-     * The URL the frame is navigating to.
+     * The frame to be navigated.
      */
-    url: string;
+    frame: WebFrameMain;
+    /**
+     * The frame which initiated the navigation, which can be a parent frame (e.g. via
+     * `window.open` with a frame's name), or null if the navigation was not initiated
+     * by a frame. This can also be null if the initiating frame was deleted before the
+     * event was emitted.
+     */
+    initiator?: WebFrameMain;
+    /**
+     * True if the navigation is taking place in a main frame.
+     */
+    isMainFrame: boolean;
     /**
      * This event does not fire for same document navigations using window.history api
      * and reference fragment navigations. This property is always set to `false` for
@@ -21460,9 +21471,12 @@ declare namespace Electron {
      */
     isSameDocument: boolean;
     /**
-     * True if the navigation is taking place in a main frame.
+     * The URL the frame is navigating to.
      */
-    isMainFrame: boolean;
+    url: string;
+  }
+
+  interface WebContentsWillRedirectEventParams {
     /**
      * The frame to be navigated.
      */
@@ -21474,13 +21488,10 @@ declare namespace Electron {
      * event was emitted.
      */
     initiator?: WebFrameMain;
-  }
-
-  interface WebContentsWillRedirectEventParams {
     /**
-     * The URL the frame is navigating to.
+     * True if the navigation is taking place in a main frame.
      */
-    url: string;
+    isMainFrame: boolean;
     /**
      * Whether the navigation happened without changing document. Examples of same
      * document navigations are reference fragment navigations, pushState/replaceState,
@@ -21488,103 +21499,92 @@ declare namespace Electron {
      */
     isSameDocument: boolean;
     /**
-     * True if the navigation is taking place in a main frame.
+     * The URL the frame is navigating to.
      */
-    isMainFrame: boolean;
-    /**
-     * The frame to be navigated.
-     */
-    frame: WebFrameMain;
-    /**
-     * The frame which initiated the navigation, which can be a parent frame (e.g. via
-     * `window.open` with a frame's name), or null if the navigation was not initiated
-     * by a frame. This can also be null if the initiating frame was deleted before the
-     * event was emitted.
-     */
-    initiator?: WebFrameMain;
+    url: string;
   }
 
   interface WebRTCUDPPortRange {
     /**
-     * The minimum UDP port number that WebRTC should use.
-     */
-    min: number;
-    /**
      * The maximum UDP port number that WebRTC should use.
      */
     max: number;
+    /**
+     * The minimum UDP port number that WebRTC should use.
+     */
+    min: number;
   }
 
   interface WebviewTagPrintOptions {
-    /**
-     * Don't ask user for print settings. Default is `false`.
-     */
-    silent?: boolean;
-    /**
-     * Prints the background color and image of the web page. Default is `false`.
-     */
-    printBackground?: boolean;
-    /**
-     * Set the printer device name to use. Must be the system-defined name and not the
-     * 'friendly' name, e.g 'Brother_QL_820NWB' and not 'Brother QL-820NWB'.
-     */
-    deviceName?: string;
-    /**
-     * Set whether the printed web page will be in color or grayscale. Default is
-     * `true`.
-     */
-    color?: boolean;
-    margins?: Margins;
-    /**
-     * Whether the web page should be printed in landscape mode. Default is `false`.
-     */
-    landscape?: boolean;
-    /**
-     * The scale factor of the web page.
-     */
-    scaleFactor?: number;
-    /**
-     * The number of pages to print per page sheet.
-     */
-    pagesPerSheet?: number;
     /**
      * Whether the web page should be collated.
      */
     collate?: boolean;
     /**
+     * Set whether the printed web page will be in color or grayscale. Default is
+     * `true`.
+     */
+    color?: boolean;
+    /**
      * The number of copies of the web page to print.
      */
     copies?: number;
     /**
-     * The page range to print.
+     * Set the printer device name to use. Must be the system-defined name and not the
+     * 'friendly' name, e.g 'Brother_QL_820NWB' and not 'Brother QL-820NWB'.
      */
-    pageRanges?: PageRanges[];
+    deviceName?: string;
+    dpi?: Record<string, number>;
     /**
      * Set the duplex mode of the printed web page. Can be `simplex`, `shortEdge`, or
      * `longEdge`.
      */
     duplexMode?: ('simplex' | 'shortEdge' | 'longEdge');
-    dpi?: Record<string, number>;
-    /**
-     * string to be printed as page header.
-     */
-    header?: string;
     /**
      * string to be printed as page footer.
      */
     footer?: string;
     /**
+     * string to be printed as page header.
+     */
+    header?: string;
+    /**
+     * Whether the web page should be printed in landscape mode. Default is `false`.
+     */
+    landscape?: boolean;
+    margins?: Margins;
+    /**
+     * The page range to print.
+     */
+    pageRanges?: PageRanges[];
+    /**
      * Specify page size of the printed document. Can be `A3`, `A4`, `A5`, `Legal`,
      * `Letter`, `Tabloid` or an Object containing `height` in microns.
      */
     pageSize?: (('A3' | 'A4' | 'A5' | 'Legal' | 'Letter' | 'Tabloid')) | (Size);
+    /**
+     * The number of pages to print per page sheet.
+     */
+    pagesPerSheet?: number;
+    /**
+     * Prints the background color and image of the web page. Default is `false`.
+     */
+    printBackground?: boolean;
+    /**
+     * The scale factor of the web page.
+     */
+    scaleFactor?: number;
+    /**
+     * Don't ask user for print settings. Default is `false`.
+     */
+    silent?: boolean;
   }
 
   interface WillFrameNavigateEvent extends DOMEvent {
-    url: string;
-    isMainFrame: boolean;
     frameProcessId: number;
     frameRoutingId: number;
+    isMainFrame: boolean;
+    url: string;
   }
 
   interface WillNavigateEvent extends DOMEvent {
@@ -21601,60 +21601,73 @@ declare namespace Electron {
 
   interface EditFlags {
     /**
-     * Whether the renderer believes it can undo.
+     * Whether the renderer believes it can copy.
      */
-    canUndo: boolean;
-    /**
-     * Whether the renderer believes it can redo.
-     */
-    canRedo: boolean;
+    canCopy: boolean;
     /**
      * Whether the renderer believes it can cut.
      */
     canCut: boolean;
     /**
-     * Whether the renderer believes it can copy.
+     * Whether the renderer believes it can delete.
      */
-    canCopy: boolean;
+    canDelete: boolean;
+    /**
+     * Whether the renderer believes it can edit text richly.
+     */
+    canEditRichly: boolean;
     /**
      * Whether the renderer believes it can paste.
      */
     canPaste: boolean;
     /**
-     * Whether the renderer believes it can delete.
+     * Whether the renderer believes it can redo.
      */
-    canDelete: boolean;
+    canRedo: boolean;
     /**
      * Whether the renderer believes it can select all.
      */
     canSelectAll: boolean;
     /**
-     * Whether the renderer believes it can edit text richly.
+     * Whether the renderer believes it can undo.
      */
-    canEditRichly: boolean;
+    canUndo: boolean;
   }
 
   interface Env {
   }
 
   interface FoundInPageResult {
-    requestId: number;
     /**
      * Position of the active match.
      */
     activeMatchOrdinal: number;
+    finalUpdate: boolean;
     /**
      * Number of Matches.
      */
     matches: number;
+    requestId: number;
     /**
      * Coordinates of first match region.
      */
     selectionArea: Rectangle;
-    finalUpdate: boolean;
   }
 
   interface LaunchItems {
+    /**
+     * the command-line arguments to pass to the executable.
+     *
+     * @platform win32
+     */
+    args: string[];
+    /**
+     * `true` if the app registry key is startup approved and therefore shows as
+     * `enabled` in Task Manager and Windows settings.
+     *
+     * @platform win32
+     */
+    enabled: boolean;
     /**
      * name value of a registry entry.
      *
@@ -21668,37 +21681,15 @@ declare namespace Electron {
      */
     path: string;
     /**
-     * the command-line arguments to pass to the executable.
-     *
-     * @platform win32
-     */
-    args: string[];
-    /**
      * one of `user` or `machine`. Indicates whether the registry entry is under
      * `HKEY_CURRENT USER` or `HKEY_LOCAL_MACHINE`.
      *
      * @platform win32
      */
     scope: string;
-    /**
-     * `true` if the app registry key is startup approved and therefore shows as
-     * `enabled` in Task Manager and Windows settings.
-     *
-     * @platform win32
-     */
-    enabled: boolean;
   }
 
   interface Margins {
-    /**
-     * Can be `default`, `none`, `printableArea`, or `custom`. If `custom` is chosen,
-     * you will also need to specify `top`, `bottom`, `left`, and `right`.
-     */
-    marginType?: ('default' | 'none' | 'printableArea' | 'custom');
-    /**
-     * The top margin of the printed web page, in pixels.
-     */
-    top?: number;
     /**
      * The bottom margin of the printed web page, in pixels.
      */
@@ -21708,44 +21699,33 @@ declare namespace Electron {
      */
     left?: number;
     /**
+     * Can be `default`, `none`, `printableArea`, or `custom`. If `custom` is chosen,
+     * you will also need to specify `top`, `bottom`, `left`, and `right`.
+     */
+    marginType?: ('default' | 'none' | 'printableArea' | 'custom');
+    /**
      * The right margin of the printed web page, in pixels.
      */
     right?: number;
+    /**
+     * The top margin of the printed web page, in pixels.
+     */
+    top?: number;
   }
 
   interface MediaFlags {
     /**
-     * Whether the media element has crashed.
+     * Whether the media element can be looped.
      */
-    inError: boolean;
-    /**
-     * Whether the media element is paused.
-     */
-    isPaused: boolean;
-    /**
-     * Whether the media element is muted.
-     */
-    isMuted: boolean;
-    /**
-     * Whether the media element has audio.
-     */
-    hasAudio: boolean;
-    /**
-     * Whether the media element is looping.
-     */
-    isLooping: boolean;
-    /**
-     * Whether the media element's controls are visible.
-     */
-    isControlsVisible: boolean;
-    /**
-     * Whether the media element's controls are toggleable.
-     */
-    canToggleControls: boolean;
+    canLoop: boolean;
     /**
      * Whether the media element can be printed.
      */
     canPrint: boolean;
+    /**
+     * Whether the media element can be rotated.
+     */
+    canRotate: boolean;
     /**
      * Whether or not the media element can be downloaded.
      */
@@ -21755,17 +21735,37 @@ declare namespace Electron {
      */
     canShowPictureInPicture: boolean;
     /**
+     * Whether the media element's controls are toggleable.
+     */
+    canToggleControls: boolean;
+    /**
+     * Whether the media element has audio.
+     */
+    hasAudio: boolean;
+    /**
+     * Whether the media element has crashed.
+     */
+    inError: boolean;
+    /**
+     * Whether the media element's controls are visible.
+     */
+    isControlsVisible: boolean;
+    /**
+     * Whether the media element is looping.
+     */
+    isLooping: boolean;
+    /**
+     * Whether the media element is muted.
+     */
+    isMuted: boolean;
+    /**
+     * Whether the media element is paused.
+     */
+    isPaused: boolean;
+    /**
      * Whether the media element is currently showing picture-in-picture.
      */
     isShowingPictureInPicture: boolean;
-    /**
-     * Whether the media element can be rotated.
-     */
-    canRotate: boolean;
-    /**
-     * Whether the media element can be looped.
-     */
-    canLoop: boolean;
   }
 
   interface PageRanges {
@@ -21781,90 +21781,19 @@ declare namespace Electron {
 
   interface Params {
     /**
-     * x coordinate.
-     */
-    x: number;
-    /**
-     * y coordinate.
-     */
-    y: number;
-    /**
-     * URL of the link that encloses the node the context menu was invoked on.
-     */
-    linkURL: string;
-    /**
-     * Text associated with the link. May be an empty string if the contents of the
-     * link are an image.
-     */
-    linkText: string;
-    /**
-     * URL of the top level page that the context menu was invoked on.
-     */
-    pageURL: string;
-    /**
-     * URL of the subframe that the context menu was invoked on.
-     */
-    frameURL: string;
-    /**
-     * Source URL for the element that the context menu was invoked on. Elements with
-     * source URLs are images, audio and video.
-     */
-    srcURL: string;
-    /**
-     * Type of the node the context menu was invoked on. Can be `none`, `image`,
-     * `audio`, `video`, `canvas`, `file` or `plugin`.
-     */
-    mediaType: ('none' | 'image' | 'audio' | 'video' | 'canvas' | 'file' | 'plugin');
-    /**
-     * Whether the context menu was invoked on an image which has non-empty contents.
-     */
-    hasImageContents: boolean;
-    /**
-     * Whether the context is editable.
-     */
-    isEditable: boolean;
-    /**
-     * Text of the selection that the context menu was invoked on.
-     */
-    selectionText: string;
-    /**
-     * Title text of the selection that the context menu was invoked on.
-     */
-    titleText: string;
-    /**
      * Alt text of the selection that the context menu was invoked on.
      */
     altText: string;
-    /**
-     * Suggested filename to be used when saving file through 'Save Link As' option of
-     * context menu.
-     */
-    suggestedFilename: string;
-    /**
-     * Rect representing the coordinates in the document space of the selection.
-     */
-    selectionRect: Rectangle;
-    /**
-     * Start position of the selection text.
-     */
-    selectionStartOffset: number;
-    /**
-     * The referrer policy of the frame on which the menu is invoked.
-     */
-    referrerPolicy: Referrer;
-    /**
-     * The misspelled word under the cursor, if any.
-     */
-    misspelledWord: string;
     /**
      * An array of suggested words to show the user to replace the `misspelledWord`.
      * Only available if there is a misspelled word and spellchecker is enabled.
      */
     dictionarySuggestions: string[];
     /**
-     * The character encoding of the frame on which the menu was invoked.
+     * These flags indicate whether the renderer believes it is able to perform the
+     * corresponding action.
      */
-    frameCharset: string;
+    editFlags: EditFlags;
     /**
      * The source that the context menu was invoked on. Possible values include `none`,
      * `button-button`, `field-set`, `input-button`, `input-checkbox`, `input-color`,
@@ -21877,9 +21806,39 @@ declare namespace Electron {
      */
     formControlType: ('none' | 'button-button' | 'field-set' | 'input-button' | 'input-checkbox' | 'input-color' | 'input-date' | 'input-datetime-local' | 'input-email' | 'input-file' | 'input-hidden' | 'input-image' | 'input-month' | 'input-number' | 'input-password' | 'input-radio' | 'input-range' | 'input-reset' | 'input-search' | 'input-submit' | 'input-telephone' | 'input-text' | 'input-time' | 'input-url' | 'input-week' | 'output' | 'reset-button' | 'select-list' | 'select-list' | 'select-multiple' | 'select-one' | 'submit-button' | 'text-area');
     /**
-     * If the context is editable, whether or not spellchecking is enabled.
+     * The character encoding of the frame on which the menu was invoked.
      */
-    spellcheckEnabled: boolean;
+    frameCharset: string;
+    /**
+     * URL of the subframe that the context menu was invoked on.
+     */
+    frameURL: string;
+    /**
+     * Whether the context menu was invoked on an image which has non-empty contents.
+     */
+    hasImageContents: boolean;
+    /**
+     * Whether the context is editable.
+     */
+    isEditable: boolean;
+    /**
+     * Text associated with the link. May be an empty string if the contents of the
+     * link are an image.
+     */
+    linkText: string;
+    /**
+     * URL of the link that encloses the node the context menu was invoked on.
+     */
+    linkURL: string;
+    /**
+     * The flags for the media element the context menu was invoked on.
+     */
+    mediaFlags: MediaFlags;
+    /**
+     * Type of the node the context menu was invoked on. Can be `none`, `image`,
+     * `audio`, `video`, `canvas`, `file` or `plugin`.
+     */
+    mediaType: ('none' | 'image' | 'audio' | 'video' | 'canvas' | 'file' | 'plugin');
     /**
      * Input source that invoked the context menu. Can be `none`, `mouse`, `keyboard`,
      * `touch`, `touchMenu`, `longPress`, `longTap`, `touchHandle`, `stylus`,
@@ -21887,14 +21846,55 @@ declare namespace Electron {
      */
     menuSourceType: ('none' | 'mouse' | 'keyboard' | 'touch' | 'touchMenu' | 'longPress' | 'longTap' | 'touchHandle' | 'stylus' | 'adjustSelection' | 'adjustSelectionReset');
     /**
-     * The flags for the media element the context menu was invoked on.
+     * The misspelled word under the cursor, if any.
      */
-    mediaFlags: MediaFlags;
+    misspelledWord: string;
     /**
-     * These flags indicate whether the renderer believes it is able to perform the
-     * corresponding action.
+     * URL of the top level page that the context menu was invoked on.
      */
-    editFlags: EditFlags;
+    pageURL: string;
+    /**
+     * The referrer policy of the frame on which the menu is invoked.
+     */
+    referrerPolicy: Referrer;
+    /**
+     * Rect representing the coordinates in the document space of the selection.
+     */
+    selectionRect: Rectangle;
+    /**
+     * Start position of the selection text.
+     */
+    selectionStartOffset: number;
+    /**
+     * Text of the selection that the context menu was invoked on.
+     */
+    selectionText: string;
+    /**
+     * If the context is editable, whether or not spellchecking is enabled.
+     */
+    spellcheckEnabled: boolean;
+    /**
+     * Source URL for the element that the context menu was invoked on. Elements with
+     * source URLs are images, audio and video.
+     */
+    srcURL: string;
+    /**
+     * Suggested filename to be used when saving file through 'Save Link As' option of
+     * context menu.
+     */
+    suggestedFilename: string;
+    /**
+     * Title text of the selection that the context menu was invoked on.
+     */
+    titleText: string;
+    /**
+     * x coordinate.
+     */
+    x: number;
+    /**
+     * y coordinate.
+     */
+    y: number;
   }
 
   interface Video {
@@ -23538,24 +23538,45 @@ declare namespace NodeJS {
 
     // Docs: https://electronjs.org/docs/api/process
 
-    /**
-     * Emitted when Electron has loaded its internal initialization script and is
-     * beginning to load the web page or the main script.
-     */
-    on(event: 'loaded', listener: () => void): this;
-    off(event: 'loaded', listener: () => void): this;
-    once(event: 'loaded', listener: () => void): this;
     addListener(event: 'loaded', listener: () => void): this;
-    removeListener(event: 'loaded', listener: () => void): this;
-    on(eventName: string | symbol, listener: (...args: any[]) => void): this;
-    off(eventName: string | symbol, listener: (...args: any[]) => void): this;
-    once(eventName: string | symbol, listener: (...args: any[]) => void): this;
     addListener(eventName: string | symbol, listener: (...args: any[]) => void): this;
-    removeListener(eventName: string | symbol, listener: (...args: any[]) => void): this;
+    /**
+     * A `string` representing Chrome's version string.
+     *
+     */
+    readonly chrome: string;
+    /**
+     * A `string` (optional) representing a globally unique ID of the current
+     * JavaScript context. Each frame has its own JavaScript context. When
+     * contextIsolation is enabled, the isolated world also has a separate JavaScript
+     * context. This property is only available in the renderer process.
+     *
+     */
+    readonly contextId?: string;
+    /**
+     * A `boolean` that indicates whether the current renderer context has
+     * `contextIsolation` enabled. It is `undefined` in the main process.
+     *
+     */
+    readonly contextIsolated: boolean;
     /**
      * Causes the main thread of the current process crash.
      */
     crash(): void;
+    /**
+     * A `boolean`. When the app is started by being passed as parameter to the default
+     * Electron executable, this property is `true` in the main process, otherwise it
+     * is `undefined`. For example when running the app with `electron .`, it is
+     * `true`, even if the app is packaged (`isPackaged`) is `true`. This can be useful
+     * to determine how many arguments will need to be sliced off from `process.argv`.
+     *
+     */
+    readonly defaultApp: boolean;
+    /**
+     * A `string` representing Electron's version string.
+     *
+     */
+    readonly electron: string;
     /**
      * * `allocated` Integer - Size of all allocated objects in Kilobytes.
      * * `total` Integer - Total allocated space in Kilobytes.
@@ -23632,52 +23653,6 @@ declare namespace NodeJS {
      */
     hang(): void;
     /**
-     * Sets the file descriptor soft limit to `maxDescriptors` or the OS hard limit,
-     * whichever is lower for the current process.
-     *
-     * @platform darwin,linux
-     */
-    setFdLimit(maxDescriptors: number): void;
-    /**
-     * Indicates whether the snapshot has been created successfully.
-     * 
-     * Takes a V8 heap snapshot and saves it to `filePath`.
-     */
-    takeHeapSnapshot(filePath: string): boolean;
-    /**
-     * A `string` representing Chrome's version string.
-     *
-     */
-    readonly chrome: string;
-    /**
-     * A `string` (optional) representing a globally unique ID of the current
-     * JavaScript context. Each frame has its own JavaScript context. When
-     * contextIsolation is enabled, the isolated world also has a separate JavaScript
-     * context. This property is only available in the renderer process.
-     *
-     */
-    readonly contextId?: string;
-    /**
-     * A `boolean` that indicates whether the current renderer context has
-     * `contextIsolation` enabled. It is `undefined` in the main process.
-     *
-     */
-    readonly contextIsolated: boolean;
-    /**
-     * A `boolean`. When the app is started by being passed as parameter to the default
-     * Electron executable, this property is `true` in the main process, otherwise it
-     * is `undefined`. For example when running the app with `electron .`, it is
-     * `true`, even if the app is packaged (`isPackaged`) is `true`. This can be useful
-     * to determine how many arguments will need to be sliced off from `process.argv`.
-     *
-     */
-    readonly defaultApp: boolean;
-    /**
-     * A `string` representing Electron's version string.
-     *
-     */
-    readonly electron: string;
-    /**
      * A `boolean`, `true` when the current renderer context is the "main" renderer
      * frame. If you want the ID of the current frame you should use
      * `webFrame.routingId`.
@@ -23701,11 +23676,23 @@ declare namespace NodeJS {
      * property is used instead of the `--no-deprecation` command line flag.
      */
     noDeprecation: boolean;
+    off(event: 'loaded', listener: () => void): this;
+    off(eventName: string | symbol, listener: (...args: any[]) => void): this;
+    /**
+     * Emitted when Electron has loaded its internal initialization script and is
+     * beginning to load the web page or the main script.
+     */
+    on(event: 'loaded', listener: () => void): this;
+    on(eventName: string | symbol, listener: (...args: any[]) => void): this;
+    once(event: 'loaded', listener: () => void): this;
+    once(eventName: string | symbol, listener: (...args: any[]) => void): this;
     /**
      * A `Electron.ParentPort` property if this is a `UtilityProcess` (or `null`
      * otherwise) allowing communication with the parent process.
      */
     parentPort: Electron.ParentPort;
+    removeListener(event: 'loaded', listener: () => void): this;
+    removeListener(eventName: string | symbol, listener: (...args: any[]) => void): this;
     /**
      * A `string` representing the path to the resources directory.
      *
@@ -23717,6 +23704,19 @@ declare namespace NodeJS {
      *
      */
     readonly sandboxed: boolean;
+    /**
+     * Sets the file descriptor soft limit to `maxDescriptors` or the OS hard limit,
+     * whichever is lower for the current process.
+     *
+     * @platform darwin,linux
+     */
+    setFdLimit(maxDescriptors: number): void;
+    /**
+     * Indicates whether the snapshot has been created successfully.
+     * 
+     * Takes a V8 heap snapshot and saves it to `filePath`.
+     */
+    takeHeapSnapshot(filePath: string): boolean;
     /**
      * A `boolean` that controls whether or not deprecation warnings will be thrown as
      * exceptions. Setting this to `true` will throw errors for deprecations. This
@@ -23755,7 +23755,7 @@ declare namespace NodeJS {
     readonly windowsStore: boolean;
   }
   interface ProcessVersions {
-    readonly electron: string;
     readonly chrome: string;
+    readonly electron: string;
   }
 }

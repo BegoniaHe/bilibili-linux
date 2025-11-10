@@ -8,14 +8,14 @@ export interface ApiResponse<T> {
 
 // 分段类型
 export const SegmentTypeDict = {
-  Sponsor: 'sponsor',
-  Intro: 'intro',
-  Outro: 'outro',
-  Interaction: 'interaction',
-  SelfPromo: 'selfpromo',
-  MusicOfftopic: 'music_offtopic',
-  Preview: 'preview',
   Filler: 'filler',
+  Interaction: 'interaction',
+  Intro: 'intro',
+  MusicOfftopic: 'music_offtopic',
+  Outro: 'outro',
+  Preview: 'preview',
+  SelfPromo: 'selfpromo',
+  Sponsor: 'sponsor',
 } as const
 export type SegmentType = typeof SegmentTypeDict[keyof typeof SegmentTypeDict];
 // 分段信息

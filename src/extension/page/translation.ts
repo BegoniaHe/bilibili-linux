@@ -1,14 +1,14 @@
 import { createLogger } from "../../common/log"
-import { requestContent } from "../document/communication"
 import { enReg, enSimple } from "../common/translation/en"
+import { requestContent } from "../document/communication"
 
 const trnaslationData: Record<string, {
   simple: Record<string, string>
   regexp: Record<string, string>
 }> = {
   en: {
-    simple: enSimple,
-    regexp: enReg
+    regexp: enReg,
+    simple: enSimple
   }
 }
 
@@ -232,9 +232,9 @@ const registerLanguageHandle = async () => {
   });
   if (!document.body) return
   observer.observe(document.body, {
+    attributes: true,
     childList: true,
     subtree: true,
-    attributes: true,
   });
   {
     const shadow = Element.prototype.attachShadow
@@ -243,9 +243,9 @@ const registerLanguageHandle = async () => {
       // log.info('[attachShadow]', this, shadowRoot)
       // log.info('[attachShadow] child length:', shadowRoot.childNodes.length)
       observer.observe(shadowRoot, {
+        attributes: false,
         childList: true,
         subtree: true,
-        attributes: false,
       })
       return shadowRoot
     }

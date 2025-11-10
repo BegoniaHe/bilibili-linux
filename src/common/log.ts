@@ -1,23 +1,23 @@
 /* eslint-disable no-console */
 const LogLevel = {
-  /** 追踪日志 */
-  Trace: 0,
-  /** 普通日志 */
-  Info: 1,
-  /** 警告日志 */
-  Warning: 2,
   /** 错误日志 */
   Error: 3,
+  /** 普通日志 */
+  Info: 1,
+  /** 追踪日志 */
+  Trace: 0,
+  /** 警告日志 */
+  Warning: 2,
 } as const
 type LogLevelType = typeof LogLevel[keyof typeof LogLevel];
 const Styles = ['color: black;', 'color: green;', 'color: orange;', 'color: red;']
 const Methods = ['log', 'info', 'warn', 'error'] as const
 const log = {
-  log: console.log,
-  warn: console.warn,
   error: console.error,
   info: console.info,
+  log: console.log,
   trace: console.trace,
+  warn: console.warn,
 }
 /**
  * 日志的配置类型

@@ -26,29 +26,53 @@ const getInitialServerConfig = (): ServerConfig => {
   }
   return {
     default: '',
-    mainLand: '',
     hk: '',
-    tw: '',
-    th: ''
+    mainLand: '',
+    th: '',
+    tw: ''
   };
 };
 
 const initialState: RoamingState = {
-  uposConfig: {
-    uposKey: localStorage.upos || 'none',
-    uposApplyAll: localStorage.uposApplyAll === 'true',
-    replaceAkamai: localStorage.replaceAkamai === "true",
-    pacLink: localStorage.pacLink || "",
-  },
   serverConfig: getInitialServerConfig(),
+  uposConfig: {
+    pacLink: localStorage.pacLink || "",
+    replaceAkamai: localStorage.replaceAkamai === "true",
+    uposApplyAll: localStorage.uposApplyAll === 'true',
+    uposKey: localStorage.upos || 'none',
+  },
 };
 
 // 创建一个 Slice 
 export const roamingSlice = createSlice({
-  name: 'roaming',
   initialState,
+  name: 'roaming',
   // 定义 reducers 并生成关联的操作
   reducers: {
+    // 重置服务器配置
+    resetServerConfig: (state) => {
+      state.serverConfig = {
+        default: '',
+        hk: '',
+        mainLand: '',
+        th: '',
+        tw: ''
+      };
+    },
+    // 数据同步方法
+    roamingSyncState: (state, action) => {
+      // 合并同步的状态数据
+      return {
+        ...state,
+        ...action.payload
+      };
+    },
+    // 保存服务器配置
+    saveServerConfig: (state, action) => {
+      const data = action.payload as ServerConfig;
+      state.serverConfig = data;
+      localStorage.serverList = JSON.stringify(state.serverConfig);
+    },
     // 保存upos配置
     saveUposConfig: (state, action) => {
       const data = action.payload as UposConfig;
@@ -63,39 +87,15 @@ export const roamingSlice = createSlice({
       const { key, value } = action.payload;
       state.serverConfig[key as keyof ServerConfig] = value;
     },
-    // 保存服务器配置
-    saveServerConfig: (state, action) => {
-      const data = action.payload as ServerConfig;
-      state.serverConfig = data;
-      localStorage.serverList = JSON.stringify(state.serverConfig);
-    },
-    // 重置服务器配置
-    resetServerConfig: (state) => {
-      state.serverConfig = {
-        default: '',
-        mainLand: '',
-        hk: '',
-        tw: '',
-        th: ''
-      };
-    },
-    // 数据同步方法
-    roamingSyncState: (state, action) => {
-      // 合并同步的状态数据
-      return {
-        ...state,
-        ...action.payload
-      };
-    },
   },
 });
 
 export const {
-  saveUposConfig,
-  updateServerConfig,
-  saveServerConfig,
   resetServerConfig,
-  roamingSyncState
+  roamingSyncState,
+  saveServerConfig,
+  saveUposConfig,
+  updateServerConfig
 } = roamingSlice.actions;
 
 // 默认导出

@@ -1,7 +1,8 @@
 import { app } from "electron";
+
+import { createLogger, Logger } from "../common/log";
 import { createBilibiliServer } from "./common/bilibili";
 import { electronOverwrite, electronOverwriteAfterReady, hookIsPackaged, initializeGlobalData, nodeJsOverWrite, parseElectronFlag, registerExtension, registerIpcHandle, registerProtocol, replaceBrowserWindow } from "./common/electron-tool";
-import { createLogger, Logger } from "../common/log";
 (() => {
   const log = createLogger('Index')
   Logger.moduleName = 'Index'

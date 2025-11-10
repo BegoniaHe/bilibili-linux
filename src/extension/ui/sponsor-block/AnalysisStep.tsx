@@ -1,13 +1,15 @@
+import { LoadingOutlined, StopOutlined } from "@ant-design/icons";
 import { Steps, type StepProps } from "antd";
 import { useEffect, useImperativeHandle, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+
+import type { ProgressViewPoint } from "../../../globals";
+import type { RootState } from "../store";
+
 import { createLogger } from "../../../common/log";
 import { GET } from "../../common/http";
 import { bigModelDetect } from "../../common/sponsor-block/sponsor-detect";
-import { LoadingOutlined, StopOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store";
-import type { ProgressViewPoint } from "../../../globals";
-import { useTranslation } from "react-i18next";
 interface SubtitleResponse {
   body: {
     from: number,
@@ -74,8 +76,8 @@ export default function AnalysisStep({ ref }: Props) {
         log.info('download audio success:', file)
         const options: Options = {
           file,
-          proxy: whisperProxy,
           libPath,
+          proxy: whisperProxy,
         }
         // 2. 音频转字幕
         setCurStep(3);
@@ -91,14 +93,14 @@ export default function AnalysisStep({ ref }: Props) {
       // 添加标记
       const { state } = window.danmakuManage.rootStore.hotspotStore
       const viewponits = detectResult.map<ProgressViewPoint>(e => ({
-        from: e.start,
-        to: e.end,
         content: e.desc,
-        type: 1,
+        from: e.start,
         sponsor_info: {
           actionType: "skip",
           category: "sponsor",
-        }
+        },
+        to: e.end,
+        type: 1
       }))
       state[1] = viewponits
       setCurStatus('finish')
@@ -126,16 +128,16 @@ export default function AnalysisStep({ ref }: Props) {
         title: t('检查字幕数据'),
       },
       {
-        title: t('获取字幕数据'),
         disabled: !hasSubtitle,
+        title: t('获取字幕数据'),
       },
       {
+        disabled: hasSubtitle,
         title: t('获取音频数据'),
-        disabled: hasSubtitle,
       },
       {
-        title: t('音频转字幕'),
         disabled: hasSubtitle,
+        title: t('音频转字幕'),
       },
       {
         title: t('AI识别关键节点'),

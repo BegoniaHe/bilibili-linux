@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import './App.css'
 import { Modal } from 'antd'
-import Setting from './setting/Setting'
-import EntryButton from './EntryButton'
+
+import './App.css'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import EntryButton from './EntryButton'
+import Setting from './setting/Setting'
 
 function App() {
   const { t } = useTranslation()

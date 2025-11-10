@@ -12,14 +12,14 @@ export const API_ENDPOINTS = {
   // 提交新分段
   SUBMIT_SEGMENT: `${API_BASE_URL}/skipSegments`,
   
-  // 对分段进行投票
-  VOTE: `${API_BASE_URL}/voteOnSponsorTime`,
+  // 获取用户统计信息
+  USER_STATS: `${API_BASE_URL}/userInfo`,
   
   // 查看分段
   VIEW_SEGMENT: `${API_BASE_URL}/viewedVideoSponsorTime`,
   
-  // 获取用户统计信息
-  USER_STATS: `${API_BASE_URL}/userInfo`,
+  // 对分段进行投票
+  VOTE: `${API_BASE_URL}/voteOnSponsorTime`,
 };
 
 // 请求头

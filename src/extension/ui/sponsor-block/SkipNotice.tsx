@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import type { ProgressViewPoint } from '../../../globals';
+
 import { createLogger } from '../../../common/log';
 import { sleep } from '../../../common/utils';
-import type { ProgressViewPoint } from '../../../globals';
-import { useTranslation } from 'react-i18next';
 type MediaTimeUpdateFunc = () => void;
 let mediaTimeUpdate: MediaTimeUpdateFunc | undefined = undefined;
 (async () => {

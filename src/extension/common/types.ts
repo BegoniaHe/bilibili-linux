@@ -2,8 +2,8 @@
 export const Page = {
   Home: 'home',
   Login: 'login',
-  Search: 'search',
   Player: 'player',
+  Search: 'search',
   Unknown: 'Unknown'
 } as const
 export type PageType = typeof Page[keyof typeof Page]

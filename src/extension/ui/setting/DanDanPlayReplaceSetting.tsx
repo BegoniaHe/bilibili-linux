@@ -1,9 +1,10 @@
 import { Button, Cascader, Col, Input, notification, Radio, Row, Switch } from "antd";
 import { useState } from "react";
-import { convertDandanResponse } from "../../common/danmaku";
-import { dandanplaySearch, getComment } from "../../common/dandan-api";
-import { createLogger } from "../../../common/log";
 import { useTranslation } from "react-i18next";
+
+import { createLogger } from "../../../common/log";
+import { dandanplaySearch, getComment } from "../../common/dandan-api";
+import { convertDandanResponse } from "../../common/danmaku";
 
 const log = createLogger('DandanPlay')
 interface SearchResultType {
@@ -24,11 +25,11 @@ export default function DanDanPlaySetting() {
     dandanplayWithRelated: boolean
     damakuMode: '1' | '2'
   }>({
-    keyword: '',
-    selectOptions: ['', ''],
-    searchResult: [],
-    dandanplayWithRelated: false,
     damakuMode: '1',
+    dandanplayWithRelated: false,
+    keyword: '',
+    searchResult: [],
+    selectOptions: ['', ''],
   })
   const updateSettingValue = (key: string, value: string | boolean | (string | SearchResultType)[]) => {
     updateSetting(pre => ({
@@ -64,13 +65,13 @@ export default function DanDanPlaySetting() {
       danmakuManage.danmaku.clear()
       // danmakuManage.danmakuStore.loadDmPbAll(true)
       notify.info({
-        message: t("成功"),
-        description: t('成功')
+        description: t('成功'),
+        message: t("成功")
       })
     } catch (err) {
       notify.info({
-        message: t("出现错误"),
-        description: `${err}`
+        description: `${err}`,
+        message: t("出现错误")
       })
     }
   }
@@ -88,9 +89,9 @@ export default function DanDanPlaySetting() {
         })
       }
       bangumiList.push({
+        children,
         label: anime.animeTitle,
-        value: `${anime.animeId}`,
-        children
+        value: `${anime.animeId}`
       })
     }
     updateSettingValue('searchResult', bangumiList || [])

@@ -22,8 +22,8 @@ export const convertDandanResponse = (comments: DandanPlayCommentType[]) => {
       pool: 0,
       renderAs: 1,
       size: 25,
-      text: comment.m,
       stime: time,
+      text: comment.m,
       weight: 1,
     })
   }

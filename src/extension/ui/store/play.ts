@@ -10,10 +10,18 @@ const initialState: PlayState = {
 
 // 创建一个 Slice 
 export const playSlice = createSlice({
-  name: 'play',
   initialState,
+  name: 'play',
   // 定义 reducers 并生成关联的操作
   reducers: {
+    // 数据同步方法
+    playSyncState: (state, action) => {
+      // 合并同步的状态数据
+      return {
+        ...state,
+        ...action.payload
+      };
+    },
     // 切换自动连播
     switchRelatedAutoPlay: (state) => {
       state.isRelatedAutoPlay = !state.isRelatedAutoPlay;
@@ -23,20 +31,12 @@ export const playSlice = createSlice({
         window.danmakuManage.storyStore.state.relatedAutoplay = state.isRelatedAutoPlay;
       }
     },
-    // 数据同步方法
-    playSyncState: (state, action) => {
-      // 合并同步的状态数据
-      return {
-        ...state,
-        ...action.payload
-      };
-    },
   },
 });
 
 export const {
-  switchRelatedAutoPlay,
-  playSyncState
+  playSyncState,
+  switchRelatedAutoPlay
 } = playSlice.actions;
 
 // 默认导出

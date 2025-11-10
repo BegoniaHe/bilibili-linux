@@ -26,11 +26,11 @@ export const replaceFetch = () => {
           // debugger
           try {
             return await replace[path]({
-              urlInfo: {
-                path,
-                params},
               config,
-              res
+              res,
+              urlInfo: {
+                params,
+                path}
             })
           }catch (e) {
             log.error(e)

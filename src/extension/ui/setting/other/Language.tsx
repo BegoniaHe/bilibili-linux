@@ -1,9 +1,11 @@
 import { Card, Select } from "antd";
-import type { RootState } from "../../store";
-import { useDispatch, useSelector } from "react-redux";
-import { changeLanguage } from "../../store/storage";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+
+import type { RootState } from "../../store";
+
 import { createLogger } from "../../../../common/log";
+import { changeLanguage } from "../../store/storage";
 
 const log = createLogger('LanguageSetting')
 export default function LanguageSetting() {
@@ -25,12 +27,12 @@ export default function LanguageSetting() {
           onChange={updateLanguage}
           options={[
             {
-              value: 'zhCn',
-              label: '中文'
+              label: '中文',
+              value: 'zhCn'
             },
             {
-              value: 'en',
-              label: 'English'
+              label: 'English',
+              value: 'en'
             }
           ]}
         >

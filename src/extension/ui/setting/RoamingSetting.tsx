@@ -1,11 +1,13 @@
 import { Button, Card, Form, Input, notification, Select, Switch } from "antd"
-import { createLogger } from "../../../common/log"
-import { useDispatch, useSelector } from "react-redux"
-import type { RootState } from "../store"
-import { saveUposConfig, saveServerConfig, resetServerConfig, type UposConfig, type ServerConfig } from "../store/roaming"
-import HDLogin from "./roaming/HDLogin"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { useDispatch, useSelector } from "react-redux"
+
+import type { RootState } from "../store"
+
+import { createLogger } from "../../../common/log"
+import { saveUposConfig, saveServerConfig, resetServerConfig, type UposConfig, type ServerConfig } from "../store/roaming"
+import HDLogin from "./roaming/HDLogin"
 
 export default function RoamingSetting() {
   const log = createLogger('RoamingSetting')
@@ -18,88 +20,88 @@ export default function RoamingSetting() {
 
   const uposItemList = [
     {
-      value: 'none',
-      label: t('不替换')
+      label: t('不替换'),
+      value: 'none'
     },
     {
-      value: "ali",
       label: "ali（阿里）",
+      value: "ali",
     },
     {
-      value: "alib",
       label: "alib（阿里）",
+      value: "alib",
     },
     {
-      value: "alio1",
       label: "alio1（阿里）",
+      value: "alio1",
     },
     {
-      value: "bos",
       label: "bos（百度）",
+      value: "bos",
     },
     {
-      value: "cos",
       label: "cos（腾讯）",
+      value: "cos",
     },
     {
-      value: "cosb",
       label: "cosb（腾讯）",
+      value: "cosb",
     },
     {
-      value: "coso1",
       label: "coso1（腾讯）",
+      value: "coso1",
     },
     {
-      value: "hw",
       label: "hw（华为）",
+      value: "hw",
     },
     {
-      value: "hwb",
       label: "hwb（华为）",
+      value: "hwb",
     },
     {
-      value: "hwo1",
       label: "hwo1（华为）",
+      value: "hwo1",
     },
     {
-      value: "08c",
       label: "08c（华为）",
+      value: "08c",
     },
     {
-      value: "08h",
       label: "08h（华为）",
+      value: "08h",
     },
     {
-      value: "08ct",
       label: "08ct（华为）",
+      value: "08ct",
     },
     {
-      value: "tf_hw",
       label: "tf_hw（华为）",
+      value: "tf_hw",
     },
     {
-      value: "tf_tx",
       label: "tf_tx（腾讯）",
+      value: "tf_tx",
     },
     {
-      value: "akamai",
       label: "akamai（Akamai海外）",
+      value: "akamai",
     },
     {
-      value: "aliov",
       label: "aliov（阿里海外）",
+      value: "aliov",
     },
     {
-      value: "cosov",
       label: "cosov（腾讯海外）",
+      value: "cosov",
     },
     {
-      value: "hwov",
       label: "hwov（华为海外）",
+      value: "hwov",
     },
     {
-      value: "hk_bcache",
       label: "hk_bcache（Bilibili海外）",
+      value: "hk_bcache",
     },
   ]
   const [upos, updateUpos] = useState(uposConfig)
@@ -116,8 +118,8 @@ export default function RoamingSetting() {
   const handleSaveUposConfig = () => {
     dispatcher(saveUposConfig(upos));
     notify.info({
-      message: t('成功'),
       description: t("成功"),
+      message: t('成功'),
     });
   }
   const [serverConfig, updateServer] = useState(storeServerConfig)
@@ -138,8 +140,8 @@ export default function RoamingSetting() {
     if (valid) {
       dispatcher(saveServerConfig(serverConfig));
       notify.info({
-        message: t('成功'),
         description: t("成功"),
+        message: t('成功'),
       })
     } else {
       log.info('error submit!')

@@ -1,3 +1,8 @@
+import type { RpcMetadata } from "@protobuf-ts/runtime-rpc";
+
+import { ChannelCredentials } from "@grpc/grpc-js";
+import { GrpcTransport } from "@protobuf-ts/grpc-transport";
+import { exec, execSync, spawn } from "child_process";
 import {
   app,
   BrowserWindow,
@@ -7,17 +12,14 @@ import {
   session,
   screen,
 } from "electron";
-import { createLogger } from "../../common/log";
-import fs from "fs";
 import EventEmitter from "events";
+import fs from "fs";
 import Module from "module";
 import path from "path";
-import { exec, execSync, spawn } from "child_process";
-import { ChannelCredentials } from "@grpc/grpc-js";
-import { DynamicClient } from "./dynamic.client";
-import { GrpcTransport } from "@protobuf-ts/grpc-transport";
-import type { RpcMetadata } from "@protobuf-ts/runtime-rpc";
+
+import { createLogger } from "../../common/log";
 import { Device, DynDetailReply, Metadata } from "./dynamic";
+import { DynamicClient } from "./dynamic.client";
 
 const log = createLogger("electron-tool");
 export const parseElectronFlag = () => {
@@ -50,7 +52,6 @@ export const parseElectronFlag = () => {
 
 export const hookIsPackaged = () => {
   const pkgHack = {
-    idx: 0,
     data: [
       true,
       true,
@@ -59,6 +60,7 @@ export const hookIsPackaged = () => {
       false,
       true,
     ],
+    idx: 0,
   };
   Object.defineProperty(app, "isPackaged", {
     get() {
@@ -194,11 +196,11 @@ export const electronOverwrite = () => {
     ) {
       if (template[0]?.label == "设置") {
         template.unshift({
-          label: "首页",
           click: () =>
             global.biliApp.configService.openMainWindowPage$.next({
               page: "RecommendPage",
             }),
+          label: "首页",
         });
         log.info("menu list:", template);
       }
@@ -350,11 +352,14 @@ export const registerIpcHandle = () => {
       "bilibili-tanscribe.mp3"
     );
     await fetch(url, {
-      method: "GET",
       headers: { Referer: "https://www.bilibili.com/" },
+      method: "GET",
     }).then(async (res) => {
       const fileStream = fs.createWriteStream(tempfile);
       const writer = new WritableStream({
+        close() {
+          fileStream.end();
+        },
         write(chunk) {
           return new Promise((resolve, reject) => {
             fileStream.write(chunk, (error) => {
@@ -362,9 +367,6 @@ export const registerIpcHandle = () => {
               else resolve();
             });
           });
-        },
-        close() {
-          fileStream.end();
         },
       });
       if (res.status !== 200)
@@ -387,8 +389,8 @@ export const registerIpcHandle = () => {
           [file],
           {
             env: {
-              HTTPS_PROXY: proxy,
               HTTP_PROXY: proxy,
+              HTTPS_PROXY: proxy,
               LD_LIBRARY_PATH: `${process.env.LD_LIBRARY_PATH}:${libPath}`,
             },
           }
@@ -421,28 +423,28 @@ export const registerIpcHandle = () => {
       log.info("dynamic id:", dynamicId, accessKey);
 
       const transport = new GrpcTransport({
-        host: "grpc.biliapi.net",
         channelCredentials: ChannelCredentials.createSsl(),
         clientOptions: {
           "grpc.primary_user_agent": "Dalvik/2.1.0 (Linux; U; Android 10; RMX2117 Build/QP1A.190711.020) 7.61.0 os/android model/Pixel XL mobi_app/android build/7610300 channel/yingyongbao innerVer/7610310 osVer/10 network/2 grpc-java-cronet/1.36.1",
-        }
+        },
+        host: "grpc.biliapi.net"
       });
       const client = new DynamicClient(transport);
       const meta: RpcMetadata = {
-        "x-bili-gaia-vtoken": "",
         "x-bili-aurora-eid": "UlcBQFgHB1M=",
         "x-bili-aurora-zone": "",
-        "x-bili-trace-id": "344211a71a0dcf47432b69ac84666e79:432b69ac84666e79:0:0",
         "x-bili-fawkes-req-bin": "CglhbmRyb2lkNjQSBHByb2QaCDlhMjU2NWM2",
+        "x-bili-gaia-vtoken": "",
+        "x-bili-trace-id": "344211a71a0dcf47432b69ac84666e79:432b69ac84666e79:0:0",
       };
 
       const data: Metadata = {
         accessKey: accessKey,
-        mobiApp: "android",
-        device: "phone",
         build: 7610300,
-        channel: "yingyongbao",
         buvid: "XU8E5D18568ACB1FFEFE1E27B3456B9AFFB28",
+        channel: "yingyongbao",
+        device: "phone",
+        mobiApp: "android",
         platform: "android",
       };
       {
@@ -452,21 +454,21 @@ export const registerIpcHandle = () => {
       }
       meta["authorization"] = `identify_v1 ${accessKey}`;
       const device: Device = {
-        mobiApp: "android",
-        device: "phone",
-        build: 7610300,
-        channel: "yingyongbao",
-        buvid: "XU8E5D18568ACB1FFEFE1E27B3456B9AFFB28",
-        platform: "android",
         appId: 5,
         brand: "realme",
-        model: "Pixel XL",
-        osver: "10",
+        build: 7610300,
+        buvid: "XU8E5D18568ACB1FFEFE1E27B3456B9AFFB28",
+        channel: "yingyongbao",
+        device: "phone",
+        fp: "8cb55fdfcf655513e20e636f6caf0e1420240328142353b223ab3420700b2b8d",
         fpLocal: "8cb55fdfcf655513e20e636f6caf0e1420240328142353b223ab3420700b2b8d",
         fpRemote: "8cb55fdfcf655513e20e636f6caf0e1420240328142353b223ab3420700b2b8d",
-        versionName: "7.61.0",
-        fp: "8cb55fdfcf655513e20e636f6caf0e1420240328142353b223ab3420700b2b8d",
-        fts: 0n
+        fts: 0n,
+        mobiApp: "android",
+        model: "Pixel XL",
+        osver: "10",
+        platform: "android",
+        versionName: "7.61.0"
       };
       const deviceData = Buffer.from(Device.toBinary(device));
       // 固定数据
@@ -520,8 +522,8 @@ export const registerProtocol = () => {
       cb(await result.json());
     } catch (err) {
       cb({
-        statusCode: 500,
         data: JSON.stringify(err),
+        statusCode: 500,
       });
     }
   });

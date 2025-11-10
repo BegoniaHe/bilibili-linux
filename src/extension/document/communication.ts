@@ -43,8 +43,8 @@ export const requestContent = <Resp, Req = any>(action: string, data: Req) => {
   return new Promise<Resp>((resolve, reject) => {
     const id = communicateId++
     communicateMap[id] = {
-      resolve: resolve,
       reject: reject,
+      resolve: resolve,
       timeout: window.setTimeout(() => {
         delete communicateMap[id]
         reject(new Error('bili_request timeout'))
@@ -52,9 +52,9 @@ export const requestContent = <Resp, Req = any>(action: string, data: Req) => {
     }
     document.dispatchEvent(new CustomEvent<MessageRequest<Req>>('bili_request', {
       detail: {
-        id,
         action: action,
-        data // Some variable from Gmail.
+        data, // Some variable from Gmail.
+        id
       } // Some variable from Gmail.
     }));
   })
@@ -84,8 +84,8 @@ export const registerMessageContent = () => {
     log.info('bili_response:', data)
     document.dispatchEvent(new CustomEvent<MessageResponse>('bili_response', {
       detail: {
-        id: request.id,
-        data: data // Some variable from Gmail.
+        data: data, // Some variable from Gmail.
+        id: request.id
       } // Some variable from Gmail.
     }));
   });

@@ -3,12 +3,15 @@
 // tslint:disable
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
-import { Dynamic } from "./dynamic";
-import { stackIntercept } from "@protobuf-ts/runtime-rpc";
-import type { DynDetailReply } from "./dynamic";
-import type { DynDetailReq } from "./dynamic";
 import type { UnaryCall } from "@protobuf-ts/runtime-rpc";
 import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
+
+import { stackIntercept } from "@protobuf-ts/runtime-rpc";
+
+import type { DynDetailReply } from "./dynamic";
+import type { DynDetailReq } from "./dynamic";
+
+import { Dynamic } from "./dynamic";
 /**
  * v2动态, rpc 按字母顺序排列
  *

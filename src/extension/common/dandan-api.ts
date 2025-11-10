@@ -1,6 +1,7 @@
-import { GET } from "./http"
-import { createLogger } from "../../common/log"
 import type { DandanPlayAnimeType, DandanPlayCommentType } from "./types"
+
+import { createLogger } from "../../common/log"
+import { GET } from "./http"
 const log = createLogger('DandanApi')
 export const getComment = async (epId: string, withRelated = false): Promise<DandanPlayCommentType[]> => {
   const url = `https://api.dandanplay.net/api/v2/comment/${epId}?withRelated=${withRelated}`

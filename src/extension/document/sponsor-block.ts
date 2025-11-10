@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+
 import SkipNoticeWrap from "../ui/sponsor-block/SkipNoticeWrap";
 
 export const registerSponsorBlock = () => {

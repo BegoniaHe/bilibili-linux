@@ -1,11 +1,13 @@
 import { Button, Card, Col, Input, Row, Switch, Tooltip } from "antd"
-import { useState } from "react"
-import { createLogger } from "../../../../common/log"
-import { useDispatch, useSelector } from "react-redux"
-import type { RootState } from "../../store"
-import { saveSponsorSetting, type SponsorState } from "../../store/sponsor"
 import useNotification from "antd/es/notification/useNotification"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { useDispatch, useSelector } from "react-redux"
+
+import type { RootState } from "../../store"
+
+import { createLogger } from "../../../../common/log"
+import { saveSponsorSetting, type SponsorState } from "../../store/sponsor"
 
 const log = createLogger("sponsor-block")
 export default function SponsorBlock() {
@@ -22,11 +24,11 @@ export default function SponsorBlock() {
     whisperProxy: string,
     libPath: string,
   }>({
+    bigmodelToken: sponsorState.bigmodelToken || '',
     enable: !!sponsorState.enable,
     isSponsorAIDetect: !!sponsorState.isSponsorAIDetect,
-    bigmodelToken: sponsorState.bigmodelToken || '',
-    whisperProxy: sponsorState.whisperProxy || '',
     libPath: sponsorState.libPath || '',
+    whisperProxy: sponsorState.whisperProxy || '',
   })
 
   const updateSettingValue = (key: string, value: string | boolean) => {

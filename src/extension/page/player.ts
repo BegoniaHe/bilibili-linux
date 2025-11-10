@@ -1,11 +1,12 @@
 import { createRoot } from "react-dom/client"
+
 import { createLogger, Logger } from "../../common/log"
 import { sleep } from "../../common/utils"
-import { replaceFetch, replaceXMLHttpRequest } from "../document/replace"
-import SettingEntry from "../ui/main"
 import { getPageType } from "../common/page"
 import { Page } from "../common/types"
+import { replaceFetch, replaceXMLHttpRequest } from "../document/replace"
 import { registerSponsorBlock } from "../document/sponsor-block"
+import SettingEntry from "../ui/main"
 
 export const initPlayerPage = () => {
   Logger.moduleName = 'Player'

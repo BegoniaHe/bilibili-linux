@@ -1,8 +1,9 @@
 import { Button, Card, Popconfirm, QRCode } from "antd"
 import { useState, useMemo } from "react"
-import { BiliBiliApi } from "../../../common/bilibili-api"
-import { createLogger } from "../../../../common/log"
 import { useTranslation } from "react-i18next"
+
+import { createLogger } from "../../../../common/log"
+import { BiliBiliApi } from "../../../common/bilibili-api"
 interface TokenInfo {
   access_token: string
   expires_at: number
@@ -67,8 +68,8 @@ export default function HDLogin() {
   }
   const tokenData = useMemo(() => {
     const ret = {
-      msg: '',
       expired: true,
+      msg: '',
     }
     if (!tokenInfo) ret.msg = t('本地没有token数据！')
     if (tokenInfo && tokenInfo.expires_at) {

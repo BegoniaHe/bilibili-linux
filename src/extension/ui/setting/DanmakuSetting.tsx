@@ -1,8 +1,10 @@
 import { notification, Slider, Switch } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../store";
-import { updateBlockLevel, switchBlockVipColor } from "../store/danmaku";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+
+import type { RootState } from "../store";
+
+import { updateBlockLevel, switchBlockVipColor } from "../store/danmaku";
 
 export default function DanmakuSetting() {
   const { t } = useTranslation();
@@ -15,22 +17,22 @@ export default function DanmakuSetting() {
   const handleBlockLevelChange = (value: number) => {
     dispatcher(updateBlockLevel(value));
     notify.info({
-      message: t('成功'),
-      description: t('设置已保存')
+      description: t('设置已保存'),
+      message: t('成功')
     });
   }
   
   const handleBlockVipColorChange = () => {
     dispatcher(switchBlockVipColor());
     notify.info({
-      message: t('成功'),
-      description: t('设置已保存')
+      description: t('设置已保存'),
+      message: t('成功')
     });
   }
   return (
     <>
       {contextHolder}
-      <div style={{ display: 'flex', width: '500px', alignItems: 'center' }}>
+      <div style={{ alignItems: 'center', display: 'flex', width: '500px' }}>
         <span style={{ width: '20%' }}>{t("屏蔽等级")}：</span>
         <Slider
           value={blockLevel}

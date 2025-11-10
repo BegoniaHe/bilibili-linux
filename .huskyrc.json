@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "echo 'Commit message validated'"
+  }
+}

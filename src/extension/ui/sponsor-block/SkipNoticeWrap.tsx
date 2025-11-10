@@ -1,8 +1,9 @@
-import { StrictMode } from 'react';
-import PlayerPanel from './PlayerPanel';
 import { ConfigProvider, theme } from 'antd';
+import { StrictMode } from 'react';
 import { Provider } from 'react-redux';
+
 import store from '../store';
+import PlayerPanel from './PlayerPanel';
 const SkipNoticeWrap = () => {
   return (
     <StrictMode>

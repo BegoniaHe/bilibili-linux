@@ -1,21 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import md5 from "md5"
-import { BiliBiliApi, type AreaType } from "./bilibili-api"
-import { createLogger } from "../../common/log"
-import type { BiliAppSearchResultType, BiliResponseData, BiliResponseResult, BiliWebSearchResultType, HDTokenInfoType, THSearchResultType } from "./types"
-import type { ThPlayurlData } from "./interface/th-playurl/playurl.type"
+
 import type { BiliPlayUrlResult, VideoInfo } from "./interface/bili-playurl/playurl.type"
+import type { ThPlayurlData } from "./interface/th-playurl/playurl.type"
+import type { BiliAppSearchResultType, BiliResponseData, BiliResponseResult, BiliWebSearchResultType, HDTokenInfoType, THSearchResultType } from "./types"
+
+import { createLogger } from "../../common/log"
+import { BiliBiliApi, type AreaType } from "./bilibili-api"
 
 const log = createLogger('Utils')
 export const UTILS = {
-  getAccessToken(): string {
-    const tokenInfo = JSON.parse(localStorage.bili_accessToken_hd || '{}') as HDTokenInfoType
-    return tokenInfo.access_token || ''
-  },
-  enableReferer() {
-    const referrerEle = document.getElementById('referrerMark')
-    if (!referrerEle) return;
-    referrerEle.setAttribute('content', "strict-origin-when-cross-origin")
+  _params2obj(params: string) {
+    const arr = params.split('&')
+    const result: Record<string, string> = {}
+    for (const param of arr) {
+      const [key, value] = param.split('=')
+      result[key] = value
+    }
+    return result
   },
   disableReferer() {
     const referrerEle = document.getElementById('referrerMark');
@@ -29,170 +31,28 @@ export const UTILS = {
       referrerEle.setAttribute('content', "no-referrer")
     }
   },
-  replaceUpos(playURL: string, host: string, replaceAkamai: boolean = false, _area: AreaType = "hk"): string {
-    log.info('replaceUpos:', host, replaceAkamai)
-    if (host && (!playURL.includes("akamaized.net") || replaceAkamai)) {
-      playURL = playURL.replace(/:\\?\/\\?\/[^/]+\\?\//g, `://${host}/`);
-    }
-    return playURL
-  },
-  handleTHSearchResult(itemList: THSearchResultType[]) {
-    log.info('th:', itemList)
-    const result: BiliWebSearchResultType[] = []
-    for (const item of itemList) {
-      result.push({
-        type: "media_bangumi",
-        title: item.title.replace(/\u003c.*?\u003e/g, ""),
-        goto_url: item.uri.replace('bstar://bangumi/season/', 'https://www.bilibili.com/bangumi/play/ss'),
-        media_type: 1,
-        season_id: item.season_id,
-        pgc_season_id: item.season_id,
-        "season_type": 1,
-        "season_type_name": "番剧",
-        "selection_style": "horizontal",
-        "media_mode": 2,
-        "fix_pubtime_str": "",
-        cover: item.cover.replace(/@.*?webp/, '').replace('https://pic.bstarstatic.com', 'roaming-thpic://pic.bstarstatic.com') + '?123',
-        url: item.uri.replace('bstar://pgc/season/', 'https://www.bilibili.com/bangumi/play/ss'),
-        is_avid: false,
-        areas: "",
-        cv: "",
-        ep_size: 0,
-        eps: [],
-        is_follow: 0,
-        is_selection: 0,
-        media_id: 0,
-        media_score: {
-          score: 0,
-          user_count: 0
-        },
-        org_title: "",
-        pubtime: "",
-        staff: "",
-        styles: ""
-      })
-    }
-    return result
-  },
-  handleAppSearchResult(itemList: BiliAppSearchResultType[]) {
-    const result = []
-    for (const item of itemList) {
-      const eps = (item.episodes || []).map((e) => {
-        return {
-          id: e.param,
-          title: e.index,
-          url: e.uri,
-          index_title: e.index
-        }
-      })
-      result.push({
-        type: "media_bangumi",
-        media_id: item.season_id,
-        title: item.title.replace(/\u003c.*?\u003e/g, ""),
-        org_title: 'org_title',
-        media_type: 1,
-        cv: item.cv,
-        staff: item.staff,
-        season_id: item.season_id,
-        is_avid: false,
-        season_type: item.season_type,
-        season_type_name: "番剧",
-        selection_style: item.selection_style, //"horizontal",
-        ep_size: eps.length,
-        url: item.uri,
-        button_text: '立即观看',
-        is_follow: item.is_atten || 0,
-        is_selection: item.is_selection || 1,
-        eps: eps,
-        badges: [],
-        cover: item.cover.replace(/@.*?webp/, '').replace('.webp', ''),
-        areas: item.area || "",
-        styles: item.style,
-        goto_url: item.uri,
-        "desc": "",
-        "pubtime": item.ptime,
-        "media_mode": 2,
-        "fix_pubtime_str": "",
-        "media_score": {
-          "score": item.rating,
-          "user_count": item.vote
-        },
-        "pgc_season_id": item.season_id,
-        "corner": 13,
-        "index_show": "全0话"
-      })
-    }
-    return result
-  },
-  generateMobiPlayUrlParams(originUrl: string, area: AreaType) {
-    // 提取参数为数组
-    const a = originUrl.split('?')[1].split('&');
-    // 参数数组转换为对象
-    const theRequest: Record<string, string> = {};
-    for (let i = 0; i < a.length; i++) {
-      const key = a[i].split("=")[0];
-      const value = a[i].split("=")[1];
-      // 给对象赋值
-      theRequest[key] = value;
-    }
-    // 追加 mobi api 需要的参数
-    theRequest.access_key = UTILS.getAccessToken();
-    if (area === 'th') {
-      theRequest.area = 'th';
-      theRequest.appkey = '7d089525d3611b1c';
-      theRequest.build = '1001310';
-      theRequest.mobi_app = 'bstar_a';
-      theRequest.platform = 'android';
-    } else {
-      theRequest.area = area;
-      theRequest.appkey = '07da50c9a0bf829f';
-      theRequest.build = '5380700';
-      theRequest.device = 'android';
-      theRequest.mobi_app = 'android_b';
-      theRequest.platform = 'android_b';
-      theRequest.buvid = 'XY418E94B89774E201E22C5B709861B7712DD';
-      theRequest.fnval = '976'; // 强制 FLV
-      theRequest.track_path = '0';
-    }
-    theRequest.force_host = '2'; // 强制音视频返回 https
-    theRequest.ts = `${~~(Date.now() / 1000)}`;
-    // 所需参数数组
-    const param_wanted = ['access_key', 'appkey', 'area', 'build', 'buvid', 'cid', 'device', 'ep_id', 'fnval', 'fnver', 'force_host', 'fourk', 'mobi_app', 'platform', 'qn', 's_locale', 'season_id', 'track_path', 'ts'];
-    // 生成 mobi api 参数字符串
-    let mobi_api_params = '';
-    for (let i = 0; i < param_wanted.length; i++) {
-      if (Object.prototype.hasOwnProperty.call(theRequest, param_wanted[i])) {
-        mobi_api_params += param_wanted[i] + `=` + theRequest[param_wanted[i]] + `&`;
-      }
-    }
-    // 准备明文
-    let plaintext = '';
-    if (area === 'th') {
-      plaintext = mobi_api_params.slice(0, -1) + `acd495b248ec528c2eed1e862d393126`;
-    } else {
-      plaintext = mobi_api_params.slice(0, -1) + `560c52ccd288fed045859ed18bffd973`;
-    }
-    // 生成 sign
-    const ciphertext = md5(plaintext);
-    return `${mobi_api_params}sign=${ciphertext}`;
+  enableReferer() {
+    const referrerEle = document.getElementById('referrerMark')
+    if (!referrerEle) return;
+    referrerEle.setAttribute('content', "strict-origin-when-cross-origin")
   },
   async fixMobiPlayUrlJson(source: VideoInfo): Promise<VideoInfo> {
       const codecsMap: Record<string, string> = {
-        30112: 'avc1.640028',
-        30102: 'hev1.1.6.L120.90',
-        30080: 'avc1.640028',
-        30077: 'hev1.1.6.L120.90',
-        30064: 'avc1.64001F',
-        30066: 'hev1.1.6.L120.90',
-        30032: 'avc1.64001E',
-        30033: 'hev1.1.6.L120.90',
+        30005: 'avc1.64001E',
+        30006: 'avc1.64001E',
         30011: 'hev1.1.6.L120.90',
         30016: 'avc1.64001E',
-        30006: 'avc1.64001E',
-        30005: 'avc1.64001E',
-        30280: 'mp4a.40.2',
-        30232: 'mp4a.40.2',
+        30032: 'avc1.64001E',
+        30033: 'hev1.1.6.L120.90',
+        30064: 'avc1.64001F',
+        30066: 'hev1.1.6.L120.90',
+        30077: 'hev1.1.6.L120.90',
+        30080: 'avc1.640028',
+        30102: 'hev1.1.6.L120.90',
+        30112: 'avc1.640028',
         30216: 'mp4a.40.2',
+        30232: 'mp4a.40.2',
+        30280: 'mp4a.40.2',
         'nb2-1-30016': 'avc1.64001E',
         'nb2-1-30032': 'avc1.64001F',
         'nb2-1-30064': 'avc1.640028',
@@ -202,34 +62,34 @@ export const UTILS = {
         'nb2-1-30280': 'mp4a.40.2' // APP源 高码音频
       };
       const resolutionMap: Record<string, number[]> = {
-        30120: [1920, 1080],
-        30112: [1920, 1080],
-        30102: [1920, 1080],
-        30080: [1920, 1080],
-        30077: [1920, 1080],
-        30064: [1280, 720],
-        30066: [1280, 720],
-        30032: [852, 480],
-        30033: [852, 480],
+        30005: [352, 240],
+        30006: [352, 240],
         30011: [640, 360],
         30016: [640, 360],
-        30006: [352, 240],
-        30005: [352, 240],
+        30032: [852, 480],
+        30033: [852, 480],
+        30064: [1280, 720],
+        30066: [1280, 720],
+        30077: [1920, 1080],
+        30080: [1920, 1080],
+        30102: [1920, 1080],
+        30112: [1920, 1080],
+        30120: [1920, 1080],
       };
       const frameRateMap: Record<string, string> = {
-        30120: '16000/672',
-        30112: '16000/672',
-        30102: '16000/672',
-        30080: '16000/672',
-        30077: '16000/656',
-        30064: '16000/672',
-        30066: '16000/656',
-        30032: '16000/672',
-        30033: '16000/656',
+        30005: '16000/672',
+        30006: '16000/672',
         30011: '16000/656',
         30016: '16000/672',
-        30006: '16000/672',
-        30005: '16000/672'
+        30032: '16000/672',
+        30033: '16000/656',
+        30064: '16000/672',
+        30066: '16000/656',
+        30077: '16000/656',
+        30080: '16000/672',
+        30102: '16000/672',
+        30112: '16000/672',
+        30120: '16000/672'
       };
 
       let segmentBaseMap: Record<string, [string, string]> = {}
@@ -315,12 +175,12 @@ export const UTILS = {
         video.codecs = codecsMap[video_id];
         const segmentBaseId = getId(video.baseUrl, '30280', true);
         video.segment_base = {
-          initialization: segmentBaseMap[segmentBaseId][0],
-          index_range: segmentBaseMap[segmentBaseId][1]
+          index_range: segmentBaseMap[segmentBaseId][1],
+          initialization: segmentBaseMap[segmentBaseId][0]
         };
         video.SegmentBase = {
-          Initialization: segmentBaseMap[segmentBaseId][0],
-          indexRange: segmentBaseMap[segmentBaseId][1]
+          indexRange: segmentBaseMap[segmentBaseId][1],
+          Initialization: segmentBaseMap[segmentBaseId][0]
         };
         video_id = video_id.replace('nb2-1-', '');
         video.width = resolutionMap[video_id][0];
@@ -338,12 +198,12 @@ export const UTILS = {
         }
         const segmentBaseId = getId(audio.baseUrl, '30280', true);
         audio.segment_base = {
-          initialization: segmentBaseMap[segmentBaseId][0],
-          index_range: segmentBaseMap[segmentBaseId][1]
+          index_range: segmentBaseMap[segmentBaseId][1],
+          initialization: segmentBaseMap[segmentBaseId][0]
         };
         audio.SegmentBase = {
-          Initialization: segmentBaseMap[segmentBaseId][0],
-          indexRange: segmentBaseMap[segmentBaseId][1]
+          indexRange: segmentBaseMap[segmentBaseId][1],
+          Initialization: segmentBaseMap[segmentBaseId][0]
         };
         audio.codecs = codecsMap[audio_id];
         audio.mimeType = 'audio/mp4';
@@ -390,13 +250,13 @@ export const UTILS = {
                 sar: '',
                 // 后面修正
                 segment_base: {
-                  initialization: '',
-                  index_range: ''
+                  index_range: '',
+                  initialization: ''
                 },
                 // 后面修正
                 SegmentBase: {
-                  Initialization: '',
-                  indexRange: ''
+                  indexRange: '',
+                  Initialization: ''
                 },
                 size: e.size,
                 start_with_sap: 1,
@@ -433,13 +293,13 @@ export const UTILS = {
                 mimeType: 'video/mp4',
                 sar: '1:1',
                 segment_base: {
+                  index_range: '',
                   // 后面修正
-                  initialization: '',
-                  index_range: ''
+                  initialization: ''
                 },
                 SegmentBase: {
-                  Initialization: '',
-                  indexRange: ''
+                  indexRange: '',
+                  Initialization: ''
                 },
                 size: e.dash_video.size,
                 start_with_sap: 1,
@@ -451,7 +311,6 @@ export const UTILS = {
             durls: [],
             fnval: 80,
             fnver: 0,
-            type: 'DASH',
             format: "flv",
             from: "local",
             has_paid: false,
@@ -464,20 +323,21 @@ export const UTILS = {
             seek_type: "offset",
             status: 2,
             support_formats: source.data.video_info.stream_list.map(e => ({
+              attribute: 1,
+              codecs: [],
+              description: e.stream_info.description,
               display_desc: e.stream_info.display_desc,
+              format: '',
               has_preview: false,
+              need_login: e.stream_info.need_login,
+              need_vip: e.stream_info.need_vip,
+              new_description: e.stream_info.new_description,
+              quality: e.stream_info.quality,
               sub_description: '',
               superscript: '',
-              need_login: e.stream_info.need_login,
-              codecs: [],
-              format: '',
-              description: e.stream_info.description,
-              need_vip: e.stream_info.need_vip,
-              attribute: 1,
-              quality: e.stream_info.quality,
-              new_description: e.stream_info.new_description,
             })),
             timelength: source.data.video_info.timelength,
+            type: 'DASH',
             video_codecid: 7,
             video_project: false,
             video_type: "",
@@ -489,15 +349,45 @@ export const UTILS = {
       await UTILS.fixMobiPlayUrlJson(result.result.video_info);
       return result
   },
-  genSearchSign(params: Record<string, string | number>, area: AreaType) {
-
+  generateMobiPlayUrlParams(originUrl: string, area: AreaType) {
+    // 提取参数为数组
+    const a = originUrl.split('?')[1].split('&');
+    // 参数数组转换为对象
+    const theRequest: Record<string, string> = {};
+    for (let i = 0; i < a.length; i++) {
+      const key = a[i].split("=")[0];
+      const value = a[i].split("=")[1];
+      // 给对象赋值
+      theRequest[key] = value;
+    }
+    // 追加 mobi api 需要的参数
+    theRequest.access_key = UTILS.getAccessToken();
+    if (area === 'th') {
+      theRequest.area = 'th';
+      theRequest.appkey = '7d089525d3611b1c';
+      theRequest.build = '1001310';
+      theRequest.mobi_app = 'bstar_a';
+      theRequest.platform = 'android';
+    } else {
+      theRequest.area = area;
+      theRequest.appkey = '07da50c9a0bf829f';
+      theRequest.build = '5380700';
+      theRequest.device = 'android';
+      theRequest.mobi_app = 'android_b';
+      theRequest.platform = 'android_b';
+      theRequest.buvid = 'XY418E94B89774E201E22C5B709861B7712DD';
+      theRequest.fnval = '976'; // 强制 FLV
+      theRequest.track_path = '0';
+    }
+    theRequest.force_host = '2'; // 强制音视频返回 https
+    theRequest.ts = `${~~(Date.now() / 1000)}`;
     // 所需参数数组
-    const param_wanted = ['access_key', 'appkey', 'area', 'build', 'buvid', 'c_locale', 'channel', 'cid', 'device', 'disable_rcmd', 'ep_id', 'fnval', 'fnver', 'force_host', 'fourk', 'highlight', 'keyword', 'lang', 'mobi_app', 'platform', 'pn', 'ps', 'qn', 's_locale', 'sim_code', 'statistics', 'season_id', 'track_path', 'ts', 'type'];
+    const param_wanted = ['access_key', 'appkey', 'area', 'build', 'buvid', 'cid', 'device', 'ep_id', 'fnval', 'fnver', 'force_host', 'fourk', 'mobi_app', 'platform', 'qn', 's_locale', 'season_id', 'track_path', 'ts'];
     // 生成 mobi api 参数字符串
     let mobi_api_params = '';
     for (let i = 0; i < param_wanted.length; i++) {
-      if (Object.prototype.hasOwnProperty.call(params, param_wanted[i])) {
-        mobi_api_params += param_wanted[i] + `=` + params[param_wanted[i]] + `&`;
+      if (Object.prototype.hasOwnProperty.call(theRequest, param_wanted[i])) {
+        mobi_api_params += param_wanted[i] + `=` + theRequest[param_wanted[i]] + `&`;
       }
     }
     // 准备明文
@@ -507,9 +397,9 @@ export const UTILS = {
     } else {
       plaintext = mobi_api_params.slice(0, -1) + `560c52ccd288fed045859ed18bffd973`;
     }
-    // log.log(plaintext)
     // 生成 sign
-    return md5(plaintext)
+    const ciphertext = md5(plaintext);
+    return `${mobi_api_params}sign=${ciphertext}`;
   },
   genSearchParam(params: Record<string, string>, area: AreaType) {
     const result: Record<string, string | number> = {
@@ -533,11 +423,11 @@ export const UTILS = {
       qn: 80,
       // force_host: 0,
       s_locale: area === 'th' ? 'zh_SG' : 'zh_CN',
+      sign: '',
       sim_code: 52004,
       statistics: encodeURIComponent('{"appId":1,"platform":3,"version":"6.85.0","abtest":""}'),
       ts: new Date().getTime() / 1000,
-      type: 7,
-      sign: ''
+      type: 7
     }
     result.access_key = params.access_key
     result.sign = UTILS.genSearchSign(result, area)
@@ -548,39 +438,52 @@ export const UTILS = {
     return a.substring(0, a.length - 1)
 
   },
-  _params2obj(params: string) {
-    const arr = params.split('&')
-    const result: Record<string, string> = {}
-    for (const param of arr) {
-      const [key, value] = param.split('=')
-      result[key] = value
+  genSearchSign(params: Record<string, string | number>, area: AreaType) {
+
+    // 所需参数数组
+    const param_wanted = ['access_key', 'appkey', 'area', 'build', 'buvid', 'c_locale', 'channel', 'cid', 'device', 'disable_rcmd', 'ep_id', 'fnval', 'fnver', 'force_host', 'fourk', 'highlight', 'keyword', 'lang', 'mobi_app', 'platform', 'pn', 'ps', 'qn', 's_locale', 'sim_code', 'statistics', 'season_id', 'track_path', 'ts', 'type'];
+    // 生成 mobi api 参数字符串
+    let mobi_api_params = '';
+    for (let i = 0; i < param_wanted.length; i++) {
+      if (Object.prototype.hasOwnProperty.call(params, param_wanted[i])) {
+        mobi_api_params += param_wanted[i] + `=` + params[param_wanted[i]] + `&`;
+      }
     }
-    return result
+    // 准备明文
+    let plaintext = '';
+    if (area === 'th') {
+      plaintext = mobi_api_params.slice(0, -1) + `acd495b248ec528c2eed1e862d393126`;
+    } else {
+      plaintext = mobi_api_params.slice(0, -1) + `560c52ccd288fed045859ed18bffd973`;
+    }
+    // log.log(plaintext)
+    // 生成 sign
+    return md5(plaintext)
   },
   async genVideoDetailByDynamicDetail(dynamicDetail: Record<string, any>) {
     const res = {
-      View: {},
       /**
        * 作者的信息
        */
       Card: {},
-      Tags: [],
-      Reply: {},
-      Related: [],
-      Spec: null,
-      hot_share: {
-        show: false,
-        list: [],
-      },
       /**
        * 充电数据
        */
       elec: {},
-      recommend: null,
-      view_addit: {},
       guide: null,
-      query_tags: null,
+      hot_share: {
+        list: [],
+        show: false,
+      },
       is_old_user: false,
+      query_tags: null,
+      recommend: null,
+      Related: [],
+      Reply: {},
+      Spec: null,
+      Tags: [],
+      View: {},
+      view_addit: {},
     }
     const card = JSON.parse(dynamicDetail.card.card)
     log.info('dynamic card:', card)
@@ -592,6 +495,105 @@ export const UTILS = {
     const resp = await new BiliBiliApi().getUserCard(card.owner.mid)
     res.Card = resp.data
     return res
+  },
+  getAccessToken(): string {
+    const tokenInfo = JSON.parse(localStorage.bili_accessToken_hd || '{}') as HDTokenInfoType
+    return tokenInfo.access_token || ''
+  },
+  handleAppSearchResult(itemList: BiliAppSearchResultType[]) {
+    const result = []
+    for (const item of itemList) {
+      const eps = (item.episodes || []).map((e) => {
+        return {
+          id: e.param,
+          index_title: e.index,
+          title: e.index,
+          url: e.uri
+        }
+      })
+      result.push({
+        areas: item.area || "",
+        badges: [],
+        button_text: '立即观看',
+        "corner": 13,
+        cover: item.cover.replace(/@.*?webp/, '').replace('.webp', ''),
+        cv: item.cv,
+        "desc": "",
+        ep_size: eps.length,
+        eps: eps,
+        "fix_pubtime_str": "",
+        goto_url: item.uri,
+        "index_show": "全0话",
+        is_avid: false,
+        is_follow: item.is_atten || 0,
+        is_selection: item.is_selection || 1,
+        media_id: item.season_id,
+        "media_mode": 2,
+        "media_score": {
+          "score": item.rating,
+          "user_count": item.vote
+        },
+        media_type: 1,
+        org_title: 'org_title',
+        "pgc_season_id": item.season_id,
+        "pubtime": item.ptime,
+        season_id: item.season_id,
+        season_type: item.season_type,
+        season_type_name: "番剧",
+        selection_style: item.selection_style, //"horizontal",
+        staff: item.staff,
+        styles: item.style,
+        title: item.title.replace(/\u003c.*?\u003e/g, ""),
+        type: "media_bangumi",
+        url: item.uri
+      })
+    }
+    return result
+  },
+  handleTHSearchResult(itemList: THSearchResultType[]) {
+    log.info('th:', itemList)
+    const result: BiliWebSearchResultType[] = []
+    for (const item of itemList) {
+      result.push({
+        areas: "",
+        cover: item.cover.replace(/@.*?webp/, '').replace('https://pic.bstarstatic.com', 'roaming-thpic://pic.bstarstatic.com') + '?123',
+        cv: "",
+        ep_size: 0,
+        eps: [],
+        "fix_pubtime_str": "",
+        goto_url: item.uri.replace('bstar://bangumi/season/', 'https://www.bilibili.com/bangumi/play/ss'),
+        is_avid: false,
+        is_follow: 0,
+        is_selection: 0,
+        media_id: 0,
+        "media_mode": 2,
+        media_score: {
+          score: 0,
+          user_count: 0
+        },
+        media_type: 1,
+        org_title: "",
+        pgc_season_id: item.season_id,
+        pubtime: "",
+        season_id: item.season_id,
+        "season_type": 1,
+        "season_type_name": "番剧",
+        "selection_style": "horizontal",
+        staff: "",
+        styles: "",
+        title: item.title.replace(/\u003c.*?\u003e/g, ""),
+        type: "media_bangumi",
+        url: item.uri.replace('bstar://pgc/season/', 'https://www.bilibili.com/bangumi/play/ss')
+      })
+    }
+    return result
+  },
+  replaceUpos(playURL: string, host: string, replaceAkamai: boolean = false, _area: AreaType = "hk"): string {
+    log.info('replaceUpos:', host, replaceAkamai)
+    if (host && (!playURL.includes("akamaized.net") || replaceAkamai)) {
+      playURL = playURL.replace(/:\\?\/\\?\/[^/]+\\?\//g, `://${host}/`);
+    }
+    return playURL
   }
 }
 

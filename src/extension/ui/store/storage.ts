@@ -1,7 +1,8 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { requestContent } from '../../document/communication';
+
 import { createLogger } from '../../../common/log';
+import { requestContent } from '../../document/communication';
 
 
 const log = createLogger('storage')
@@ -14,8 +15,8 @@ const initialState: CounterState = {
 };
 // 创建一个 Slice 
 export const storageSlice = createSlice({
-  name: 'storage',
   initialState,
+  name: 'storage',
   // 定义 reducers 并生成关联的操作
   reducers: {
     changeLanguage: (state, action) => {
@@ -39,7 +40,7 @@ export const storageSlice = createSlice({
     },
   },
 });
-export const { storageSync, changeLanguage } = storageSlice.actions;
+export const { changeLanguage, storageSync } = storageSlice.actions;
 
 // 默认导出
 export default storageSlice.reducer;

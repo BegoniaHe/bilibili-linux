@@ -12,23 +12,10 @@ const initialState: SponsorState = JSON.parse(localStorage.getItem('sponsor_bloc
 
 // 创建一个 Slice 
 export const sponsorSlice = createSlice({
-  name: 'storage',
   initialState,
+  name: 'storage',
   // 定义 reducers 并生成关联的操作
   reducers: {
-    // 定义一个加的方法
-    switchSponsorBlock: (state) => {
-      state.enable = !state.enable;
-    },
-    switchSponsorAIDetect: (state) => {
-      state.isSponsorAIDetect = !state.isSponsorAIDetect;
-    },
-    updateBigmodelToken: (state, action) => {
-      state.bigmodelToken = action.payload;
-    },
-    updateWhisperProxy: (state, action) => {
-      state.whisperProxy = action.payload;
-    },
     saveSponsorSetting: (state, action) => {
       state.enable = action.payload.enable;
       state.isSponsorAIDetect = action.payload.isSponsorAIDetect;
@@ -45,15 +32,28 @@ export const sponsorSlice = createSlice({
         ...action.payload
       };
     },
+    switchSponsorAIDetect: (state) => {
+      state.isSponsorAIDetect = !state.isSponsorAIDetect;
+    },
+    // 定义一个加的方法
+    switchSponsorBlock: (state) => {
+      state.enable = !state.enable;
+    },
+    updateBigmodelToken: (state, action) => {
+      state.bigmodelToken = action.payload;
+    },
+    updateWhisperProxy: (state, action) => {
+      state.whisperProxy = action.payload;
+    },
   },
 });
 export const {
+  saveSponsorSetting,
+  sponsorSyncState,
   switchSponsorAIDetect,
+  switchSponsorBlock,
   updateBigmodelToken,
   updateWhisperProxy,
-  switchSponsorBlock,
-  sponsorSyncState,
-  saveSponsorSetting,
 } = sponsorSlice.actions;
 
 // 默认导出

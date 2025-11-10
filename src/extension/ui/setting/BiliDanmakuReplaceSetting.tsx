@@ -1,10 +1,11 @@
 import { Button, Cascader, Col, Input, notification, Row } from "antd";
 import { useState } from "react";
-import { BiliBiliApi } from "../../common/bilibili-api";
-import { UTILS } from "../../common/utils";
-import { GET } from "../../common/http";
-import { createLogger } from "../../../common/log";
 import { useTranslation } from "react-i18next";
+
+import { createLogger } from "../../../common/log";
+import { BiliBiliApi } from "../../common/bilibili-api";
+import { GET } from "../../common/http";
+import { UTILS } from "../../common/utils";
 
 const log = createLogger('BiliDanmaku')
 interface SearchResultType {
@@ -24,8 +25,8 @@ export default function BiliDanmakuReplaceSetting() {
     searchResult: SearchResultType[],
   }>({
     keyword: '',
-    selectOptions: ['', ''],
     searchResult: [],
+    selectOptions: ['', ''],
   })
   const updateSettingValue = (key: string, value: string | (string | SearchResultType)[]) => {
     updateSetting(pre => ({
@@ -70,8 +71,8 @@ export default function BiliDanmakuReplaceSetting() {
       })
     } catch (err) {
       notify.info({
-        message: t("出现错误"),
-        description: `${err}`
+        description: `${err}`,
+        message: t("出现错误")
       })
     }
   }
@@ -97,9 +98,9 @@ export default function BiliDanmakuReplaceSetting() {
         })
       }
       bangumiList.push({
+        children,
         label: bangumi.title.replace(/<.*?>/g, ''),
-        value: bangumi.pgc_season_id,
-        children
+        value: bangumi.pgc_season_id
       })
     }
     updateSettingValue('searchResult', bangumiList || [])

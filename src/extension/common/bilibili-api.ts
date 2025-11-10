@@ -1,10 +1,12 @@
 import md5 from "md5";
-import { GET, POST } from "./http";
-import { createLogger, Logger } from "../../common/log";
-import { UTILS } from "./utils";
-import type { BiliResponseData, BiliResponseResult, BiliSeasonInfoType } from "./types";
-import type { ThPlayurlData } from "./interface/th-playurl/playurl.type";
+
 import type { BiliPlayUrlResult } from "./interface/bili-playurl/playurl.type";
+import type { ThPlayurlData } from "./interface/th-playurl/playurl.type";
+import type { BiliResponseData, BiliResponseResult, BiliSeasonInfoType } from "./types";
+
+import { createLogger, type Logger } from "../../common/log";
+import { GET, POST } from "./http";
+import { UTILS } from "./utils";
 export type AreaType = 'hk' | 'th' | 'tw'
 
 export class BiliBiliApi {
@@ -272,10 +274,10 @@ export class BiliBiliApi {
       ts: (Date.now() / 1000).toFixed(0)
     }
     const _resp = await POST(url, this.genSignParam(param), {
-      'Content-Type': 'application/x-www-form-urlencoded',
       'app-key': 'android_hd',
-      env: 'prod',
       buvid: buvid,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      env: 'prod',
     })
     const resp = JSON.parse(_resp.responseText)
     if (resp.code === 0) {
@@ -318,10 +320,10 @@ export class BiliBiliApi {
       ts: (Date.now() / 1000).toFixed(0),
     }
     const _resp = await POST(url, this.genSignParam(param), {
-      'Content-Type': 'application/x-www-form-urlencoded',
       'app-key': 'android_hd',
-      env: 'prod',
       buvid: buvid,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      env: 'prod',
     })
     const resp = JSON.parse(_resp.responseText)
     if (resp.code >= 0) {

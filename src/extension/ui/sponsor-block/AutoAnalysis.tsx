@@ -1,9 +1,11 @@
-import { useSelector } from "react-redux"
-import { createLogger } from "../../../common/log"
-import type { RootState } from "../store"
 import { useRef, useState } from "react"
-import AnalysisStep from "./AnalysisStep"
 import { useTranslation } from "react-i18next"
+import { useSelector } from "react-redux"
+
+import type { RootState } from "../store"
+
+import { createLogger } from "../../../common/log"
+import AnalysisStep from "./AnalysisStep"
 const log = createLogger('AutoAnalysis')
 type ShowPanel = ((b: boolean) => void) | undefined
 let changeAiPanel: ShowPanel = undefined
@@ -54,21 +56,21 @@ export default function AutoAnalysis() {
   return (
     <>
     <div className="sponsor-expand-btn" style={{
-        position: 'absolute',
-        right: '0px',
-        bottom: '100px',
-        zIndex: 9999,
         background: 'rgba(0, 0, 0, 0.8)',
-        color: 'white',
         border: 'none',
         borderRadius: '4px 0 0 4px',
-        padding: '12px 8px',
-        cursor: 'pointer',
+        bottom: '100px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+        color: 'white',
+        cursor: 'pointer',
+        display: isVisible ? 'none' : 'block',
         fontSize: '14px',
         fontWeight: 'bold',
+        padding: '12px 8px',
         pointerEvents: 'auto',
-        display: isVisible ? 'none' : 'block'
+        position: 'absolute',
+        right: '0px',
+        zIndex: 9999
       }} onClick={handleExpand}>
         {t('展开')}
       </div>
@@ -76,22 +78,22 @@ export default function AutoAnalysis() {
       <div className="sponsor-container">
         <div className="sponsor-header">
           {/* 左上角：跳过信息和重试按钮 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ alignItems: 'center', display: 'flex', gap: '8px' }}>
             <span className="skip-text">{t('AI识别关键节点')}</span>
             <button
               onClick={handleRetry}
               title={t("重试")}
               style={{
+                alignItems: 'center',
                 background: 'none',
                 border: 'none',
-                cursor: 'pointer',
-                padding: '4px',
                 borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
                 color: '#666',
-                fontSize: '14px'
+                cursor: 'pointer',
+                display: 'flex',
+                fontSize: '14px',
+                justifyContent: 'center',
+                padding: '4px'
               }}
             >
               <svg

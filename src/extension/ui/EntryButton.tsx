@@ -1,8 +1,9 @@
 import { SettingOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
+
 import { getPageType } from "../common/page";
 import { Page } from "../common/types";
 import DanmuAdjust from "./player/DanmuAdjust";
-import { useTranslation } from "react-i18next";
 interface PropType {
   onClick: () => void
 }

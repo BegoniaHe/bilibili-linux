@@ -1,5 +1,3 @@
-import { GET, POST } from '../http';
-import { API_ENDPOINTS, DEFAULT_HEADERS, CLIENT_INFO } from './constants';
 import type {
   GetSegmentsParams,
   Segment,
@@ -9,13 +7,16 @@ import type {
   UserStats
 } from './types';
 
+import { GET, POST } from '../http';
+import { API_ENDPOINTS, DEFAULT_HEADERS, CLIENT_INFO } from './constants';
+
 /**
  * 获取视频分段
  * @param params 请求参数
  * @returns 分段列表
  */
 export async function getSegments(params: GetSegmentsParams): Promise<Segment[]> {
-  const { videoID, categories } = params;
+  const { categories, videoID } = params;
   
   let url = `${API_ENDPOINTS.GET_SEGMENTS}?videoID=${videoID}`;
   
@@ -40,23 +41,23 @@ export async function getSegments(params: GetSegmentsParams): Promise<Segment[]>
  */
 export async function submitSegment(params: SubmitSegmentParams): Promise<string> {
   const {
-    videoID,
-    startTime,
-    endTime,
     category,
+    description = '',
+    endTime,
+    startTime,
     userID,
     videoDuration,
-    description = ''
+    videoID
   } = params;
   
   const body = JSON.stringify({
-    videoID,
-    startTime,
-    endTime,
     category,
+    description,
+    endTime,
+    startTime,
     userID,
     videoDuration,
-    description,
+    videoID,
     ...CLIENT_INFO
   });
   
@@ -75,7 +76,7 @@ export async function submitSegment(params: SubmitSegmentParams): Promise<string
  * @returns 投票结果
  */
 export async function voteOnSegment(params: VoteParams): Promise<boolean> {
-  const { UUID, userID, type } = params;
+  const { type, userID, UUID } = params;
   
   const url = `${API_ENDPOINTS.VOTE}?UUID=${UUID}&userID=${userID}&type=${type}`;
   
@@ -94,7 +95,7 @@ export async function voteOnSegment(params: VoteParams): Promise<boolean> {
  * @returns 操作结果
  */
 export async function viewSegment(params: ViewSegmentParams): Promise<boolean> {
-  const { UUID, userID } = params;
+  const { userID, UUID } = params;
   
   const url = `${API_ENDPOINTS.VIEW_SEGMENT}?UUID=${UUID}&userID=${userID}`;
   

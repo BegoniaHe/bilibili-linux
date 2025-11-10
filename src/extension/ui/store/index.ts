@@ -1,23 +1,24 @@
 // index.ts 文件
 
 import { configureStore } from "@reduxjs/toolkit";
-import storageSlice, { changeLanguage, storageSync } from "./storage.ts";
+
 import { createLogger } from "../../../common/log.ts";
-import sponsorSlice, { sponsorSyncState } from "./sponsor.ts";
-import playSlice, { playSyncState } from "./play.ts";
-import danmakuSlice, { danmakuSyncState } from "./danmaku.ts";
-import roamingSlice, { roamingSyncState } from "./roaming.ts";
 import { requestContent } from "../../document/communication.ts";
+import danmakuSlice, { danmakuSyncState } from "./danmaku.ts";
+import playSlice, { playSyncState } from "./play.ts";
+import roamingSlice, { roamingSyncState } from "./roaming.ts";
+import sponsorSlice, { sponsorSyncState } from "./sponsor.ts";
+import storageSlice, { changeLanguage, storageSync } from "./storage.ts";
 
 // slice actions映射，用于多slice数据同步
 const sliceActions = {
-  storage: storageSync,
+  danmaku: danmakuSyncState,
+  play: playSyncState,
+  roaming: roamingSyncState,
   // 可以在这里添加其他slice的syncState action
   // user: userSyncState,
   sponsor: sponsorSyncState,
-  play: playSyncState,
-  danmaku: danmakuSyncState,
-  roaming: roamingSyncState,
+  storage: storageSync,
 };
 
 // 防止循环同步的标志
@@ -27,11 +28,11 @@ let isSyncing = false;
 const store = configureStore({
   // 合并多个Slice
   reducer: {
-    storage: storageSlice,
-    sponsor: sponsorSlice,
-    play: playSlice,
     danmaku: danmakuSlice,
+    play: playSlice,
     roaming: roamingSlice,
+    sponsor: sponsorSlice,
+    storage: storageSlice,
   },
 });
 

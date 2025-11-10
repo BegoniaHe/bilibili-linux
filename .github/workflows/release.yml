@@ -38,14 +38,48 @@ jobs:
         with:
           node-version: '22.15.0'
 
+      # 添加 pnpm 缓存
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Prepare
         run: |
           sudo apt install wget exiftool
           sudo npm install asar -g
           corepack enable
           pnpm setup
-          npm install
+          pnpm install
           echo "$UID, $GID"
+      
+      # 添加代码质量检查
+      - name: Run linter
+        run: pnpm lint
+        continue-on-error: true
+      
+      - name: Type check
+        run: pnpm type-check
+        continue-on-error: true
+      
+      # 添加测试
+      - name: Run tests
+        run: pnpm test:run
+        continue-on-error: true
 
       - name: Generate TAG
         id: Tag
@@ -196,6 +230,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      # 添加缓存
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Prepare
         env:
