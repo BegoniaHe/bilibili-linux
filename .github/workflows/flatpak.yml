@@ -90,15 +90,30 @@ jobs:
       
       - name: Build application resources
         run: |
+          mkdir -p app
           tools/update-bilibili
           tools/fix-other.sh
           tools/extension.sh
           mv tmp/bili/resources/* app
       
+      - name: Build project
+        run: |
+          pnpm build
+      
       - name: Prepare Flatpak build
         run: |
           mkdir -p flatpak-build
-          tar -czf flatpak-build/bilibili-asar.tar.gz bin app electron
+          # 确保必要的文件存在
+          if [ ! -d "app" ]; then
+            echo "错误: app 目录不存在"
+            exit 1
+          fi
+          if [ ! -d "bin" ]; then
+            echo "错误: bin 目录不存在"
+            exit 1
+          fi
+          # Flatpak 使用 BaseApp 提供的 electron，只需打包 bin 和 app
+          tar -czf flatpak-build/bilibili-asar.tar.gz bin app
           cp io.github.msojocs.bilibili.yml flatpak-build/
           cp io.github.msojocs.bilibili.metainfo.xml flatpak-build/
           cp -r res flatpak-build/
