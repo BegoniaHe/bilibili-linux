@@ -209,7 +209,11 @@ jobs:
         id: build-result
         if: always()
         run: |
-          echo "success=${{ steps.build-flatpak.outcome == 'success' }}" >> $GITHUB_OUTPUT
+          if [ "${{ steps.build-flatpak.outcome }}" == "success" ]; then
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "success=false" >> $GITHUB_OUTPUT
+          fi
   
   upload-flatpak:
     name: Upload Flatpak to Release
