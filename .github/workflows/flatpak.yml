@@ -61,7 +61,14 @@ jobs:
       
       - name: Install system dependencies
         run: |
-          dnf install -y wget tar gzip asar npm
+          # Flatpak 构建容器基于 Fedora，使用 dnf
+          # 安装构建所需的系统工具
+          dnf install -y wget nodejs npm perl-Image-ExifTool p7zip p7zip-plugins
+      
+      - name: Install asar globally
+        run: |
+          # asar 不是系统包，需要通过 npm 安装
+          npm install -g @electron/asar
       
       - name: Install Node.js dependencies
         run: |

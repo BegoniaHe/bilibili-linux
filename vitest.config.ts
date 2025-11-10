@@ -12,14 +12,26 @@ export default defineConfig({
     },
   },
   test: {
+    // 测试文件匹配模式
+    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    // 排除目录
+    exclude: [
+      'node_modules/**',
+      'dist/**',
+      'app/**',
+      'tmp/**',
+      '.git/**',
+    ],
     coverage: {
       exclude: [
         'dist/**',
         'node_modules/**',
-        'test/**',
+        'app/**',
+        'tmp/**',
         '**/*.d.ts',
         '**/*.config.*',
         '**/mockData/**',
+        'test/setup.ts',
       ],
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
