@@ -44,6 +44,7 @@ jobs:
 
       - name: Setup pnpm cache
         uses: actions/cache@v3
+        continue-on-error: true
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
