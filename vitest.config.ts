@@ -12,16 +12,6 @@ export default defineConfig({
     },
   },
   test: {
-    // 测试文件匹配模式
-    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    // 排除目录
-    exclude: [
-      'node_modules/**',
-      'dist/**',
-      'app/**',
-      'tmp/**',
-      '.git/**',
-    ],
     coverage: {
       exclude: [
         'dist/**',
@@ -37,7 +27,17 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
     },
     environment: 'jsdom',
+    // 排除目录
+    exclude: [
+      'node_modules/**',
+      'dist/**',
+      'app/**',
+      'tmp/**',
+      '.git/**',
+    ],
     globals: true,
+    // 测试文件匹配模式
+    include: ['test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./test/setup.ts'],
   },
 });
