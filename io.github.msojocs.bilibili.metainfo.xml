@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.msojocs.bilibili</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  
+  <name>哔哩哔哩</name>
+  <name xml:lang="en">Bilibili</name>
+  <name xml:lang="zh-TW">嗶哩嗶哩</name>
+  
+  <summary>哔哩哔哩 Linux 客户端</summary>
+  <summary xml:lang="en">Bilibili Linux Client</summary>
+  <summary xml:lang="zh-TW">嗶哩嗶哩 Linux 客戶端</summary>
+  
+  <description>
+    <p>
+      哔哩哔哩官方客户端的 Linux 适配版本，提供完整的视频观看、弹幕互动等功能。
+    </p>
+    <p xml:lang="en">
+      Linux adaptation of the official Bilibili client, providing complete video viewing and danmaku interaction features.
+    </p>
+    <p xml:lang="zh-TW">
+      嗶哩嗶哩官方客戶端的 Linux 適配版本，提供完整的影片觀看、彈幕互動等功能。
+    </p>
+    
+    <p>主要功能 / Features:</p>
+    <ul>
+      <li>观看视频和直播 / Watch videos and live streams</li>
+      <li>发送弹幕 / Send danmaku comments</li>
+      <li>港澳台番剧解锁 / Unlock region-restricted content</li>
+      <li>弹幕共享 / Danmaku sharing</li>
+      <li>SponsorBlock 支持 / SponsorBlock integration</li>
+      <li>自定义播放设置 / Custom playback settings</li>
+    </ul>
+  </description>
+  
+  <launchable type="desktop-id">io.github.msojocs.bilibili.desktop</launchable>
+  
+  <screenshots>
+    <screenshot type="default">
+      <caption>主界面</caption>
+      <caption xml:lang="en">Main interface</caption>
+      <image>https://raw.githubusercontent.com/msojocs/bilibili-linux/master/res/screenshots/screenshot1.png</image>
+    </screenshot>
+  </screenshots>
+  
+  <url type="homepage">https://github.com/msojocs/bilibili-linux</url>
+  <url type="bugtracker">https://github.com/msojocs/bilibili-linux/issues</url>
+  <url type="help">https://github.com/msojocs/bilibili-linux/blob/master/README.MD</url>
+  
+  <developer_name>msojocs</developer_name>
+  <developer id="io.github.msojocs">
+    <name>msojocs</name>
+  </developer>
+  
+  <releases>
+    <release version="1.17.3-1" date="2025-11-06">
+      <description>
+        <p>更新到 Bilibili v1.17.3.4496</p>
+        <p xml:lang="en">Update to Bilibili v1.17.3.4496</p>
+      </description>
+    </release>
+  </releases>
+  
+  <content_rating type="oars-1.1">
+    <content_attribute id="social-chat">intense</content_attribute>
+    <content_attribute id="social-audio">intense</content_attribute>
+    <content_attribute id="money-purchasing">mild</content_attribute>
+  </content_rating>
+  
+  <keywords>
+    <keyword>bilibili</keyword>
+    <keyword>video</keyword>
+    <keyword>streaming</keyword>
+    <keyword>anime</keyword>
+    <keyword>弹幕</keyword>
+    <keyword>视频</keyword>
+  </keywords>
+  
+  <categories>
+    <category>AudioVideo</category>
+    <category>Video</category>
+    <category>Player</category>
+    <category>Network</category>
+  </categories>
+  
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+  
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </recommends>
+</component>

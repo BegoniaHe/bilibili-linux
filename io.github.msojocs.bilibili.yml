@@ -1,0 +1,76 @@
+app-id: io.github.msojocs.bilibili
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '23.08'
+command: bilibili
+separate-locales: false
+
+finish-args:
+  # X11 + XShm access
+  - --share=ipc
+  - --socket=x11
+  # Wayland access
+  - --socket=wayland
+  # Audio access
+  - --socket=pulseaudio
+  # Network access
+  - --share=network
+  # GPU acceleration
+  - --device=dri
+  # Notifications
+  - --talk-name=org.freedesktop.Notifications
+  # System tray
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --own-name=org.kde.StatusNotifierItem-*
+  # File system access
+  - --filesystem=xdg-download
+  - --filesystem=xdg-videos
+  - --filesystem=xdg-music
+  # Persist config
+  - --persist=.config/bilibili
+
+modules:
+  - name: bilibili
+    buildsystem: simple
+    build-commands:
+      # 解压构建产物
+      - tar -xzf bilibili-asar.tar.gz
+      # 安装到 Flatpak 目录
+      - install -Dm755 bin/bilibili /app/bin/bilibili
+      - cp -r app /app/app
+      - cp -r electron /app/electron || true
+      # 创建启动脚本
+      - |
+        cat > /app/bin/bilibili-wrapper <<'EOF'
+        #!/bin/bash
+        export ELECTRON_IS_DEV=0
+        export ELECTRON_FORCE_IS_PACKAGED=1
+        if [ -d "/app/electron" ]; then
+          exec /app/electron/electron /app/app --no-sandbox "$@"
+        else
+          exec /app/bin/bilibili "$@"
+        fi
+        EOF
+      - chmod +x /app/bin/bilibili-wrapper
+      # 安装图标（检查文件是否存在）
+      - install -Dm644 res/icons/512x512.png /app/share/icons/hicolor/512x512/apps/${FLATPAK_ID}.png || true
+      - install -Dm644 res/icons/256x256.png /app/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png || true
+      - install -Dm644 res/icons/128x128.png /app/share/icons/hicolor/128x128/apps/${FLATPAK_ID}.png || true
+      - install -Dm644 res/icons/icon.png /app/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png || true
+      # 安装 desktop 文件
+      - install -Dm644 res/bilibili.desktop /app/share/applications/${FLATPAK_ID}.desktop
+      # 更新 desktop 文件中的图标和 Exec
+      - desktop-file-edit --set-key=Icon --set-value=${FLATPAK_ID} /app/share/applications/${FLATPAK_ID}.desktop
+      - desktop-file-edit --set-key=Exec --set-value="bilibili-wrapper %U" /app/share/applications/${FLATPAK_ID}.desktop
+      # 安装 AppStream metadata
+      - install -Dm644 io.github.msojocs.bilibili.metainfo.xml /app/share/metainfo/${FLATPAK_ID}.metainfo.xml
+    
+    sources:
+      - type: archive
+        path: bilibili-asar.tar.gz
+        dest: .
+      
+      - type: file
+        path: io.github.msojocs.bilibili.metainfo.xml

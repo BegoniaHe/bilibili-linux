@@ -47,27 +47,33 @@ This project is completely open source, with no code encryption. If you have any
 
 Please download from the Release page:
 
-https://github.com/msojocs/bilibili-linux/releases
+<https://github.com/msojocs/bilibili-linux/releases>
 
 For continuous builds:
 
-https://github.com/msojocs/bilibili-linux/releases/tag/continuous
+<https://github.com/msojocs/bilibili-linux/releases/tag/continuous>
 
 ### Manual Build
 
 1. Clone the code
+
    ```
    git clone https://github.com/msojocs/bilibili-linux.git
    cd bilibili-linux
    ```
+
 2. Install
+
    ```
    tools/setup-bilibili
    ```
+
 3. Launch
+
    ```
    bin/bilibili
    ```
+
 ### AppImage Installation
 
 Please use [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher)
@@ -79,7 +85,7 @@ If you don't want to install another Electron on your computer, you can extract 
 ## Flag Configuration
 
 List of supported flags:
-https://www.electronjs.org/docs/latest/api/command-line-switches
+<https://www.electronjs.org/docs/latest/api/command-line-switches>
 
 1. Create a `flags` file
 
@@ -102,7 +108,7 @@ The login interface has two layers: right-click to open the inner layer, and pre
 
 ## About Loongson
 
-https://areweloongyet.com/docs/loong-or-loongarch
+<https://areweloongyet.com/docs/loong-or-loongarch>
 
 |Distribution|Architecture Identifier|
 |---|---|
@@ -121,7 +127,7 @@ Automatically helps you jump to key moments.
 |---|---|
 | Whisper Proxy | A proxy is needed for model downloads, e.g., `http://127.0.0.1:1080` |
 | LD_LIBRARY_PATH | You might encounter a `cudnn` library not found issue, [refer here](https://github.com/MahmoudAshraf97/whisper-diarization/issues/259) |
-| AI Recognition TOKEN | Token from https://www.bigmodel.cn/, using the free model `glm-4.5-flash` |
+| AI Recognition TOKEN | Token from <https://www.bigmodel.cn/>, using the free model `glm-4.5-flash` |
 
 ## Switch Language
 
@@ -159,4 +165,4 @@ The copyright of the Bilibili client belongs to Shanghai Kuanyu Digital Technolo
 
 The maintainer is not responsible for any additional issues arising from the use of this project, such as account bans or theft. Please use with caution.
 
-If there are any improprieties, please contact me at: jiyecafe@gmail.com
+If there are any improprieties, please contact me at: <jiyecafe@gmail.com>

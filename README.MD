@@ -44,30 +44,93 @@
 
 请到 Release 页面下载：
 
-https://github.com/msojocs/bilibili-linux/releases
+<https://github.com/msojocs/bilibili-linux/releases>
 
 即时构建版本：
 
-https://github.com/msojocs/bilibili-linux/releases/tag/continuous
+<https://github.com/msojocs/bilibili-linux/releases/tag/continuous>
 
 ### 手动构建
 
 1. 拉取代码
-   ```
+
+   ```bash
    git clone https://github.com/msojocs/bilibili-linux.git
    cd bilibili-linux
    ```
+
 2. 安装
-   ```
+
+   ```bash
    tools/setup-bilibili
    ```
+
 3. 启动
+
    ```
    bin/bilibili
    ```
+
 ### AppImage 安装
 
 请使用 [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher)
+
+### Flatpak 安装
+
+#### 方式一：使用 flatpakref 文件（推荐）
+
+```bash
+# 下载并安装
+wget https://github.com/msojocs/bilibili-linux/releases/latest/download/io.github.msojocs.bilibili.flatpakref
+flatpak install --user io.github.msojocs.bilibili.flatpakref
+```
+
+#### 方式二：直接从 bundle 安装
+
+```bash
+# 下载 flatpak bundle
+wget https://github.com/msojocs/bilibili-linux/releases/latest/download/io.github.msojocs.bilibili-<version>.flatpak
+
+# 安装
+flatpak install --user io.github.msojocs.bilibili-<version>.flatpak
+```
+
+#### 运行应用
+
+```bash
+flatpak run io.github.msojocs.bilibili
+```
+
+#### 卸载
+
+```bash
+flatpak uninstall io.github.msojocs.bilibili
+```
+
+#### 故障排除
+
+##### 应用无法启动
+
+检查日志：
+
+```bash
+flatpak run --command=sh io.github.msojocs.bilibili
+journalctl --user -xe | grep bilibili
+```
+
+##### 权限问题
+
+查看应用权限：
+
+```bash
+flatpak info --show-permissions io.github.msojocs.bilibili
+```
+
+修改权限（例如增加访问主目录权限）：
+
+```bash
+flatpak override --user io.github.msojocs.bilibili --filesystem=home
+```
 
 ### 额外补充
 
@@ -76,7 +139,7 @@ https://github.com/msojocs/bilibili-linux/releases/tag/continuous
 ## Flag参数配置
 
 支持的参数列表：
-https://www.electronjs.org/docs/latest/api/command-line-switches
+<https://www.electronjs.org/docs/latest/api/command-line-switches>
 
 1. 创建 `flags` 文件
 
@@ -99,7 +162,7 @@ https://www.electronjs.org/docs/latest/api/command-line-switches
 
 ## 关于龙芯
 
-https://areweloongyet.com/docs/loong-or-loongarch
+<https://areweloongyet.com/docs/loong-or-loongarch>
 
 |发行版|架构标识符|
 |------|----------|
@@ -118,7 +181,7 @@ https://areweloongyet.com/docs/loong-or-loongarch
 |------|-----|
 | Whisper代理 | 模型下载需要代理, 形如：`http://127.0.0.1:1080` |
 | LD_LIBRARY_PATH | 可能遇到 `cudnn` 库找不到，[参考此处](https://github.com/MahmoudAshraf97/whisper-diarization/issues/259) |
-| AI识别TOKEN | https://www.bigmodel.cn/ 的Token，使用免费模型 `glm-4.5-flash` |
+| AI识别TOKEN | <https://www.bigmodel.cn/> 的Token，使用免费模型 `glm-4.5-flash` |
 
 ## 切换语言
 
@@ -156,4 +219,4 @@ License 仅对本项目生效，不针对其产物。
 
 对于使用本项目产生的额外问题，如账户封禁被盗等，维护者不对此负责，请谨慎使用；
 
-如有不当之处，请联系本人，邮箱：jiyecafe@gmail.com
+如有不当之处，请联系本人，邮箱：<jiyecafe@gmail.com>

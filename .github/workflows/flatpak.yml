@@ -1,0 +1,205 @@
+name: Build Flatpak
+
+on:
+  push:
+    tags:
+      - v*
+    branches: [master, dev, ci]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      upload_to_release:
+        description: '上传到 Release'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  build-flatpak:
+    name: Build Flatpak Package
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:freedesktop-23.08
+      options: --privileged
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.15.0'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install system dependencies
+        run: |
+          dnf install -y wget tar gzip asar npm
+      
+      - name: Install Node.js dependencies
+        run: |
+          corepack enable
+          pnpm install
+      
+      - name: Generate TAG
+        id: tag
+        run: |
+          tag='continuous'
+          name='Continuous Build'
+          if [ 'true' == ${{ startsWith(github.ref, 'refs/tags/') }} ];then
+            tag='${{ github.ref_name }}'
+            name='${{ github.ref_name }}'
+          fi
+          echo "tag result: $tag - $name"
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+          echo "name=$name" >> $GITHUB_OUTPUT
+      
+      - name: Build application resources
+        run: |
+          tools/update-bilibili
+          tools/fix-other.sh
+          tools/extension.sh
+          mv tmp/bili/resources/* app
+      
+      - name: Prepare Flatpak build
+        run: |
+          mkdir -p flatpak-build
+          tar -czf flatpak-build/bilibili-asar.tar.gz bin app electron
+          cp io.github.msojocs.bilibili.yml flatpak-build/
+          cp io.github.msojocs.bilibili.metainfo.xml flatpak-build/
+          cp -r res flatpak-build/
+      
+      - name: Build Flatpak
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: io.github.msojocs.bilibili-${{ steps.tag.outputs.tag }}.flatpak
+          manifest-path: flatpak-build/io.github.msojocs.bilibili.yml
+          cache-key: flatpak-builder-${{ github.sha }}
+          restore-cache: true
+      
+      - name: Generate flatpakref
+        run: |
+          cat > io.github.msojocs.bilibili.flatpakref <<EOF
+          [Flatpak Ref]
+          Name=io.github.msojocs.bilibili
+          Branch=stable
+          Title=哔哩哔哩
+          IsRuntime=false
+          Url=https://github.com/${{ github.repository }}/releases/download/${{ steps.tag.outputs.tag }}/io.github.msojocs.bilibili-${{ steps.tag.outputs.tag }}.flatpak
+          RuntimeRepo=https://flathub.org/repo/flathub.flatpakrepo
+          EOF
+      
+      - name: Upload Flatpak artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-bundle-${{ steps.tag.outputs.tag }}
+          path: |
+            *.flatpak
+            *.flatpakref
+          retention-days: 30
+      
+      - name: Create Flathub repository structure
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          mkdir -p flathub-repo
+          cp flatpak-build/io.github.msojocs.bilibili.yml flathub-repo/
+          cp flatpak-build/io.github.msojocs.bilibili.metainfo.xml flathub-repo/
+          
+          cat > flathub-repo/flathub.json <<EOF
+          {
+            "only-arches": ["x86_64", "aarch64"]
+          }
+          EOF
+          
+          cat > flathub-repo/README.md <<EOF
+          # Bilibili Linux Client - Flathub
+
+          This repository contains the Flatpak manifest for the Bilibili Linux client.
+
+          ## Build
+          \`\`\`bash
+          flatpak-builder --force-clean build-dir io.github.msojocs.bilibili.yml
+          \`\`\`
+
+          ## Install
+          \`\`\`bash
+          flatpak-builder --user --install --force-clean build-dir io.github.msojocs.bilibili.yml
+          \`\`\`
+
+          ## Run
+          \`\`\`bash
+          flatpak run io.github.msojocs.bilibili
+          \`\`\`
+          EOF
+      
+      - name: Upload Flathub repository structure
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: flathub-repo-structure
+          path: flathub-repo/
+          retention-days: 90
+  
+  upload-flatpak:
+    name: Upload Flatpak to Release
+    needs: build-flatpak
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || github.event.inputs.upload_to_release == 'true'
+    
+    steps:
+      - name: Generate TAG
+        id: tag
+        run: |
+          if [ 'true' == ${{ startsWith(github.ref, 'refs/tags/') }} ];then
+            tag='${{ github.ref_name }}'
+          else
+            tag='continuous'
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+      
+      - name: Download Flatpak artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: flatpak-bundle-${{ steps.tag.outputs.tag }}
+          path: flatpak-artifacts
+      
+      - name: List artifacts
+        run: |
+          ls -lah flatpak-artifacts/
+      
+      - name: Release Flatpak
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            flatpak-artifacts/*.flatpak
+            flatpak-artifacts/*.flatpakref
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

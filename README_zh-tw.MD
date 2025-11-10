@@ -47,27 +47,33 @@
 
 請到 Release 頁面下載：
 
-https://github.com/msojocs/bilibili-linux/releases
+<https://github.com/msojocs/bilibili-linux/releases>
 
 即時建構版本：
 
-https://github.com/msojocs/bilibili-linux/releases/tag/continuous
+<https://github.com/msojocs/bilibili-linux/releases/tag/continuous>
 
 ### 手動建構
 
 1. 拉取程式碼
-   ```
+
+   ```bash
    git clone https://github.com/msojocs/bilibili-linux.git
    cd bilibili-linux
    ```
+
 2. 安裝
-   ```
+
+   ```bash
    tools/setup-bilibili
    ```
+
 3. 啟動
-   ```
+
+   ```bash
    bin/bilibili
    ```
+
 ### AppImage 安裝
 
 請使用 [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher)
@@ -79,7 +85,7 @@ https://github.com/msojocs/bilibili-linux/releases/tag/continuous
 ## Flag參數配置
 
 支援的參數列表：
-https://www.electronjs.org/docs/latest/api/command-line-switches
+<https://www.electronjs.org/docs/latest/api/command-line-switches>
 
 1. 建立 `flags` 檔案
 
@@ -102,7 +108,7 @@ https://www.electronjs.org/docs/latest/api/command-line-switches
 
 ## 關於龍芯
 
-https://areweloongyet.com/docs/loong-or-loongarch
+<https://areweloongyet.com/docs/loong-or-loongarch>
 
 |發行版|架構識別碼|
 |------|----------|
@@ -121,7 +127,7 @@ https://areweloongyet.com/docs/loong-or-loongarch
 |------|-----|
 | Whisper代理 | 模型下載需要代理 形如：`http://127.0.0.1:1080` |
 | LD_LIBRARY_PATH | 可能遇到 `cudnn` 庫找不到，[參考此處](https://github.com/MahmoudAshraf97/whisper-diarization/issues/259) |
-| AI識別TOKEN | https://www.bigmodel.cn/ 的Token，使用免費模型 `glm-4.5-flash` |
+| AI識別TOKEN | <https://www.bigmodel.cn/> 的Token，使用免費模型 `glm-4.5-flash` |
 
 ## 切換語言
 
@@ -159,4 +165,4 @@ License 僅對本專案生效，不針對其產物。
 
 對於使用本專案產生的額外問題，如帳戶封禁被盜等，維護者不對此負責，請謹慎使用；
 
-如有不當之處，請聯繫本人，信箱：jiyecafe@gmail.com
+如有不當之處，請聯繫本人，信箱：<jiyecafe@gmail.com>
